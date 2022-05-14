@@ -1,10 +1,11 @@
 {
   "name": "budgetly-backend",
   "version": "1.0.0",
-  "description": "backend for budgetly mobile app",
+  "description": "Mock REST API for budgetly mobile app.",
   "main": "index.js",
   "scripts": {
-    "json:server": "json-server --watch db.json"
+    "json:server": "json-server --watch db.json",
+    "start": "node server.js"
   },
   "author": "Roland Füst",
   "license": "ISC",
