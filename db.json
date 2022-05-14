@@ -1,0 +1,11 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "username": "demouser",
+      "email": "something@budgetly.com",
+      "password": "123456",
+      "accountId": "1"
+    }
+  ]
+}
