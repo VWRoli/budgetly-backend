@@ -1,0 +1,14 @@
+{
+  "name": "budgetly-backend",
+  "version": "1.0.0",
+  "description": "backend for budgetly mobile app",
+  "main": "index.js",
+  "scripts": {
+    "json:server": "json-server --watch db.json"
+  },
+  "author": "Roland Füst",
+  "license": "ISC",
+  "dependencies": {
+    "json-server": "^0.17.0"
+  }
+}
