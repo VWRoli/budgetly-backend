@@ -5,91 +5,353 @@
       "username": "demouser",
       "email": "something@budgetly.com",
       "password": "123456",
-      "accountId": 1
+      "balance": 500000,
+      "currency": "huf",
+      "budgeted": 500000,
+      "available": 0
+    },
+    {
+      "id": 2,
+      "username": "shouldNotBeSeen",
+      "email": "shouldNotBeSeen@budgetly.com",
+      "password": "123456",
+      "balance": 300000,
+      "currency": "huf",
+      "budgeted": 300000,
+      "available": 0
+    }
+  ],
+  "accounts": [
+    {
+      "name": "bank",
+      "id": 1,
+      "userId": 1,
+      "balance": 150000
+    },
+    {
+      "name": "Cash",
+      "id": 2,
+      "userId": 1,
+      "balance": 150000
+    },
+    {
+      "name": "Card",
+      "id": 3,
+      "userId": 1,
+      "balance": 200000
     }
   ],
   "transactions": [
     {
-      "payee": "Amazon",
-      "amount": 3254,
+      "payee": "Store",
+      "userId": 1,
+      "id": 1,
+      "amount": -3254,
       "currency": "huf",
-      "date": "2022-05-05T14:48:00.000Z",
-      "category": "Expenses",
-      "categoryId": 1
+      "date": "2022-05-01T14:48:00.000Z",
+      "categoryId": 1,
+      "budgetItemsId": 7,
+      "accountId": 3
     },
     {
-      "payee": "Market",
-      "amount": 500,
+      "payee": "Store",
+      "userId": 1,
+      "id": 2,
+      "amount": -2500,
+      "currency": "huf",
+      "date": "2022-05-01T15:48:00.000Z",
+      "categoryId": 1,
+      "budgetItemsId": 7,
+      "accountId": 3
+    },
+    {
+      "payee": "Amazon",
+      "userId": 1,
+      "id": 3,
+      "amount": -500,
+      "currency": "huf",
+      "date": "2022-05-01T15:48:00.000Z",
+      "categoryId": 1,
+      "budgetItemsId": 6,
+      "accountId": 2
+    },
+    {
+      "payee": "Landlord",
+      "userId": 1,
+      "id": 4,
+      "amount": -70000,
+      "currency": "huf",
+      "date": "2022-05-02T15:48:00.000Z",
+      "categoryId": 1,
+      "budgetItemsId": 1,
+      "accountId": 2
+    },
+    {
+      "payee": "Store",
+      "userId": 1,
+      "id": 5,
+      "amount": -1500,
+      "currency": "huf",
+      "date": "2022-05-02T20:48:00.000Z",
+      "categoryId": 1,
+      "budgetItemsId": 7,
+      "accountId": 3
+    },
+    {
+      "payee": "Fuel Station",
+      "userId": 1,
+      "id": 6,
+      "amount": -15000,
+      "currency": "huf",
+      "date": "2022-05-02T20:48:00.000Z",
+      "categoryId": 2,
+      "budgetItemsId": 8,
+      "accountId": 3
+    },
+    {
+      "payee": "Pub",
+      "userId": 1,
+      "id": 7,
+      "amount": -1000,
+      "currency": "huf",
+      "date": "2022-05-05T20:48:00.000Z",
+      "categoryId": 2,
+      "budgetItemsId": 9,
+      "accountId": 2
+    },
+    {
+      "payee": "Pub",
+      "userId": 1,
+      "id": 8,
+      "amount": -1000,
       "currency": "huf",
       "date": "2022-05-05T21:48:00.000Z",
-      "category": "Expenses",
-      "categoryId": 1
+      "categoryId": 2,
+      "budgetItemsId": 9,
+      "accountId": 2
     },
     {
-      "payee": "Store",
-      "amount": 3254,
+      "payee": "Pub",
+      "userId": 1,
+      "id": 9,
+      "amount": -1000,
       "currency": "huf",
-      "date": "2022-05-07T10:48:00.000Z",
-      "category": "Expenses",
-      "categoryId": 1
+      "date": "2022-05-05T22:48:00.000Z",
+      "categoryId": 2,
+      "budgetItemsId": 9,
+      "accountId": 2
     },
     {
-      "payee": "Store",
-      "amount": 3254,
+      "payee": "Pub",
+      "userId": 1,
+      "id": 10,
+      "amount": -1000,
       "currency": "huf",
-      "date": "2022-05-07T14:48:00.000Z",
-      "category": "Expenses",
-      "categoryId": 1
-    },
-    {
-      "payee": "Internet",
-      "amount": 4200,
-      "currency": "huf",
-      "date": "2022-05-07T15:48:00.000Z",
-      "category": "Bills",
-      "categoryId": 2
-    },
-    {
-      "payee": "Phone",
-      "amount": 3390,
-      "currency": "huf",
-      "date": "2022-05-07T16:48:00.000Z",
-      "category": "Bills",
-      "categoryId": 2
-    },
-    {
-      "payee": "Electricity",
-      "amount": 8000,
-      "currency": "huf",
-      "date": "2022-05-08T16:48:00.000Z",
-      "category": "Bills",
-      "categoryId": 2
-    },
-    {
-      "payee": "Water",
-      "amount": 4000,
-      "currency": "huf",
-      "date": "2022-05-08T20:48:00.000Z",
-      "category": "Bills",
-      "categoryId": 2
+      "date": "2022-05-05T23:48:00.000Z",
+      "categoryId": 2,
+      "budgetItemsId": 9,
+      "accountId": 2
     },
     {
       "payee": "Spotify",
-      "amount": 1800,
+      "userId": 1,
+      "id": 11,
+      "amount": -1900,
       "currency": "huf",
-      "date": "2022-05-01T20:48:00.000Z",
-      "category": "Bills",
-      "categoryId": 2
+      "date": "2022-05-06T08:48:00.000Z",
+      "categoryId": 1,
+      "budgetItemsId": 5,
+      "accountId": 1
+    },
+    {
+      "payee": "Restaurant",
+      "userId": 1,
+      "id": 12,
+      "amount": -1900,
+      "currency": "huf",
+      "date": "2022-05-08T12:48:00.000Z",
+      "categoryId": 2,
+      "budgetItemsId": 12,
+      "accountId": 1
+    },
+    {
+      "payee": "Store",
+      "userId": 1,
+      "id": 13,
+      "amount": -1500,
+      "currency": "huf",
+      "date": "2022-05-10T20:48:00.000Z",
+      "categoryId": 1,
+      "budgetItemsId": 7,
+      "accountId": 3
+    },
+    {
+      "payee": "Store",
+      "userId": 1,
+      "id": 14,
+      "amount": -1500,
+      "currency": "huf",
+      "date": "2022-05-11T20:48:00.000Z",
+      "categoryId": 1,
+      "budgetItemsId": 7,
+      "accountId": 3
+    },
+    {
+      "payee": "Workplace",
+      "userId": 1,
+      "id": 15,
+      "amount": 250000,
+      "currency": "huf",
+      "date": "2022-05-11T20:48:00.000Z",
+      "income": true,
+      "accountId": 1
+    },
+    {
+      "payee": "Store",
+      "userId": 1,
+      "id": 16,
+      "amount": -5000,
+      "currency": "huf",
+      "date": "2022-05-13T20:48:00.000Z",
+      "categoryId": 1,
+      "budgetItemsId": 7,
+      "accountId": 3
     }
   ],
   "categories": [
     {
-      "categoryTitle": "Expenses",
+      "categoryTitle": "Monthly Bills",
+      "userId": 1,
       "id": 1
     },
     {
-      "categoryTitle": "Bills",
+      "categoryTitle": "Expenses",
+      "userId": 1,
       "id": 2
+    },
+    {
+      "categoryTitle": "Savings",
+      "userId": 1,
+      "id": 3
+    }
+  ],
+  "budgetItems": [
+    {
+      "name": "Rent",
+      "userId": 1,
+      "id": 1,
+      "categoryId": 1,
+      "budgeted": 70000,
+      "outflow": 70000,
+      "balance": 0
+    },
+    {
+      "name": "Phone",
+      "userId": 1,
+      "id": 2,
+      "categoryId": 1,
+      "budgeted": 6780,
+      "outflow": 3390,
+      "balance": 3390
+    },
+    {
+      "name": "Bills",
+      "userId": 1,
+      "id": 3,
+      "categoryId": 1,
+      "budgeted": 0,
+      "outflow": 0,
+      "balance": 25000
+    },
+    {
+      "name": "Internet",
+      "userId": 1,
+      "id": 4,
+      "categoryId": 1,
+      "budgeted": 0,
+      "outflow": 0,
+      "balance": 4200
+    },
+    {
+      "name": "Subscriptions",
+      "userId": 1,
+      "id": 5,
+      "categoryId": 1,
+      "budgeted": 1900,
+      "outflow": 1900,
+      "balance": 0
+    },
+    {
+      "name": "Books",
+      "userId": 1,
+      "id": 6,
+      "categoryId": 1,
+      "budgeted": 0,
+      "outflow": 0,
+      "balance": 3000
+    },
+    {
+      "name": "Groceries",
+      "userId": 1,
+      "id": 7,
+      "categoryId": 2,
+      "budgeted": 40000,
+      "outflow": 25000,
+      "balance": 15000
+    },
+    {
+      "name": "Fuel",
+      "userId": 1,
+      "id": 8,
+      "categoryId": 2,
+      "budgeted": 25000,
+      "outflow": 4000,
+      "balance": 21000
+    },
+    {
+      "name": "Spending Money",
+      "userId": 1,
+      "id": 9,
+      "categoryId": 2,
+      "budgeted": 50000,
+      "outflow": 14000,
+      "balance": 36000
+    },
+    {
+      "name": "Cars",
+      "userId": 1,
+      "id": 10,
+      "categoryId": 2,
+      "budgeted": 0,
+      "outflow": 0,
+      "balance": 0
+    },
+    {
+      "name": "Health Care",
+      "userId": 1,
+      "id": 11,
+      "categoryId": 2,
+      "budgeted": 20000,
+      "outflow": 0,
+      "balance": 20000
+    },
+    {
+      "name": "Restaurant",
+      "userId": 1,
+      "id": 12,
+      "categoryId": 2,
+      "budgeted": 0,
+      "outflow": 0,
+      "balance": 3000
+    },
+    {
+      "name": "New computer",
+      "userId": 1,
+      "id": 13,
+      "categoryId": 3,
+      "budgeted": 0,
+      "outflow": 0,
+      "balance": 30000
     }
   ]
 }
