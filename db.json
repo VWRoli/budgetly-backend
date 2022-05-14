@@ -1,11 +1,95 @@
 {
   "users": [
     {
-      "id": "1",
+      "id": 1,
       "username": "demouser",
       "email": "something@budgetly.com",
       "password": "123456",
-      "accountId": "1"
+      "accountId": 1
+    }
+  ],
+  "transactions": [
+    {
+      "payee": "Amazon",
+      "amount": 3254,
+      "currency": "huf",
+      "date": "2022-05-05T14:48:00.000Z",
+      "category": "Expenses",
+      "categoryId": 1
+    },
+    {
+      "payee": "Market",
+      "amount": 500,
+      "currency": "huf",
+      "date": "2022-05-05T21:48:00.000Z",
+      "category": "Expenses",
+      "categoryId": 1
+    },
+    {
+      "payee": "Store",
+      "amount": 3254,
+      "currency": "huf",
+      "date": "2022-05-07T10:48:00.000Z",
+      "category": "Expenses",
+      "categoryId": 1
+    },
+    {
+      "payee": "Store",
+      "amount": 3254,
+      "currency": "huf",
+      "date": "2022-05-07T14:48:00.000Z",
+      "category": "Expenses",
+      "categoryId": 1
+    },
+    {
+      "payee": "Internet",
+      "amount": 4200,
+      "currency": "huf",
+      "date": "2022-05-07T15:48:00.000Z",
+      "category": "Bills",
+      "categoryId": 2
+    },
+    {
+      "payee": "Phone",
+      "amount": 3390,
+      "currency": "huf",
+      "date": "2022-05-07T16:48:00.000Z",
+      "category": "Bills",
+      "categoryId": 2
+    },
+    {
+      "payee": "Electricity",
+      "amount": 8000,
+      "currency": "huf",
+      "date": "2022-05-08T16:48:00.000Z",
+      "category": "Bills",
+      "categoryId": 2
+    },
+    {
+      "payee": "Water",
+      "amount": 4000,
+      "currency": "huf",
+      "date": "2022-05-08T20:48:00.000Z",
+      "category": "Bills",
+      "categoryId": 2
+    },
+    {
+      "payee": "Spotify",
+      "amount": 1800,
+      "currency": "huf",
+      "date": "2022-05-01T20:48:00.000Z",
+      "category": "Bills",
+      "categoryId": 2
+    }
+  ],
+  "categories": [
+    {
+      "categoryTitle": "Expenses",
+      "id": 1
+    },
+    {
+      "categoryTitle": "Bills",
+      "id": 2
     }
   ]
 }
