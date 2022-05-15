@@ -234,7 +234,7 @@
       "id": 2,
       "items": 6,
       "budgeted": 219350,
-      "available": 0
+      "available": 32570
     },
     {
       "title": "Savings",
@@ -247,7 +247,7 @@
   ],
   "budgetItems": [
     {
-      "name": "Rent",
+      "title": "Rent",
       "userId": 1,
       "id": 1,
       "categoryId": 1,
@@ -256,7 +256,7 @@
       "balance": 0
     },
     {
-      "name": "Phone",
+      "title": "Phone",
       "userId": 1,
       "id": 2,
       "categoryId": 1,
@@ -265,7 +265,7 @@
       "balance": 3390
     },
     {
-      "name": "Bills",
+      "title": "Bills",
       "userId": 1,
       "id": 3,
       "categoryId": 1,
@@ -274,7 +274,7 @@
       "balance": 25000
     },
     {
-      "name": "Internet",
+      "title": "Internet",
       "userId": 1,
       "id": 4,
       "categoryId": 1,
@@ -283,7 +283,7 @@
       "balance": 4200
     },
     {
-      "name": "Subscriptions",
+      "title": "Subscriptions",
       "userId": 1,
       "id": 5,
       "categoryId": 1,
@@ -292,7 +292,7 @@
       "balance": 0
     },
     {
-      "name": "Books",
+      "title": "Books",
       "userId": 1,
       "id": 6,
       "categoryId": 1,
@@ -301,7 +301,7 @@
       "balance": 3000
     },
     {
-      "name": "Groceries",
+      "title": "Groceries",
       "userId": 1,
       "id": 7,
       "categoryId": 2,
@@ -310,7 +310,7 @@
       "balance": 15000
     },
     {
-      "name": "Fuel",
+      "title": "Fuel",
       "userId": 1,
       "id": 8,
       "categoryId": 2,
@@ -319,7 +319,7 @@
       "balance": 21000
     },
     {
-      "name": "Spending Money",
+      "title": "Spending Money",
       "userId": 1,
       "id": 9,
       "categoryId": 2,
@@ -328,7 +328,7 @@
       "balance": 36000
     },
     {
-      "name": "Cars",
+      "title": "Cars",
       "userId": 1,
       "id": 10,
       "categoryId": 2,
@@ -337,7 +337,7 @@
       "balance": 0
     },
     {
-      "name": "Health Care",
+      "title": "Health Care",
       "userId": 1,
       "id": 11,
       "categoryId": 2,
@@ -346,7 +346,7 @@
       "balance": 20000
     },
     {
-      "name": "Restaurant",
+      "title": "Restaurant",
       "userId": 1,
       "id": 12,
       "categoryId": 2,
@@ -355,7 +355,7 @@
       "balance": 3000
     },
     {
-      "name": "New computer",
+      "title": "New computer",
       "userId": 1,
       "id": 13,
       "categoryId": 3,
