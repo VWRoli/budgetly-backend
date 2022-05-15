@@ -221,7 +221,7 @@
   ],
   "categories": [
     {
-      "categoryTitle": "Monthly Bills",
+      "title": "Monthly Bills",
       "userId": 1,
       "id": 1,
       "items": 6,
@@ -229,7 +229,7 @@
       "available": 0
     },
     {
-      "categoryTitle": "Expenses",
+      "title": "Expenses",
       "userId": 1,
       "id": 2,
       "items": 6,
@@ -237,7 +237,7 @@
       "available": 0
     },
     {
-      "categoryTitle": "Savings",
+      "title": "Savings",
       "userId": 1,
       "id": 3,
       "items": 6,
