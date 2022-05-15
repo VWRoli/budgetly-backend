@@ -223,17 +223,26 @@
     {
       "categoryTitle": "Monthly Bills",
       "userId": 1,
-      "id": 1
+      "id": 1,
+      "items": 6,
+      "budgeted": 219350,
+      "available": 0
     },
     {
       "categoryTitle": "Expenses",
       "userId": 1,
-      "id": 2
+      "id": 2,
+      "items": 6,
+      "budgeted": 219350,
+      "available": 0
     },
     {
       "categoryTitle": "Savings",
       "userId": 1,
-      "id": 3
+      "id": 3,
+      "items": 6,
+      "budgeted": 50357,
+      "available": 0
     }
   ],
   "budgetItems": [
