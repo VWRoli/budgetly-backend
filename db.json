@@ -51,6 +51,7 @@
       "currency": "huf",
       "date": "2022-05-01T14:48:00.000Z",
       "categoryId": 1,
+      "categoryTitle": "Monthly Bills",
       "budgetItemsId": 7,
       "accountId": 3
     },
@@ -62,6 +63,7 @@
       "currency": "huf",
       "date": "2022-05-01T15:48:00.000Z",
       "categoryId": 1,
+      "categoryTitle": "Monthly Bills",
       "budgetItemsId": 7,
       "accountId": 3
     },
@@ -73,6 +75,7 @@
       "currency": "huf",
       "date": "2022-05-01T15:48:00.000Z",
       "categoryId": 1,
+      "categoryTitle": "Monthly Bills",
       "budgetItemsId": 6,
       "accountId": 2
     },
@@ -84,6 +87,7 @@
       "currency": "huf",
       "date": "2022-05-02T15:48:00.000Z",
       "categoryId": 1,
+      "categoryTitle": "Monthly Bills",
       "budgetItemsId": 1,
       "accountId": 2
     },
@@ -95,6 +99,7 @@
       "currency": "huf",
       "date": "2022-05-02T20:48:00.000Z",
       "categoryId": 1,
+      "categoryTitle": "Monthly Bills",
       "budgetItemsId": 7,
       "accountId": 3
     },
@@ -106,6 +111,7 @@
       "currency": "huf",
       "date": "2022-05-02T20:48:00.000Z",
       "categoryId": 2,
+      "categoryTitle": "Expenses",
       "budgetItemsId": 8,
       "accountId": 3
     },
@@ -117,6 +123,7 @@
       "currency": "huf",
       "date": "2022-05-05T20:48:00.000Z",
       "categoryId": 2,
+      "categoryTitle": "Expenses",
       "budgetItemsId": 9,
       "accountId": 2
     },
@@ -128,6 +135,7 @@
       "currency": "huf",
       "date": "2022-05-05T21:48:00.000Z",
       "categoryId": 2,
+      "categoryTitle": "Expenses",
       "budgetItemsId": 9,
       "accountId": 2
     },
@@ -139,6 +147,7 @@
       "currency": "huf",
       "date": "2022-05-05T22:48:00.000Z",
       "categoryId": 2,
+      "categoryTitle": "Expenses",
       "budgetItemsId": 9,
       "accountId": 2
     },
@@ -150,6 +159,7 @@
       "currency": "huf",
       "date": "2022-05-05T23:48:00.000Z",
       "categoryId": 2,
+      "categoryTitle": "Expenses",
       "budgetItemsId": 9,
       "accountId": 2
     },
@@ -161,6 +171,7 @@
       "currency": "huf",
       "date": "2022-05-06T08:48:00.000Z",
       "categoryId": 1,
+      "categoryTitle": "Monthly Bills",
       "budgetItemsId": 5,
       "accountId": 1
     },
@@ -172,6 +183,7 @@
       "currency": "huf",
       "date": "2022-05-08T12:48:00.000Z",
       "categoryId": 2,
+      "categoryTitle": "Expenses",
       "budgetItemsId": 12,
       "accountId": 1
     },
@@ -183,6 +195,7 @@
       "currency": "huf",
       "date": "2022-05-10T20:48:00.000Z",
       "categoryId": 1,
+      "categoryTitle": "Monthly Bills",
       "budgetItemsId": 7,
       "accountId": 3
     },
@@ -194,6 +207,7 @@
       "currency": "huf",
       "date": "2022-05-11T20:48:00.000Z",
       "categoryId": 1,
+      "categoryTitle": "Monthly Bills",
       "budgetItemsId": 7,
       "accountId": 3
     },
@@ -215,6 +229,7 @@
       "currency": "huf",
       "date": "2022-05-13T20:48:00.000Z",
       "categoryId": 1,
+      "categoryTitle": "Monthly Bills",
       "budgetItemsId": 7,
       "accountId": 3
     }
