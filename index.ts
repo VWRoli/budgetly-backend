@@ -1,7 +1,10 @@
-import express from 'express';
+import dotenv from 'dotenv';
+import express, { Express, Request, Response } from 'express';
 import bodyParser from 'body-parser';
 
-const app = express();
+dotenv.config();
+
+const app: Express = express();
 const PORT = process.env.PORT;
 
 app.use(bodyParser.json());
