@@ -1,0 +1,29 @@
+{
+  "name": "budgetly-backend",
+  "version": "1.0.0",
+  "description": "Backend for budgetly mobile app",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/VWRoli/budgetly-backend.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/VWRoli/budgetly-backend/issues"
+  },
+  "homepage": "https://github.com/VWRoli/budgetly-backend#readme",
+  "devDependencies": {
+    "nodemon": "^2.0.16",
+    "typescript": "^4.7.2"
+  },
+  "dependencies": {
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1"
+  }
+}
