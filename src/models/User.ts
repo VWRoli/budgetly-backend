@@ -1,6 +1,8 @@
 import mongoose from 'mongoose';
 import validator from 'validator';
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+import { isErrored } from 'stream';
 
 const SALT_WORK_FACTOR = 10;
 
@@ -33,6 +35,11 @@ const UserSchema = new mongoose.Schema({
       }
     },
   },
+  tokens: [
+    {
+      token: { type: String, required: true },
+    },
+  ],
 });
 
 //Hash password before saving
@@ -44,6 +51,21 @@ UserSchema.pre('save', async function (next) {
   }
   next();
 });
+
+UserSchema.methods.generateAuthToken = async function () {
+  const user = this;
+  const secret = process.env.JWT_SECRET;
+  let token;
+
+  if (secret) {
+    token = jwt.sign({ email: user.email, id: user._id }, secret, {
+      expiresIn: '30d',
+    });
+    user.tokens = user.tokens.concat({ token });
+    await user.save();
+  }
+  return token;
+};
 
 //Remove password and other sensitive information from response
 UserSchema.methods.toJSON = function () {
