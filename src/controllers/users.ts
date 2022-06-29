@@ -12,7 +12,9 @@ export const createUser = async (req: Request, res: Response) => {
 
     await user.save();
 
-    res.status(201).json({ user });
+    const token = await user.generateAuthToken();
+
+    res.status(201).json({ user, token });
   } catch (error) {
     res.status(400).send(error);
   }
