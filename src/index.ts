@@ -18,6 +18,8 @@ app.use(bodyParser.json());
 
 app.use('/users', usersRoutes);
 
-app.get('/', (req: Request, res: Response) => res.send('Hello from home page'));
+app.get('/', (req: Request, res: Response) =>
+  res.send('This is the home page for the budgetly app backend'),
+);
 
 app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
