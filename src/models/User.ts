@@ -35,6 +35,9 @@ const UserSchema = new mongoose.Schema({
       }
     },
   },
+  balance: { type: Number, required: true },
+  budgeted: { type: Number, required: true },
+  available: { type: Number, required: true },
   tokens: [
     {
       token: { type: String, required: true },
