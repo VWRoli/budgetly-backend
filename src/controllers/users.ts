@@ -39,17 +39,11 @@ export const login = async (req: Request, res: Response) => {
   }
 };
 
-export const getProfile = async (
-  req: userInfoReq,
-  res: Response,
-  next: NextFunction,
-) => {
-  const id = req.userId;
+export const getProfile = async (req: userInfoReq, res: Response) => {
+  const id = req.user_id;
   try {
     const [user] = await User.find({ id });
-
     if (!user) throw createHttpError(404, `Couldn't find user`);
-
     res.status(200).json(user);
   } catch (error) {
     console.log(error);
