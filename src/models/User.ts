@@ -2,7 +2,6 @@ import mongoose from 'mongoose';
 import validator from 'validator';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { isErrored } from 'stream';
 
 const SALT_WORK_FACTOR = 10;
 
