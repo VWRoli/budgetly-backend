@@ -61,7 +61,7 @@ UserSchema.methods.generateAuthToken = async function () {
   let token;
 
   if (secret) {
-    token = jwt.sign({ email: user.email, id: user._id }, secret, {
+    token = jwt.sign({ username: user.username, id: user._id }, secret, {
       expiresIn: '30d',
     });
     user.tokens = user.tokens.concat({ token });
