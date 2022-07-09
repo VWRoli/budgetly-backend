@@ -15,15 +15,16 @@ export const getTransactions = async (req: userInfoReq, res: Response) => {
 };
 
 export const createTransaction = async (req: userInfoReq, res: Response) => {
-  //console.log(JSON.stringify(req.body, undefined, 2));
-  //console.log(req.user);
   const newTransaction = new Transaction({
     ...req.body,
     user_id: req.user._id,
   });
 
   if (!newTransaction)
-    throw createHttpError(400, 'There was a problem creating new transaction');
+    throw createHttpError(
+      400,
+      'There was a problem creating a new transaction',
+    );
 
   try {
     await newTransaction.save();

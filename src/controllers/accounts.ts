@@ -14,22 +14,20 @@ export const getAccounts = async (req: userInfoReq, res: Response) => {
   }
 };
 
-// export const createTransaction = async (req: userInfoReq, res: Response) => {
-//   //console.log(JSON.stringify(req.body, undefined, 2));
-//   //console.log(req.user);
-//   const newTransaction = new Transaction({
-//     ...req.body,
-//     user_id: req.user._id,
-//   });
+export const createAccount = async (req: userInfoReq, res: Response) => {
+  const newAccount = new Account({
+    ...req.body,
+    user_id: req.user._id,
+  });
 
-//   if (!newTransaction)
-//     throw createHttpError(400, 'There was a problem creating new transaction');
+  if (!newAccount)
+    throw createHttpError(400, 'There was a problem creating a new account');
 
-//   try {
-//     await newTransaction.save();
+  try {
+    await newAccount.save();
 
-//     res.status(201).json(newTransaction);
-//   } catch (error) {
-//     res.status(400).send(error);
-//   }
-// };
+    res.status(201).json(newAccount);
+  } catch (error) {
+    res.status(400).send(error);
+  }
+};
