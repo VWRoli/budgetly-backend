@@ -18,7 +18,7 @@ const PORT = process.env.PORT;
 app.use(bodyParser.json());
 
 app.use('/users', usersRoutes);
-app.use('/transaction', transactionsRoutes);
+app.use('/transactions', transactionsRoutes);
 
 app.get('/', (req: Request, res: Response) =>
   res.send('This is the home page for the budgetly app backend'),
