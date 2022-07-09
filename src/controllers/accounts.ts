@@ -1,18 +1,18 @@
 import { Response } from 'express';
 import { userInfoReq } from '../Types/userInfoReq.js';
-import Transaction from '../models/Transaction.js';
+import Account from '../models/Account.js';
 import createHttpError from 'http-errors';
 
-// export const getAccounts = async (req: userInfoReq, res: Response) => {
-//   try {
-//     const accounts = await Transaction.find({
-//       userId: req.user_id,
-//     });
-//     res.status(200).json(transactions);
-//   } catch (error) {
-//     res.status(400).send(error);
-//   }
-// };
+export const getAccounts = async (req: userInfoReq, res: Response) => {
+  try {
+    const accounts = await Account.find({
+      userId: req.user_id,
+    });
+    res.status(200).json(accounts);
+  } catch (error) {
+    res.status(400).send(error);
+  }
+};
 
 // export const createTransaction = async (req: userInfoReq, res: Response) => {
 //   //console.log(JSON.stringify(req.body, undefined, 2));
