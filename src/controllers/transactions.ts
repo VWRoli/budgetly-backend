@@ -1,5 +1,4 @@
 import { Response } from 'express';
-import mongoose from 'mongoose';
 import { userInfoReq } from '../Types/userInfoReq.js';
 import Transaction from '../models/Transaction.js';
 import createHttpError from 'http-errors';

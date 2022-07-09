@@ -25,7 +25,7 @@ const TransactionSchema = new mongoose.Schema({
   user_id: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
-    red: 'User',
+    ref: 'User',
   },
 });
 

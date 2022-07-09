@@ -6,6 +6,7 @@ import connectDB from './config/db.js';
 
 import usersRoutes from './routes/users.js';
 import transactionsRoutes from './routes/transactions.js';
+import accountsRoutes from './routes/accounts.js';
 
 dotenv.config();
 
@@ -19,6 +20,7 @@ app.use(bodyParser.json());
 
 app.use('/users', usersRoutes);
 app.use('/transactions', transactionsRoutes);
+app.use('/accounts', accountsRoutes);
 
 app.get('/', (req: Request, res: Response) =>
   res.send('This is the home page for the budgetly app backend'),
