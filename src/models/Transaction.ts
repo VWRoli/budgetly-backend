@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose, { mongo } from 'mongoose';
 
 const TransactionSchema = new mongoose.Schema({
   payee: {
@@ -21,6 +21,11 @@ const TransactionSchema = new mongoose.Schema({
   budgetItemTitle: {
     type: String,
     //required: true,
+  },
+  user_id: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    red: 'User',
   },
 });
 
