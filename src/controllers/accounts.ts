@@ -7,7 +7,7 @@ import mongoose from 'mongoose';
 export const getAccounts = async (req: userInfoReq, res: Response) => {
   try {
     const accounts = await Account.find({
-      userId: req.user_id,
+      user_id: req.user._id,
     });
     res.status(200).json(accounts);
   } catch (error) {
