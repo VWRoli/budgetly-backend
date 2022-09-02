@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-const AccountSchema = new mongoose.Schema(
+const BudgetSchema = new mongoose.Schema(
   {
     balance: { type: Number, required: true },
     currency: { type: String, required: true },
@@ -15,4 +15,4 @@ const AccountSchema = new mongoose.Schema(
   },
 );
 
-export default mongoose.model('Account', AccountSchema);
+export default mongoose.model('Budget', BudgetSchema);
