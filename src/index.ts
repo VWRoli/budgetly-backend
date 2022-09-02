@@ -1,5 +1,6 @@
 import dotenv from 'dotenv';
 import express, { Express, Request, Response } from 'express';
+import cors from 'cors';
 import bodyParser from 'body-parser';
 
 import connectDB from './config/db.js';
@@ -13,6 +14,7 @@ dotenv.config();
 connectDB();
 
 const app: Express = express();
+app.use(cors());
 
 const PORT = process.env.PORT;
 
