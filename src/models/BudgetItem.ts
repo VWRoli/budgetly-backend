@@ -8,12 +8,12 @@ const BudgetItemSchema = new mongoose.Schema(
       required: true,
       ref: 'User',
     },
-    budget_id: {
+    budgetId: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
       ref: 'Budget',
     },
-    category_id: {
+    categoryId: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
       ref: 'Category',
