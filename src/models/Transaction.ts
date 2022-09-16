@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 
 const TransactionSchema = new mongoose.Schema(
+  //todo camelCase
   {
     payee: {
       type: String,
