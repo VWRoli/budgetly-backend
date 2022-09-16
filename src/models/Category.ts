@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 
 const CategorySchema = new mongoose.Schema({
   title: { type: String, required: true },
-  user_id: {
+  userId: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
     ref: 'User',

@@ -3,8 +3,8 @@ import {
   createCategory,
   deleteCategory,
   getCategories,
-} from '../controllers/categories';
-import auth from '../middleware/auth';
+} from '../controllers/categories.js';
+import auth from '../middleware/auth.js';
 
 const router = express.Router();
 
