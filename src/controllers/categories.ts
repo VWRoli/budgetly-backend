@@ -5,7 +5,7 @@ import { userInfoReq } from '../Types/userInfoReq.js';
 import mongoose from 'mongoose';
 
 export const getCategories = async (req: userInfoReq, res: Response) => {
-  //todo
+  //todo?
 };
 
 export const createCategory = async (req: userInfoReq, res: Response) => {

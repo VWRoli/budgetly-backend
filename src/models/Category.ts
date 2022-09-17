@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import { BudgetItemSchema } from './BudgetItem.js';
 
 const CategorySchema = new mongoose.Schema({
   title: { type: String, required: true },
@@ -9,6 +10,7 @@ const CategorySchema = new mongoose.Schema({
   },
   budgeted: { type: Number, required: true },
   available: { type: Number, required: true },
+  budgetItems: { type: [BudgetItemSchema] },
 });
 
 export default mongoose.model('Category', CategorySchema);

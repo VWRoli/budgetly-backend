@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-const BudgetItemSchema = new mongoose.Schema(
+export const BudgetItemSchema = new mongoose.Schema(
   {
     title: { type: String, required: true },
     user_id: {
@@ -26,5 +26,5 @@ const BudgetItemSchema = new mongoose.Schema(
     timestamps: true,
   },
 );
-
-export default mongoose.model('BudgetItem', BudgetItemSchema);
+//! cant export the model because then there is a typeerror with the exported schema above, probably have to create a model whereever i want to import it
+//export default mongoose.model('BudgetItem', BudgetItemSchema);
