@@ -6,7 +6,7 @@ import createHttpError from 'http-errors';
 export const getTransactions = async (req: userInfoReq, res: Response) => {
   try {
     const transactions = await Transaction.find({
-      userId: req.user_id,
+      userId: req.user_id, //todo not userId and not user_id fix it!
     });
     res.status(200).json(transactions);
   } catch (error) {
