@@ -16,15 +16,25 @@ export const getBudgets = async (req: userInfoReq, res: Response) => {
 };
 
 export const createBudget = async (req: userInfoReq, res: Response) => {
-  const newBudget = new Budget({
-    ...req.body,
-    user_id: req.user._id,
-  });
-
-  if (!newBudget)
-    throw createHttpError(400, 'There was a problem creating a new budget');
-
   try {
+    const alreadyExistingBudgets = await Budget.find({ user_id: req.user._id });
+    const exists = alreadyExistingBudgets.some(
+      (b) => b.currency.toLowerCase() === req.body.currency,
+    );
+    if (exists)
+      throw createHttpError(
+        400,
+        'You already have a budget with that currency',
+      );
+
+    const newBudget = new Budget({
+      ...req.body,
+      user_id: req.user._id,
+    });
+
+    if (!newBudget)
+      throw createHttpError(400, 'There was a problem creating a new budget');
+
     await newBudget.save();
 
     res.status(201).json(newBudget);
