@@ -15,6 +15,17 @@ export const getCategories = async (req: userInfoReq, res: Response) => {
   }
 };
 
+export const getCategory = async (req: userInfoReq, res: Response) => {
+  const { id } = req.params;
+  try {
+    const [category] = await Category.find({ _id: id });
+
+    res.status(200).json(category);
+  } catch (error) {
+    res.status(400).send(error);
+  }
+};
+
 export const createCategory = async (req: userInfoReq, res: Response) => {
   const newCategory = new Category({
     ...req.body,

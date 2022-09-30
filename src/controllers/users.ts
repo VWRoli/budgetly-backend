@@ -46,7 +46,6 @@ export const getProfile = async (req: userInfoReq, res: Response) => {
 
 export const editProfile = async (req: userInfoReq, res: Response) => {
   const { _id } = req.user._id;
-  console.log(_id);
   try {
     const user = req.body;
     if (!mongoose.Types.ObjectId.isValid(_id))
