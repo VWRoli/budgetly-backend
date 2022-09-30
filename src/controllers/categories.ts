@@ -2,6 +2,7 @@ import { Response } from 'express';
 import createHttpError from 'http-errors';
 import Category from '../models/Category.js';
 import { userInfoReq } from '../Types/userInfoReq.js';
+import mongoose from 'mongoose';
 
 export const getCategories = async (req: userInfoReq, res: Response) => {
   try {
@@ -31,6 +32,17 @@ export const createCategory = async (req: userInfoReq, res: Response) => {
     res.status(400).send(error);
   }
 };
+
 export const deleteCategory = async (req: userInfoReq, res: Response) => {
-  //todo
+  const { id } = req.params;
+
+  try {
+    if (!mongoose.Types.ObjectId.isValid(id))
+      throw createHttpError(404, 'No category with that ID.');
+
+    await Category.findByIdAndRemove(id);
+    res.json({ message: 'Category deleted successfully!' });
+  } catch (error) {
+    res.status(400).send(error);
+  }
 };
