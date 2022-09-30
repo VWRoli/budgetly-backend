@@ -15,6 +15,20 @@ export const getBudgets = async (req: userInfoReq, res: Response) => {
   }
 };
 
+export const getBudget = async (req: userInfoReq, res: Response) => {
+  const { id } = req.params;
+  try {
+    const [category] = await Budget.find({ _id: id });
+
+    if (!category)
+      throw createHttpError(404, 'No budget with that id was found');
+
+    res.status(200).json(category);
+  } catch (error) {
+    res.status(400).send(error);
+  }
+};
+
 export const createBudget = async (req: userInfoReq, res: Response) => {
   try {
     const alreadyExistingBudgets = await Budget.find({ user_id: req.user._id });
