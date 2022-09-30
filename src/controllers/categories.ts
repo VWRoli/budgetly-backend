@@ -46,3 +46,20 @@ export const deleteCategory = async (req: userInfoReq, res: Response) => {
     res.status(400).send(error);
   }
 };
+
+export const editCategory = async (req: userInfoReq, res: Response) => {
+  const { id } = req.params;
+  try {
+    const category = req.body;
+    if (!mongoose.Types.ObjectId.isValid(id))
+      throw createHttpError(404, 'No category with that ID.');
+
+    const updatedCategory = await Category.findByIdAndUpdate(id, category, {
+      new: true,
+    });
+
+    res.json(updatedCategory);
+  } catch (error) {
+    res.status(400).send(error);
+  }
+};
