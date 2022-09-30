@@ -37,6 +37,9 @@ const UserSchema = new mongoose.Schema({
   balance: { type: Number, required: true },
   budgeted: { type: Number, required: true },
   available: { type: Number, required: true },
+  defaultBudget: {
+    type: mongoose.Schema.Types.ObjectId,
+  },
   tokens: [
     {
       token: { type: String, required: true },

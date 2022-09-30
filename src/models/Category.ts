@@ -8,6 +8,11 @@ const CategorySchema = new mongoose.Schema({
     required: true,
     ref: 'User',
   },
+  budgetId: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    ref: 'Budget',
+  },
   budgeted: { type: Number, required: true },
   available: { type: Number, required: true },
   budgetItems: { type: [BudgetItemSchema] },
