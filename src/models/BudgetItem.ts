@@ -8,11 +8,6 @@ export const BudgetItemSchema = new mongoose.Schema(
       required: true,
       ref: 'User',
     },
-    budgetId: {
-      type: mongoose.Schema.Types.ObjectId,
-      required: true,
-      ref: 'Budget',
-    },
     categoryId: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
@@ -26,5 +21,5 @@ export const BudgetItemSchema = new mongoose.Schema(
     timestamps: true,
   },
 );
-//! cant export the model because then there is a typeerror with the exported schema above, probably have to create a model whereever i want to import it
-//export default mongoose.model('BudgetItem', BudgetItemSchema);
+//? cant export the model because then there is a typeerror with the exported schema above, probably have to create a model whereever i want to import it
+export default mongoose.model('BudgetItem', BudgetItemSchema);
