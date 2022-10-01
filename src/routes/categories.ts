@@ -9,7 +9,7 @@ import auth from '../middleware/auth.js';
 
 const router = express.Router();
 
-router.get('/', auth, getCategories);
+router.get('/:budgetId', auth, getCategories);
 
 router.post('/', auth, createCategory);
 router.delete('/:id', auth, deleteCategory);

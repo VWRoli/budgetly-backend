@@ -32,9 +32,11 @@ export const getBudget = async (req: userInfoReq, res: Response) => {
 export const createBudget = async (req: userInfoReq, res: Response) => {
   try {
     const alreadyExistingBudgets = await Budget.find({ user_id: req.user._id });
+
     const exists = alreadyExistingBudgets.some(
-      (b) => b.currency.toLowerCase() === req.body.currency,
+      (b) => b.currency.toLowerCase() === req.body.currency.toLowerCase(),
     );
+
     if (exists)
       throw createHttpError(
         400,

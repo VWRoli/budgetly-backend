@@ -5,10 +5,14 @@ import { userInfoReq } from '../Types/userInfoReq.js';
 import mongoose from 'mongoose';
 
 export const getCategories = async (req: userInfoReq, res: Response) => {
+  const { budgetId } = req.params;
   try {
+    if (!budgetId) throw createHttpError(400, 'Budget ID must be provided');
+
     const categories = await Category.find({
-      userId: req.user._id,
+      budgetId,
     });
+
     res.status(200).json(categories);
   } catch (error) {
     res.status(400).send(error);
