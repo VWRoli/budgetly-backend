@@ -38,6 +38,7 @@ const TransactionSchema = new mongoose.Schema(
       required: true,
       ref: 'User',
     },
+    income: { type: Boolean, required: true },
   },
   {
     timestamps: true,
