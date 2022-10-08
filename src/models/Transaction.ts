@@ -1,7 +1,6 @@
 import mongoose from 'mongoose';
 
 const TransactionSchema = new mongoose.Schema(
-  //todo camelCase
   {
     payee: {
       type: String,
@@ -18,11 +17,21 @@ const TransactionSchema = new mongoose.Schema(
     },
     categoryTitle: {
       type: String,
-      //todo required: true,
+      required: true,
     },
     budgetItemTitle: {
       type: String,
-      //todo required: true,
+      required: true,
+    },
+    categoryId: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: 'Category',
+    },
+    budgetId: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: 'Budget',
     },
     user_id: {
       type: mongoose.Schema.Types.ObjectId,
