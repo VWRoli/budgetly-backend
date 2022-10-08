@@ -4,10 +4,14 @@ import Transaction from '../models/Transaction.js';
 import createHttpError from 'http-errors';
 
 export const getTransactions = async (req: userInfoReq, res: Response) => {
+  const { budgetId } = req.params;
   try {
+    if (!budgetId) throw createHttpError(400, 'Budget ID must be provided');
+
     const transactions = await Transaction.find({
-      userId: req.user_id, //todo not userId and not user_id fix it!
+      budgetId,
     });
+
     res.status(200).json(transactions);
   } catch (error) {
     res.status(400).send(error);
