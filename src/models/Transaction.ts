@@ -7,9 +7,11 @@ const TransactionSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
-    amount: {
+    outcome: {
       type: Number,
-      required: true,
+    },
+    income: {
+      type: Number,
     },
     date: {
       type: String,
@@ -38,7 +40,6 @@ const TransactionSchema = new mongoose.Schema(
       required: true,
       ref: 'User',
     },
-    income: { type: Boolean, required: true },
   },
   {
     timestamps: true,

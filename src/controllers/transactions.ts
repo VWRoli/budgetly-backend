@@ -24,14 +24,19 @@ export const createTransaction = async (req: userInfoReq, res: Response) => {
     user_id: req.user._id,
   });
 
-  if (!newTransaction)
-    throw createHttpError(
-      400,
-      'There was a problem creating a new transaction',
-    );
-
   try {
     await newTransaction.save();
+    if (req.body.income && req.body.outcome)
+      throw createHttpError(
+        400,
+        'You can only have an income OR an outcome in your transacion.',
+      );
+
+    if (!newTransaction)
+      throw createHttpError(
+        400,
+        'There was a problem creating a new transaction',
+      );
 
     res.status(201).json(newTransaction);
   } catch (error) {
