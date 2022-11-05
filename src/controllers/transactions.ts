@@ -2,6 +2,7 @@ import { Response } from 'express';
 import { userInfoReq } from '../Types/userInfoReq.js';
 import Transaction from '../models/Transaction.js';
 import createHttpError from 'http-errors';
+import mongoose from 'mongoose';
 
 export const getTransactions = async (req: userInfoReq, res: Response) => {
   const { budgetId } = req.params;
@@ -39,6 +40,41 @@ export const createTransaction = async (req: userInfoReq, res: Response) => {
       );
 
     res.status(201).json(newTransaction);
+  } catch (error) {
+    res.status(400).send(error);
+  }
+};
+
+export const deleteTransaction = async (req: userInfoReq, res: Response) => {
+  const { id } = req.params;
+
+  try {
+    if (!mongoose.Types.ObjectId.isValid(id))
+      throw createHttpError(404, 'No transaction with that ID.');
+
+    await Transaction.findByIdAndRemove(id);
+    res.json({ message: 'Transaction deleted successfully!' });
+  } catch (error) {
+    res.status(400).send(error);
+  }
+};
+
+export const editTransaction = async (req: userInfoReq, res: Response) => {
+  const { id } = req.params;
+  try {
+    const transaction = req.body;
+    if (!mongoose.Types.ObjectId.isValid(id))
+      throw createHttpError(404, 'No transaction with that ID.');
+
+    const updatedTransaction = await Transaction.findByIdAndUpdate(
+      id,
+      transaction,
+      {
+        new: true,
+      },
+    );
+
+    res.json(updatedTransaction);
   } catch (error) {
     res.status(400).send(error);
   }
