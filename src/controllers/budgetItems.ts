@@ -20,6 +20,7 @@ export const createBudgetItem = async (req: userInfoReq, res: Response) => {
     //get category by id
     const [category] = await Category.find({ _id: categoryId });
 
+    if (!category) throw createHttpError(400, 'Problem creating budget item');
     //update category
     const newCategory = {
       ...category._doc,
