@@ -7,10 +7,10 @@ const TransactionSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
-    outcome: {
+    outflow: {
       type: Number,
     },
-    income: {
+    inflow: {
       type: Number,
     },
     date: {

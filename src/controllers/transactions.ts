@@ -27,10 +27,10 @@ export const createTransaction = async (req: userInfoReq, res: Response) => {
 
   try {
     await newTransaction.save();
-    if (req.body.income && req.body.outcome)
+    if (req.body.inflow && req.body.outflow)
       throw createHttpError(
         400,
-        'You can only have an income OR an outcome in your transacion.',
+        'You can only have an inflow OR an outflow in your transacion.',
       );
 
     if (!newTransaction)
