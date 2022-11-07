@@ -3,6 +3,7 @@ import createHttpError from 'http-errors';
 import Category from '../models/Category.js';
 import { userInfoReq } from '../Types/userInfoReq.js';
 import mongoose from 'mongoose';
+import Transaction from '../models/Transaction.js';
 
 export const getCategories = async (req: userInfoReq, res: Response) => {
   const { budgetId } = req.params;
@@ -61,6 +62,12 @@ export const editCategory = async (req: userInfoReq, res: Response) => {
     const updatedCategory = await Category.findByIdAndUpdate(id, category, {
       new: true,
     });
+
+    //update transactions when category title changes
+    await Transaction.updateMany(
+      { categoryId: id },
+      { categoryTitle: req.body.title },
+    );
 
     res.json(updatedCategory);
   } catch (error) {
