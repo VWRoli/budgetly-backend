@@ -53,7 +53,7 @@ export const deleteTransaction = async (req: userInfoReq, res: Response) => {
       throw createHttpError(404, 'No transaction with that ID.');
 
     await Transaction.findByIdAndRemove(id);
-    res.json({ message: 'Transaction deleted successfully!' });
+    res.status(200).json({ message: 'Transaction deleted successfully!' });
   } catch (error) {
     res.status(400).send(error);
   }
@@ -74,7 +74,7 @@ export const editTransaction = async (req: userInfoReq, res: Response) => {
       },
     );
 
-    res.json(updatedTransaction);
+    res.status(200).json(updatedTransaction);
   } catch (error) {
     res.status(400).send(error);
   }

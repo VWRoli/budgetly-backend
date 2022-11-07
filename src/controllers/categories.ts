@@ -46,7 +46,7 @@ export const deleteCategory = async (req: userInfoReq, res: Response) => {
       throw createHttpError(404, 'No category with that ID.');
 
     await Category.findByIdAndRemove(id);
-    res.json({ message: 'Category deleted successfully!' });
+    res.status(200).json({ message: 'Category deleted successfully!' });
   } catch (error) {
     res.status(400).send(error);
   }
@@ -69,7 +69,7 @@ export const editCategory = async (req: userInfoReq, res: Response) => {
       { categoryTitle: req.body.title },
     );
 
-    res.json(updatedCategory);
+    res.status(200).json(updatedCategory);
   } catch (error) {
     res.status(400).send(error);
   }

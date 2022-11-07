@@ -68,7 +68,7 @@ export const deleteBudget = async (req: userInfoReq, res: Response) => {
 
     await Budget.findByIdAndRemove(id);
 
-    res.json({ message: 'Budget deleted successfully!' });
+    res.status(200).json({ message: 'Budget deleted successfully!' });
   } catch (error) {
     res.status(400).send(error);
   }
