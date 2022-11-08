@@ -6,6 +6,7 @@ export interface transactionType {
   date: string;
   categoryId: string;
   budgetId: string;
+  accountId: string;
   categoryTitle: string;
   budgetItemTitle: string;
   inflow: string | number;

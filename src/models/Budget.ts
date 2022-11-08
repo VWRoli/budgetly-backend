@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
-import { budgetType } from '../Types/budgetType';
+import { budgetType } from '../Types/budgetType.js';
+import { AccountSchema } from './Account.js';
 
 const BudgetSchema = new mongoose.Schema<budgetType>(
   {
@@ -10,6 +11,7 @@ const BudgetSchema = new mongoose.Schema<budgetType>(
       required: true,
       ref: 'User',
     },
+    accounts: { type: [AccountSchema], required: true },
   },
   {
     timestamps: true,

@@ -1,10 +1,12 @@
 import mongoose from 'mongoose';
-import { TransactionSchema } from './Transaction.js';
+import { accountType } from '../Types/accountType.js';
 
-const AccountSchema = new mongoose.Schema(
+export const AccountSchema = new mongoose.Schema<accountType>(
   {
+    name: { type: String, required: true },
     balance: { type: Number, required: true },
-    trasactions: { type: [TransactionSchema] },
+    user_id: { type: String, required: true },
+    budgetId: { type: String, required: true },
   },
   {
     timestamps: true,
