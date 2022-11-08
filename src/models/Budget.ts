@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
+import { budgetType } from '../Types/budgetType';
 
-const BudgetSchema = new mongoose.Schema(
+const BudgetSchema = new mongoose.Schema<budgetType>(
   {
     balance: { type: Number, required: true },
     currency: { type: String, required: true },

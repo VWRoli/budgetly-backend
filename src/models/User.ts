@@ -2,10 +2,11 @@ import mongoose from 'mongoose';
 import validator from 'validator';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import { userType } from '../Types/userType';
 
 const SALT_WORK_FACTOR = 10;
 
-const UserSchema = new mongoose.Schema({
+const UserSchema = new mongoose.Schema<userType>({
   username: {
     type: String,
     required: [true, 'Username is required!'],

@@ -3,6 +3,7 @@ import { userInfoReq } from '../Types/userInfoReq.js';
 import Transaction from '../models/Transaction.js';
 import createHttpError from 'http-errors';
 import mongoose from 'mongoose';
+import { transactionType } from '../Types/transactionType.js';
 
 export const getTransactions = async (req: userInfoReq, res: Response) => {
   const { budgetId } = req.params;
@@ -22,7 +23,7 @@ export const getTransactions = async (req: userInfoReq, res: Response) => {
 export const createTransaction = async (req: userInfoReq, res: Response) => {
   const newTransaction = new Transaction({
     ...req.body,
-    user_id: req.user._id,
+    user_id: req.user?._id,
   });
 
   try {
@@ -62,7 +63,7 @@ export const deleteTransaction = async (req: userInfoReq, res: Response) => {
 export const editTransaction = async (req: userInfoReq, res: Response) => {
   const { id } = req.params;
   try {
-    const transaction = req.body;
+    const transaction: transactionType = req.body;
     if (!mongoose.Types.ObjectId.isValid(id))
       throw createHttpError(404, 'No transaction with that ID.');
 

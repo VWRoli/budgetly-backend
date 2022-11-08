@@ -1,7 +1,8 @@
 import mongoose from 'mongoose';
+import { categoryType } from '../Types/categoryType.js';
 import { BudgetItemSchema } from './BudgetItem.js';
 
-const CategorySchema = new mongoose.Schema(
+const CategorySchema = new mongoose.Schema<categoryType>(
   {
     title: { type: String, required: true },
     userId: {

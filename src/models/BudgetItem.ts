@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
+import { budgetItemType } from '../Types/budgetItemType';
 
-export const BudgetItemSchema = new mongoose.Schema(
+export const BudgetItemSchema = new mongoose.Schema<budgetItemType>(
   {
     title: { type: String, required: true },
     user_id: {

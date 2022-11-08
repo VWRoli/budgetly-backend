@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
+import { transactionType } from '../Types/transactionType';
 
-const TransactionSchema = new mongoose.Schema(
+const TransactionSchema = new mongoose.Schema<transactionType>(
   {
     payee: {
       type: String,

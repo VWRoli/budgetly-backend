@@ -7,7 +7,7 @@ import mongoose from 'mongoose';
 export const getBudgets = async (req: userInfoReq, res: Response) => {
   try {
     const budgets = await Budget.find({
-      user_id: req.user._id,
+      user_id: req.user?._id,
     });
     res.status(200).json(budgets);
   } catch (error) {
@@ -31,7 +31,9 @@ export const getBudget = async (req: userInfoReq, res: Response) => {
 
 export const createBudget = async (req: userInfoReq, res: Response) => {
   try {
-    const alreadyExistingBudgets = await Budget.find({ user_id: req.user._id });
+    const alreadyExistingBudgets = await Budget.find({
+      user_id: req.user?._id,
+    });
 
     const exists = alreadyExistingBudgets.some(
       (b) => b.currency.toLowerCase() === req.body.currency.toLowerCase(),
@@ -45,7 +47,7 @@ export const createBudget = async (req: userInfoReq, res: Response) => {
 
     const newBudget = new Budget({
       ...req.body,
-      user_id: req.user._id,
+      user_id: req.user?._id,
     });
 
     if (!newBudget)

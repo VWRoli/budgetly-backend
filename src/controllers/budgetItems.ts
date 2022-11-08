@@ -4,14 +4,16 @@ import createHttpError from 'http-errors';
 import BudgetItem from '../models/BudgetItem.js';
 import Category from '../models/Category.js';
 import mongoose from 'mongoose';
+import { categoryType } from '../Types/categoryType.js';
+import { budgetItemType } from '../Types/budgetItemType.js';
 
 export const createBudgetItem = async (req: userInfoReq, res: Response) => {
   try {
     const newBudgetItem = new BudgetItem({
       ...req.body,
-      user_id: req.user._id,
+      user_id: req.user?._id,
     });
-    const categoryId = req.body.categoryId;
+    const categoryId: string = req.body.categoryId;
     if (!newBudgetItem)
       throw createHttpError(400, `Problem creating budget item`);
 
@@ -23,7 +25,7 @@ export const createBudgetItem = async (req: userInfoReq, res: Response) => {
 
     if (!category) throw createHttpError(400, 'Problem creating budget item');
     //update category
-    const newCategory = {
+    const newCategory: categoryType = {
       ...category._doc,
       budgetItems: [...category.budgetItems, newBudgetItem],
     };
@@ -40,7 +42,7 @@ export const createBudgetItem = async (req: userInfoReq, res: Response) => {
 export const editBudgetItem = async (req: userInfoReq, res: Response) => {
   const { id } = req.params;
   try {
-    const budgetItem = req.body;
+    const budgetItem: budgetItemType = req.body;
 
     if (!mongoose.Types.ObjectId.isValid(id))
       throw createHttpError(404, 'No transaction with that ID.');
@@ -58,7 +60,7 @@ export const editBudgetItem = async (req: userInfoReq, res: Response) => {
     const [category] = await Category.find({ _id: req.body.categoryId });
     if (!category) throw createHttpError(400, 'Problem updating budget item');
 
-    const newCategory = {
+    const newCategory: categoryType = {
       ...category._doc,
       budgetItems: [
         ...category.budgetItems.filter((b: any) => b._id.toString() !== id),

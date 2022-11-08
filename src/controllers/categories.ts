@@ -4,6 +4,7 @@ import Category from '../models/Category.js';
 import { userInfoReq } from '../Types/userInfoReq.js';
 import mongoose from 'mongoose';
 import Transaction from '../models/Transaction.js';
+import { categoryType } from '../Types/categoryType.js';
 
 export const getCategories = async (req: userInfoReq, res: Response) => {
   const { budgetId } = req.params;
@@ -23,7 +24,7 @@ export const getCategories = async (req: userInfoReq, res: Response) => {
 export const createCategory = async (req: userInfoReq, res: Response) => {
   const newCategory = new Category({
     ...req.body,
-    userId: req.user._id,
+    userId: req.user?._id,
   });
 
   if (!newCategory)
@@ -55,7 +56,7 @@ export const deleteCategory = async (req: userInfoReq, res: Response) => {
 export const editCategory = async (req: userInfoReq, res: Response) => {
   const { id } = req.params;
   try {
-    const category = req.body;
+    const category: categoryType = req.body;
     if (!mongoose.Types.ObjectId.isValid(id))
       throw createHttpError(404, 'No category with that ID.');
 

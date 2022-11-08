@@ -4,6 +4,7 @@ import createHttpError from 'http-errors';
 import User from '../models/User.js';
 import { userInfoReq } from '../Types/userInfoReq.js';
 import mongoose from 'mongoose';
+import { userType } from '../Types/userType.js';
 
 export const createUser = async (req: Request, res: Response) => {
   const user = new User(req.body);
@@ -14,7 +15,7 @@ export const createUser = async (req: Request, res: Response) => {
 
     await user.save();
 
-    const token = await user.generateAuthToken();
+    const token = user.generateAuthToken();
 
     res.status(201).json({ user, token });
   } catch (error) {
@@ -45,10 +46,10 @@ export const getProfile = async (req: userInfoReq, res: Response) => {
 };
 
 export const editProfile = async (req: userInfoReq, res: Response) => {
-  const { _id } = req.user._id;
+  const _id = req.user?._id;
   try {
-    const user = req.body;
-    if (!mongoose.Types.ObjectId.isValid(_id))
+    const user: userType = req.body;
+    if (_id && !mongoose.Types.ObjectId.isValid(_id))
       throw createHttpError(404, 'No user with that ID.');
 
     const existingUser = await User.findOne({ email: user.email });
