@@ -40,4 +40,16 @@ export const createAccount = async (req: userInfoReq, res: Response) => {
     res.status(400).send(error);
   }
 };
-//export const getAccount = async (req: userInfoReq, res: Response) => {};
+export const getAccount = async (req: userInfoReq, res: Response) => {
+  const { id } = req.params;
+  try {
+    const [account] = await Account.find({ _id: id });
+
+    if (!account)
+      throw createHttpError(404, 'No account was found with the provided ID');
+
+    res.status(200).json(account);
+  } catch (error) {
+    res.status(400).send(error);
+  }
+};
