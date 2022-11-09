@@ -40,10 +40,10 @@ export const TransactionSchema = new mongoose.Schema<transactionType>(
       type: String,
       required: true,
     },
-    budgetId: {
+    budgetItemId: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
-      ref: 'Budget',
+      ref: 'BudgetItem',
     },
     user_id: {
       type: mongoose.Schema.Types.ObjectId,

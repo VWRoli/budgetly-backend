@@ -5,7 +5,7 @@ export interface transactionType {
   outflow: string | number;
   date: string;
   categoryId: string;
-  budgetId: string;
+  budgetItemId: string;
   accountId: string;
   accountName: string;
   categoryTitle: string;
