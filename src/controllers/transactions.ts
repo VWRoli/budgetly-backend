@@ -6,15 +6,22 @@ import mongoose from 'mongoose';
 import { transactionType } from '../Types/transactionType.js';
 
 export const getTransactions = async (req: userInfoReq, res: Response) => {
-  const { budgetId } = req.params;
+  const { accountId } = req.params;
+  const id = req.user?._id;
   try {
-    if (!budgetId) throw createHttpError(400, 'Budget ID must be provided');
+    if (!id) throw createHttpError(400, 'This user has no transactions yet');
 
-    const transactions = await Transaction.find({
-      budgetId,
-    });
-
-    res.status(200).json(transactions);
+    if (accountId) {
+      const transactions = await Transaction.find({
+        accountId,
+      });
+      res.status(200).json(transactions);
+    } else {
+      const transactions = await Transaction.find({
+        user_id: id,
+      });
+      res.status(200).json(transactions);
+    }
   } catch (error) {
     res.status(400).send(error);
   }
