@@ -36,6 +36,10 @@ export const TransactionSchema = new mongoose.Schema<transactionType>(
       required: true,
       ref: 'Account',
     },
+    accountName: {
+      type: String,
+      required: true,
+    },
     budgetId: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
