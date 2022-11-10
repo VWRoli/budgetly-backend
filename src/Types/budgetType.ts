@@ -2,7 +2,7 @@ import { accountType } from './accountType';
 
 export interface budgetType {
   currency: string;
-  balance: number;
+  available: number;
   _id?: string;
   accounts: accountType[];
   user_id?: string;

@@ -4,7 +4,7 @@ import { AccountSchema } from './Account.js';
 
 const BudgetSchema = new mongoose.Schema<budgetType>(
   {
-    balance: { type: Number, required: true },
+    available: { type: Number, required: true },
     currency: { type: String, required: true },
     user_id: {
       type: mongoose.Schema.Types.ObjectId,

@@ -3,6 +3,7 @@ export interface budgetItemType {
   user_id?: number;
   _id?: number;
   categoryId: string;
-  spent: number;
+  budgeted: number;
   balance: number;
+  _doc: any;
 }

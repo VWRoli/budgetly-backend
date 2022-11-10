@@ -15,7 +15,7 @@ const CategorySchema = new mongoose.Schema<categoryType>(
       required: true,
       ref: 'Budget',
     },
-    spent: { type: Number, required: true },
+    budgeted: { type: Number, required: true },
     balance: { type: Number, required: true },
     budgetItems: { type: [BudgetItemSchema] },
   },
