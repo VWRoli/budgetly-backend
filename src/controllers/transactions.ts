@@ -35,6 +35,7 @@ export const createTransaction = async (req: userInfoReq, res: Response) => {
   });
 
   const budgetItemId: string = req.body.budgetItemId;
+  const budgetId: string = req.body.budgetId;
   const outflow: number = +req.body.outflow;
   const inflow: number = +req.body.inflow;
 
@@ -56,7 +57,7 @@ export const createTransaction = async (req: userInfoReq, res: Response) => {
     if (outflow) handleOutflow(budgetItemId, outflow);
 
     //handle inflow
-    if (inflow) handleInflow(inflow, budgetItemId);
+    if (inflow) handleInflow(inflow, budgetId, budgetItemId);
 
     res.status(201).json(newTransaction);
   } catch (error) {

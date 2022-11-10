@@ -3,6 +3,7 @@ import Budget from '../models/Budget.js';
 import BudgetItem from '../models/BudgetItem.js';
 import Category from '../models/Category.js';
 import { budgetItemType } from '../Types/budgetItemType.js';
+import { budgetType } from '../Types/budgetType.js';
 import { categoryType } from '../Types/categoryType.js';
 
 export const handleOutflow = async (budgetItemId: string, outflow: number) => {
@@ -44,11 +45,31 @@ export const handleOutflow = async (budgetItemId: string, outflow: number) => {
   });
 };
 
-export const handleInflow = async (inflow: number, budgetItemId?: string) => {
+export const handleInflow = async (
+  inflow: number,
+  budgetId: string,
+  budgetItemId?: string,
+) => {
   console.log({ budgetItemId });
-  //if no budgetIteID present it will be an income for this month
+  //if no budgetItemID present it will be an income for this month
   if (!budgetItemId) {
-    //const [budget] = await Budget.find({_id: })
+    const [budget] = await Budget.find({ _id: budgetId });
+    if (!budget)
+      throw createHttpError(
+        404,
+        `We couldn't find a budget with the provided ID`,
+      );
+
+    //update budget availability with amount
+    const newBudget: budgetType = {
+      ...budget._doc,
+      available: budget.available + inflow,
+    };
+
+    await Budget.findByIdAndUpdate(budgetId, newBudget, {
+      new: true,
+    });
+
     return;
   }
   //get budgetitem by id
