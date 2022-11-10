@@ -14,6 +14,11 @@ export const BudgetItemSchema = new mongoose.Schema<budgetItemType>(
       required: true,
       ref: 'Category',
     },
+    budgetId: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: 'Budget',
+    },
     budgeted: { type: Number, required: true },
     balance: { type: Number, required: true },
   },

@@ -32,6 +32,7 @@ export const createBudgetItem = async (req: userInfoReq, res: Response) => {
     await Category.findByIdAndUpdate(categoryId, newCategory, {
       new: true,
     });
+    //update budget with new balance
 
     res.status(201).json(newBudgetItem);
   } catch (error) {
