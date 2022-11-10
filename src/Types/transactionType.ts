@@ -7,6 +7,7 @@ export interface transactionType {
   categoryId: string;
   budgetItemId: string;
   accountId: string;
+  budgetId: string;
   accountName: string;
   categoryTitle: string;
   budgetItemTitle: string;

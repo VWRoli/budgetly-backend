@@ -4,8 +4,7 @@ import Transaction from '../models/Transaction.js';
 import createHttpError from 'http-errors';
 import mongoose from 'mongoose';
 import { transactionType } from '../Types/transactionType.js';
-import BudgetItem from '../models/BudgetItem.js';
-import { budgetItemType } from '../Types/budgetItemType.js';
+import { handleInflow, handleOutflow } from './helpers.js';
 
 export const getTransactions = async (req: userInfoReq, res: Response) => {
   const { accountId } = req.params;
@@ -34,8 +33,10 @@ export const createTransaction = async (req: userInfoReq, res: Response) => {
     ...req.body,
     user_id: req.user?._id,
   });
-  const inflow = req.body.inflow;
-  const outflow = req.body.outflow;
+
+  const budgetItemId: string = req.body.budgetItemId;
+  const outflow: number = +req.body.outflow;
+  const inflow: number = +req.body.inflow;
 
   try {
     if (req.body.inflow && req.body.outflow)
@@ -49,21 +50,13 @@ export const createTransaction = async (req: userInfoReq, res: Response) => {
         400,
         'There was a problem creating a new transaction',
       );
-    // await newTransaction.save();
+    await newTransaction.save();
 
-    //get budgetitem by id
-    const [item] = await BudgetItem.find({ _id: req.body.budgetItemId });
-    if (!item)
-      throw createHttpError(404, 'The provided budget item ID was not found');
-    // console.log({item});
-    //update item with amount
-    const newItem: budgetItemType = {
-      ...item._doc,
-      balance: inflow ? item.balance + inflow : item.balance - outflow,
-    };
-    console.log({ newItem });
-    //get category by id
-    //update budgetitem in category
+    //handle outflow
+    if (outflow) handleOutflow(budgetItemId, outflow);
+
+    //handle inflow
+    if (inflow) handleInflow(inflow, budgetItemId);
 
     res.status(201).json(newTransaction);
   } catch (error) {

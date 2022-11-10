@@ -24,11 +24,9 @@ export const TransactionSchema = new mongoose.Schema<transactionType>(
     },
     budgetItemTitle: {
       type: String,
-      required: true,
     },
     categoryId: {
-      type: mongoose.Schema.Types.ObjectId,
-      required: true,
+      type: mongoose.Schema.Types.Mixed,
       ref: 'Category',
     },
     accountId: {
@@ -41,9 +39,13 @@ export const TransactionSchema = new mongoose.Schema<transactionType>(
       required: true,
     },
     budgetItemId: {
+      type: mongoose.Schema.Types.Mixed,
+      ref: 'BudgetItem',
+    },
+    budgetId: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
-      ref: 'BudgetItem',
+      ref: 'Budget',
     },
     user_id: {
       type: mongoose.Schema.Types.ObjectId,
