@@ -1,6 +1,0 @@
-dist
-node_modules
-.husky
-README.md
-.prettierrc
-commitlint.config.js
