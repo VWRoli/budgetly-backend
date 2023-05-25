@@ -1,19 +1,16 @@
 import { NestFactory } from '@nestjs/core';
-import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
+import helmet from 'helmet';
+import { json } from 'express';
+import { initializeSwagger } from './swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  const config = new DocumentBuilder()
-    .setTitle('Cats example')
-    .setDescription('The cats API description')
-    .setVersion('1.0')
-    .addTag('cats')
-    .build();
-  const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, document);
+  app.use(helmet());
 
-  await app.listen(9051);
+  app.use(json({ limit: '100kb' }));
+  initializeSwagger(app);
+  await app.listen(8080);
 }
 bootstrap();
