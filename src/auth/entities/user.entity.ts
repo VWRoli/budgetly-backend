@@ -9,10 +9,7 @@ export class User {
   email: string;
 
   @Column()
-  password: string;
-
-  // @Column()
-  // email: string;
+  hash: string;
 
   // @Column()
   // balance: number;
