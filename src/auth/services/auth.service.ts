@@ -16,7 +16,7 @@ export class AuthService {
   async signup(dto: CreateUserDto) {
     try {
       //generate the password hash
-      const existingUser = this.repository.findOne({
+      const existingUser = await this.repository.findOne({
         where: { email: dto.email },
       });
 
