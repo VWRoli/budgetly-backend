@@ -1,7 +1,7 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreateUserDto } from '../dto';
+import { CreateUserDto, LoginUserDto } from '../dto';
 import { User } from '../entities';
 import { SALT_WORK_FACTOR } from '../auth.constants';
 import * as bcrypt from 'bcrypt';
@@ -13,7 +13,7 @@ export class AuthService {
     private repository: Repository<User>,
   ) {}
 
-  async signup(dto: CreateUserDto) {
+  async signUp(dto: CreateUserDto) {
     try {
       //generate the password hash
       const existingUser = await this.repository.findOne({
@@ -37,5 +37,9 @@ export class AuthService {
     } catch (error) {
       throw error;
     }
+  }
+
+  async signIn(dto: LoginUserDto) {
+    //todo
   }
 }
