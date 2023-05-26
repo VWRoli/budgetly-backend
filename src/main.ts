@@ -7,6 +7,7 @@ import { initializeSwagger } from './swagger';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  //secure app by setting HTTP response headers
   app.use(helmet());
 
   app.use(json({ limit: '100kb' }));

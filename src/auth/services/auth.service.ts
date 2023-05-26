@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from '../dto';
@@ -14,18 +14,28 @@ export class AuthService {
   ) {}
 
   async signup(dto: CreateUserDto) {
-    //generate the password hash
-    console.log(bcrypt);
     try {
+      //generate the password hash
+      const existingUser = this.repository.findOne({
+        where: { email: dto.email },
+      });
+
+      //Check for existing user
+      if (existingUser) throw new ForbiddenException('Credentials taken');
+
+      //hash password
       const hash = await bcrypt.hash(dto.password, SALT_WORK_FACTOR);
-      console.log({ hash });
+
+      //create user entity
       const user = this.repository.create({
         email: dto.email,
         hash,
       });
+
+      //save user entity in DB
       return await this.repository.save(user);
     } catch (error) {
-      console.log(error);
+      throw error;
     }
   }
 }
