@@ -8,6 +8,7 @@ import {
   MaxLength,
   MinLength,
 } from 'class-validator';
+import { Match } from '../decorators/match.decorator';
 
 export class CreateUserDto {
   @IsEmail()
@@ -24,4 +25,13 @@ export class CreateUserDto {
   })
   @ApiProperty({ example: 'StrongPassword1', required: true })
   readonly password: string;
+
+  @IsString()
+  @IsNotEmpty()
+  @MinLength(8)
+  @Match('password', {
+    message: 'Passwords do not match',
+  })
+  @ApiProperty({ example: 'StrongPassword1', required: true })
+  readonly confirmPassword: string;
 }
