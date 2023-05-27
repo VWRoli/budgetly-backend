@@ -1,3 +1,4 @@
+import { Budget } from 'src/budget/entities';
 import {
   Entity,
   Column,
@@ -5,6 +6,8 @@ import {
   ObjectId,
   CreateDateColumn,
   UpdateDateColumn,
+  OneToMany,
+  RelationId,
 } from 'typeorm';
 
 @Entity()
@@ -17,6 +20,12 @@ export class User {
 
   @Column()
   hash: string;
+
+  @OneToMany(() => Budget, (budget) => budget.user)
+  budgets: Budget[];
+
+  // @RelationId((user: User) => user.budgets)
+  // budgetIds: ObjectId[];
 
   @CreateDateColumn()
   createTimeStamp: Date;

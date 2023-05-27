@@ -19,12 +19,11 @@ export class AuthService {
 
   async signUp(dto: CreateUserDto) {
     try {
-      //generate the password hash
+      //Check for existing user
       const existingUser = await this.repository.findOne({
         where: { email: dto.email },
       });
 
-      //Check for existing user
       if (existingUser) throw new ForbiddenException('Credentials taken');
 
       //hash password

@@ -9,7 +9,7 @@ import {
   RelationId,
   UpdateDateColumn,
 } from 'typeorm';
-import { ECurrency } from '../enum/budget.enum';
+import { ECurrency } from '../enum';
 
 export class Budget {
   @ObjectIdColumn()
@@ -21,7 +21,7 @@ export class Budget {
   @Column()
   currency: ECurrency;
 
-  @ManyToOne(() => User)
+  @ManyToOne(() => User, (user) => user.budgets)
   @JoinColumn()
   user: User;
 

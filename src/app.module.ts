@@ -5,7 +5,7 @@ import { join } from 'path';
 //Modules
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
-import { BudgetsModule } from './budgets/budgets.module';
+import { BudgetModule } from './budget/budget.module';
 
 @Module({
   imports: [
@@ -23,7 +23,7 @@ import { BudgetsModule } from './budgets/budgets.module';
     }),
     AuthModule,
     UserModule,
-    BudgetsModule,
+    BudgetModule,
   ],
   controllers: [],
   providers: [],
