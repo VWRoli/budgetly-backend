@@ -1,6 +1,6 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { ObjectId, Repository } from 'typeorm';
 import { CreateUserDto, LoginUserDto } from '../dto';
 import { User } from '../entities';
 import { SALT_WORK_FACTOR } from '../auth.constants';
@@ -66,7 +66,7 @@ export class AuthService {
   }
 
   async signToken(
-    userId: string,
+    userId: ObjectId,
     email: string,
   ): Promise<{ access_token: string }> {
     const payload = {
