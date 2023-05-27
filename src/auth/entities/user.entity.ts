@@ -24,8 +24,8 @@ export class User {
   @OneToMany(() => Budget, (budget) => budget.user)
   budgets: Budget[];
 
-  // @RelationId((user: User) => user.budgets)
-  // budgetIds: ObjectId[];
+  @RelationId((user: User) => user.budgets)
+  budgetIds: ObjectId[];
 
   @CreateDateColumn()
   createTimeStamp: Date;

@@ -2,6 +2,7 @@ import { User } from 'src/auth/entities';
 import {
   Column,
   CreateDateColumn,
+  Entity,
   JoinColumn,
   ManyToOne,
   ObjectId,
@@ -11,6 +12,7 @@ import {
 } from 'typeorm';
 import { ECurrency } from '../enum';
 
+@Entity()
 export class Budget {
   @ObjectIdColumn()
   _id: ObjectId;
