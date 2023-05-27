@@ -5,10 +5,9 @@ import {
   IsNotEmpty,
   IsString,
   Matches,
-  MaxLength,
   MinLength,
 } from 'class-validator';
-import { Match } from '../decorators/match.decorator';
+import { Match } from '../decorators';
 
 export class CreateUserDto {
   @IsEmail()
