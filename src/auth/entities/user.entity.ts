@@ -1,4 +1,11 @@
-import { Entity, Column, ObjectIdColumn, ObjectId } from 'typeorm';
+import {
+  Entity,
+  Column,
+  ObjectIdColumn,
+  ObjectId,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 @Entity()
 export class User {
@@ -10,6 +17,15 @@ export class User {
 
   @Column()
   hash: string;
+
+  @CreateDateColumn()
+  createTimeStamp: Date;
+
+  @UpdateDateColumn()
+  updateTimeStamp: Date;
+
+  @Column({ default: null })
+  deleteTimeStamp: Date | null;
 
   // @Column()
   // balance: number;
