@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsMongoId, IsNotEmpty, IsString } from 'class-validator';
+import { IsEnum, IsMongoId, IsNotEmpty, IsString } from 'class-validator';
 import { ECurrency } from '../enum';
 
 export class CreateBudgetDto {
@@ -9,6 +9,7 @@ export class CreateBudgetDto {
   readonly name: string;
 
   @IsNotEmpty()
+  @IsEnum(ECurrency)
   @ApiProperty({ enum: ECurrency, enumName: 'ECurrency', required: true })
   readonly currency: ECurrency;
 

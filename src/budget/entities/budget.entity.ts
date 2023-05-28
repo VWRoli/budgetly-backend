@@ -20,7 +20,7 @@ export class Budget {
   @Column()
   name: string;
 
-  @Column()
+  @Column({ enum: ECurrency, enumName: 'ECurrency' })
   currency: ECurrency;
 
   @ManyToOne(() => User, (user) => user.budgets)
@@ -38,4 +38,8 @@ export class Budget {
 
   @Column({ default: null })
   deleteTimeStamp: Date | null;
+
+  validateCurrency(): boolean {
+    return Object.values(ECurrency).includes(this.currency as ECurrency);
+  }
 }
