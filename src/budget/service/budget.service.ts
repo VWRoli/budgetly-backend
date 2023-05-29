@@ -9,6 +9,7 @@ import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ObjectId } from 'mongodb';
 import { User } from 'src/auth/entities';
+import { UpdateBudgetDto } from '../dto/update-budget.dto';
 
 @Injectable()
 export class BudgetService {
@@ -18,7 +19,7 @@ export class BudgetService {
     @InjectRepository(User)
     private userRepository: Repository<User>,
   ) {}
-  async createOne(data: CreateBudgetDto) {
+  async createOne(data: CreateBudgetDto): Promise<Budget> {
     //check if user exists
     const user = await this.userRepository.findOne({
       where: {
@@ -52,5 +53,23 @@ export class BudgetService {
 
     //save budget entity in DB
     return await this.repository.save(budget);
+  }
+
+  async updateOne(id: string, data: UpdateBudgetDto): Promise<Budget> {
+    const currentBudget = await this.repository.findOne({
+      where: { _id: new ObjectId(id) },
+    });
+
+    if (!currentBudget) {
+      throw new NotFoundException('No budget found with the provided id.');
+    }
+    // Update the properties of the currentBudget entity
+    currentBudget.name = data.name;
+    currentBudget.currency = data.currency;
+
+    // Save the updated budget entity in the database
+    await this.repository.save(currentBudget);
+
+    return currentBudget;
   }
 }
