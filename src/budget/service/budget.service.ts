@@ -84,12 +84,11 @@ export class BudgetService {
       const currentBudget = await this.repository.findOne({
         where: { _id: new ObjectId(id) },
       });
-
+      //todo delete accounts and categories
       if (!currentBudget) {
         throw new NotFoundException('No budget found with the provided id.');
       }
 
-      // await this.repository.softDelete(new ObjectId(id));
       await this.repository.delete(new ObjectId(id));
     } catch (error) {
       throw error;

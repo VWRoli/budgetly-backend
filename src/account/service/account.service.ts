@@ -9,6 +9,7 @@ import { Repository } from 'typeorm';
 import { Account } from '../entities';
 import { ObjectId } from 'mongodb';
 import { CreatAccountDto } from '../dto';
+import { UpdateAccountDto } from '../dto/update-account.dto';
 
 @Injectable()
 export class AccountService {
@@ -59,5 +60,38 @@ export class AccountService {
 
     //save account entity in DB
     return await this.repository.save(account);
+  }
+
+  async updateOne(id: string, data: UpdateAccountDto): Promise<Account> {
+    const currentAccount = await this.repository.findOne({
+      where: { _id: new ObjectId(id) },
+    });
+
+    if (!currentAccount) {
+      throw new NotFoundException('No Account found with the provided id.');
+    }
+    // Update the properties of the currentAccount entity
+    currentAccount.name = data.name;
+
+    // Save the updated Account entity in the database
+    await this.repository.save(currentAccount);
+
+    return currentAccount;
+  }
+
+  async deleteOne(id: string) {
+    try {
+      const currentAccount = await this.repository.findOne({
+        where: { _id: new ObjectId(id) },
+      });
+
+      if (!currentAccount) {
+        throw new NotFoundException('No account found with the provided id.');
+      }
+      //todo delete transactions
+      await this.repository.delete(new ObjectId(id));
+    } catch (error) {
+      throw error;
+    }
   }
 }
