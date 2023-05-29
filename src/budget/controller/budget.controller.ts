@@ -1,4 +1,14 @@
-import { Body, Controller, Param, Post, Put, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  HttpCode,
+  HttpStatus,
+  Param,
+  Post,
+  Put,
+  UseGuards,
+} from '@nestjs/common';
 import { BudgetService } from '../service';
 import { CreateBudgetDto } from '../dto';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
@@ -24,5 +34,11 @@ export class BudgetController {
     @Body() body: UpdateBudgetDto,
   ) {
     return this.budgetService.updateOne(budgetId, body);
+  }
+
+  @Delete(':budgetId')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  deleteBudget(@Param('budgetId') budgetId: string) {
+    this.budgetService.deleteOne(budgetId);
   }
 }
