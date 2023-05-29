@@ -28,6 +28,7 @@ export class BudgetController {
   getBudgets(@Param('userId') userId: string) {
     return this.budgetService.getAll(userId);
   }
+
   @Post()
   @ApiOkResponse({ type: Budget })
   createBudget(@Body() dto: CreateBudgetDto) {
