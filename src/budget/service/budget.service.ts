@@ -19,6 +19,12 @@ export class BudgetService {
     @InjectRepository(User)
     private userRepository: Repository<User>,
   ) {}
+
+  async getAll(userId: string) {
+    return await this.repository.find({
+      where: { userId: new ObjectId(userId) },
+    });
+  }
   async createOne(data: CreateBudgetDto): Promise<Budget> {
     //check if user exists
     const user = await this.userRepository.findOne({

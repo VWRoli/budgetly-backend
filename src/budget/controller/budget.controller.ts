@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Delete,
+  Get,
   HttpCode,
   HttpStatus,
   Param,
@@ -21,6 +22,12 @@ import { UpdateBudgetDto } from '../dto/update-budget.dto';
 @Controller('budgets')
 export class BudgetController {
   constructor(private readonly budgetService: BudgetService) {}
+
+  @Get(':userId')
+  @ApiOkResponse({ type: Budget, isArray: true })
+  getBudgets(@Param('userId') userId: string) {
+    return this.budgetService.getAll(userId);
+  }
   @Post()
   @ApiOkResponse({ type: Budget })
   createBudget(@Body() dto: CreateBudgetDto) {
