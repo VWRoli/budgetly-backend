@@ -32,6 +32,9 @@ export class AccountService {
       where: {
         _id: new ObjectId(data.budgetId),
       },
+      loadRelationIds: {
+        relations: ['accounts'],
+      },
     });
 
     if (!budget) {
@@ -58,8 +61,16 @@ export class AccountService {
     account.budget = budget; // Assign the budget relation
     account.budgetId = new ObjectId(data.budgetId); // Assign the user relation
 
-    //save account entity in DB
-    return await this.repository.save(account);
+    // Save the account entity in the DB
+    const savedAccount = await this.repository.save(account);
+
+    console.log(budget);
+    // Update the parent budget with the new account's ID
+    budget.accounts.push(savedAccount);
+    budget.accountIds.push(savedAccount._id);
+    await this.budgetRepository.save(budget);
+
+    return savedAccount;
   }
 
   async updateOne(id: string, data: UpdateAccountDto): Promise<Account> {

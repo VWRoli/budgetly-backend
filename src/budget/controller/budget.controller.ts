@@ -47,6 +47,6 @@ export class BudgetController {
   @Delete(':budgetId')
   @HttpCode(HttpStatus.NO_CONTENT)
   deleteBudget(@Param('budgetId') budgetId: string) {
-    this.budgetService.deleteOne(budgetId);
+    return this.budgetService.deleteOne(budgetId);
   }
 }

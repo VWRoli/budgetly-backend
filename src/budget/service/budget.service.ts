@@ -10,6 +10,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { ObjectId } from 'mongodb';
 import { User } from 'src/auth/entities';
 import { UpdateBudgetDto } from '../dto/update-budget.dto';
+import { Account } from 'src/account/entities';
 
 @Injectable()
 export class BudgetService {
@@ -18,6 +19,8 @@ export class BudgetService {
     private repository: Repository<Budget>,
     @InjectRepository(User)
     private userRepository: Repository<User>,
+    @InjectRepository(Account)
+    private accountRepository: Repository<Account>,
   ) {}
 
   async getAll(userId: string) {
@@ -52,6 +55,8 @@ export class BudgetService {
     const budget = this.repository.create({
       name: data.name,
       currency: data.currency,
+      accounts: [],
+      accountIds: [],
     });
 
     budget.user = user; // Assign the user relation
@@ -83,10 +88,16 @@ export class BudgetService {
     try {
       const currentBudget = await this.repository.findOne({
         where: { _id: new ObjectId(id) },
+        relations: { accounts: true }, // Specify the relations to be loaded
       });
-      //todo delete accounts and categories
+
       if (!currentBudget) {
         throw new NotFoundException('No budget found with the provided id.');
+      }
+      console.log(currentBudget);
+      // Delete the associated accounts
+      for (const account of currentBudget.accounts) {
+        await this.accountRepository.delete(new ObjectId(account._id));
       }
 
       await this.repository.delete(new ObjectId(id));

@@ -12,10 +12,13 @@ import { AccountModule } from './account/account.module';
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRoot({
-      type: 'mongodb',
-      url: process.env.MONGODB_URL,
+      type: 'mysql',
+      host: '',
+      port: 3030,
+      username: '',
+      password: '',
+      database: '',
       entities: [join(__dirname, '**/**.entity{.ts,.js}')],
-      useNewUrlParser: true,
       logging: true,
       // Only enable this option if your application is in development,
       // otherwise use TypeORM migrations to sync entity schemas:

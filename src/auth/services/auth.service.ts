@@ -33,6 +33,8 @@ export class AuthService {
       const user = this.repository.create({
         email: dto.email,
         hash,
+        budgets: [],
+        budgetIds: [],
       });
 
       //save user entity in DB
