@@ -17,4 +17,4 @@ COPY . .
 EXPOSE 8080
 
 # Start the application
-CMD sleep 10 && npm run start:prod
+CMD npm run start:dev

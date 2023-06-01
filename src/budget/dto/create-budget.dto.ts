@@ -13,7 +13,10 @@ export class CreateBudgetDto {
   @ApiProperty({ enum: ECurrency, enumName: 'ECurrency', required: true })
   readonly currency: ECurrency;
 
-  @IsMongoId()
-  @ApiProperty({ example: '507f1f77bcf86cd799439011', required: true })
+  @IsString()
+  @ApiProperty({
+    example: 'd7bd1401-c0c9-4b54-8afd-33eda671921f',
+    required: true,
+  })
   readonly userId: string;
 }

@@ -1,4 +1,3 @@
-import { ApiProperty } from '@nestjs/swagger';
 import { Budget } from 'src/budget/entities';
 import {
   Entity,
@@ -13,7 +12,6 @@ import {
 @Entity()
 export class User {
   @PrimaryGeneratedColumn('uuid')
-  @ApiProperty({ example: '123e4567-e89b-12d3-a456-426614174000' })
   id: string;
 
   @Column()
@@ -45,9 +43,6 @@ export class User {
 
   // @Column()
   // available: number;
-
-  // @Column()
-  // accounts: string[]; //todo
 
   // @Column()
   // defaultBudget: string;

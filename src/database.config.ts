@@ -9,8 +9,8 @@ const databaseConfig: TypeOrmModuleOptions = {
   password: process.env.TYPEORM_PASSWORD,
   database: process.env.TYPEORM_DATABASE,
   entities: [join(__dirname, '**/**.entity{.ts,.js}')],
-  logging: true,
-  synchronize: true,
+  logging: false,
+  synchronize: false,
 };
 
 export default databaseConfig;
