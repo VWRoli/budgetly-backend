@@ -1,13 +1,13 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
-import databaseConfig from './database.config';
 //Modules
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { BudgetModule } from './budget/budget.module';
 import { AccountModule } from './account/account.module';
 import { DataSource } from 'typeorm';
+import databaseConfig from './config/app.development.config';
 
 @Module({
   imports: [
