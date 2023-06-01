@@ -7,7 +7,7 @@ import { UserModule } from './user/user.module';
 import { BudgetModule } from './budget/budget.module';
 import { AccountModule } from './account/account.module';
 import { DataSource } from 'typeorm';
-import databaseConfig from './config/app.development.config';
+import databaseConfig from './app.development.config';
 
 @Module({
   imports: [
