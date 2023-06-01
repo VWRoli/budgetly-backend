@@ -5,7 +5,6 @@ import { ExtractJwt, Strategy } from 'passport-jwt';
 import { Repository } from 'typeorm';
 import { User } from '../entities';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ObjectId } from 'mongodb';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
@@ -20,10 +19,10 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
     });
   }
   async validate(payload: { sub: string; email: string }) {
-    const objectId = new ObjectId(payload.sub);
+    const id = payload.sub;
 
     const user = await this.repository.findOne({
-      where: { _id: objectId },
+      where: { id },
     });
 
     delete user.hash;

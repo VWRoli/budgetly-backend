@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { Budget } from 'src/budget/entities';
 import {
   Column,
@@ -5,16 +6,16 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
-  ObjectId,
-  ObjectIdColumn,
+  PrimaryGeneratedColumn,
   RelationId,
   UpdateDateColumn,
 } from 'typeorm';
 
 @Entity()
 export class Account {
-  @ObjectIdColumn()
-  _id: ObjectId;
+  @PrimaryGeneratedColumn('uuid')
+  @ApiProperty({ example: '123e4567-e89b-12d3-a456-426614174000' })
+  id: string;
 
   @Column()
   name: string;
@@ -24,7 +25,7 @@ export class Account {
   budget: Budget;
 
   @RelationId((account: Account) => account.budget)
-  budgetId: ObjectId;
+  budgetId: string;
 
   @Column()
   balance: number;

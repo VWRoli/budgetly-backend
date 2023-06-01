@@ -1,6 +1,6 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ObjectId, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { CreateUserDto, LoginUserDto } from '../dto';
 import { User } from '../entities';
 import { SALT_WORK_FACTOR } from '../auth.constants';
@@ -18,56 +18,47 @@ export class AuthService {
   ) {}
 
   async signUp(dto: CreateUserDto) {
-    try {
-      //Check for existing user
-      const existingUser = await this.repository.findOne({
-        where: { email: dto.email },
-      });
-
-      if (existingUser) throw new ForbiddenException('Credentials taken');
-
-      //hash password
-      const hash = await bcrypt.hash(dto.password, SALT_WORK_FACTOR);
-
-      //create user entity
-      const user = this.repository.create({
-        email: dto.email,
-        hash,
-        budgets: [],
-        budgetIds: [],
-      });
-
-      //save user entity in DB
-      await this.repository.save(user);
-
-      //send back the user
-      return this.signToken(user._id, user.email);
-    } catch (error) {
-      throw error;
-    }
+    // try {
+    //   //Check for existing user
+    //   const existingUser = await this.repository.findOne({
+    //     where: { email: dto.email },
+    //   });
+    //   if (existingUser) throw new ForbiddenException('Credentials taken');
+    //   //hash password
+    //   const hash = await bcrypt.hash(dto.password, SALT_WORK_FACTOR);
+    //   //create user entity
+    //   const user = this.repository.create({
+    //     email: dto.email,
+    //     hash,
+    //     budgets: [],
+    //     budgetIds: [],
+    //   });
+    //   //save user entity in DB
+    //   await this.repository.save(user);
+    //   //send back the user
+    //   return this.signToken(user.id, user.email);
+    // } catch (error) {
+    //   throw error;
+    // }
   }
 
   async signIn(dto: LoginUserDto) {
-    //find user by email
-    const user = await this.repository.findOne({
-      where: { email: dto.email },
-    });
-
-    //if user does not exist, throw exception
-    if (!user) throw new ForbiddenException('Credentials incorrect');
-
-    //compare passwords
-    const pwMatches = await bcrypt.compare(dto.password, user.hash);
-
-    //if password is incorrect throw exception
-    if (!pwMatches) throw new ForbiddenException('Credentials incorrect');
-
-    //send back the user
-    return this.signToken(user._id, user.email);
+    // //find user by email
+    // const user = await this.repository.findOne({
+    //   where: { email: dto.email },
+    // });
+    // //if user does not exist, throw exception
+    // if (!user) throw new ForbiddenException('Credentials incorrect');
+    // //compare passwords
+    // const pwMatches = await bcrypt.compare(dto.password, user.hash);
+    // //if password is incorrect throw exception
+    // if (!pwMatches) throw new ForbiddenException('Credentials incorrect');
+    // //send back the user
+    // return this.signToken(user.id, user.email);
   }
 
   async signToken(
-    userId: ObjectId,
+    userId: string,
     email: string,
   ): Promise<{ access_token: string }> {
     const payload = {
