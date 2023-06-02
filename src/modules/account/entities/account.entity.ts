@@ -1,11 +1,12 @@
-import { ApiProperty } from '@nestjs/swagger';
 import { Budget } from 'src/modules/budget/entities';
+import { Transaction } from 'src/modules/transaction/entities';
 import {
   Column,
   CreateDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   RelationId,
   UpdateDateColumn,
@@ -25,6 +26,12 @@ export class Account {
 
   @RelationId((account: Account) => account.budget)
   budgetId: number;
+
+  @OneToMany(() => Transaction, (transaction) => transaction.account)
+  transactions: Transaction[];
+
+  @RelationId((account: Account) => account.transactions)
+  transactionIds: number[];
 
   @Column()
   balance: number;

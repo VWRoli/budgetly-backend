@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsMongoId, IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
 export class CreatAccountDto {
   @IsString()
@@ -7,7 +7,7 @@ export class CreatAccountDto {
   @ApiProperty({ example: 'Example account', required: true })
   readonly name: string;
 
-  @IsMongoId()
+  @IsNumber()
   @ApiProperty({ example: 1, required: true })
   readonly budgetId: number;
 }

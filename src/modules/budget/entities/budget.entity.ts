@@ -12,7 +12,6 @@ import {
 } from 'typeorm';
 import { ECurrency } from '../enum';
 import { Account } from 'src/modules/account/entities';
-import { ApiProperty } from '@nestjs/swagger';
 
 @Entity()
 export class Budget {
