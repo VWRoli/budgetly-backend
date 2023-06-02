@@ -11,7 +11,6 @@ import {
 
 @Entity()
 export class User {
-  //todo change to uuid later on, syncronize does not work with uuid on mysql, deletes column
   @PrimaryGeneratedColumn('increment')
   id: number;
 
@@ -36,8 +35,8 @@ export class User {
   @Column({ default: null })
   deleteTimeStamp: Date | null;
 
-  // @Column()
-  // balance: number;
+  @Column()
+  balance: number;
 
   // @Column()
   // budgeted: number;

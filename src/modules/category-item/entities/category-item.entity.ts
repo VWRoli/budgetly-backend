@@ -10,11 +10,11 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Budget } from 'src/modules/budget/entities';
-import { CategoryItem } from 'src/modules/category-item/entities';
+import { Category } from 'src/modules/category/entities';
 import { Transaction } from 'src/modules/transaction/entities';
 
 @Entity()
-export class Category {
+export class CategoryItem {
   @PrimaryGeneratedColumn('increment')
   id: number;
 
@@ -30,24 +30,18 @@ export class Category {
   @Column()
   balance: number;
 
-  @ManyToOne(() => Budget, (budget) => budget.categories)
+  @ManyToOne(() => Category, (category) => category.categoryItems)
   @JoinColumn()
-  budget: Budget;
+  category: Category;
 
-  @RelationId((category: Category) => category.budget)
-  budgetId: number;
+  @RelationId((categoryItem: CategoryItem) => categoryItem.category)
+  categoryId: number;
 
-  @OneToMany(() => Transaction, (transaction) => transaction.category)
+  @OneToMany(() => Transaction, (transaction) => transaction.categoryItem)
   transactions: Transaction[];
 
-  @RelationId((category: Category) => category.transactions)
+  @RelationId((categoryItem: CategoryItem) => categoryItem.transactions)
   transactionIds: number[];
-
-  @OneToMany(() => CategoryItem, (categoryItem) => categoryItem.category)
-  categoryItems: CategoryItem[];
-
-  @RelationId((category: Category) => category.categoryItems)
-  categoryItemIds: number[];
 
   @CreateDateColumn()
   createTimeStamp: Date;

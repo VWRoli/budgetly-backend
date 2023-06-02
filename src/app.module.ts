@@ -5,11 +5,12 @@ import databaseConfig from './app.development.config';
 import { DataSource } from 'typeorm';
 //Modules
 import { AuthModule } from './modules/auth/auth.module';
-import { UserModule } from './user/user.module';
+import { UserModule } from './modules/user/user.module';
 import { BudgetModule } from './modules/budget/budget.module';
 import { AccountModule } from './modules/account/account.module';
 import { TransactionModule } from './modules/transaction/transaction.module';
-import { CategoryModule } from './category/category.module';
+import { CategoryItemModule } from './modules/category-item/category-item.module';
+import { CategoryModule } from './modules/category/category.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { CategoryModule } from './category/category.module';
     AccountModule,
     TransactionModule,
     CategoryModule,
+    CategoryItemModule,
   ],
   controllers: [],
   providers: [],

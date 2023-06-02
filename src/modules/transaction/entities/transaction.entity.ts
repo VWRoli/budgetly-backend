@@ -1,5 +1,7 @@
 import { IsNumber } from 'class-validator';
 import { Account } from 'src/modules/account/entities';
+import { CategoryItem } from 'src/modules/category-item/entities';
+import { Category } from 'src/modules/category/entities';
 import {
   Column,
   CreateDateColumn,
@@ -25,6 +27,20 @@ export class Transaction {
 
   @RelationId((transaction: Transaction) => transaction.account)
   accountId: number;
+
+  @ManyToOne(() => Category, (category) => category.transactions)
+  @JoinColumn()
+  category: Category;
+
+  @RelationId((transaction: Transaction) => transaction.category)
+  categoryId: number;
+
+  @ManyToOne(() => CategoryItem, (categoryItem) => categoryItem.transactions)
+  @JoinColumn()
+  categoryItem: CategoryItem;
+
+  @RelationId((transaction: Transaction) => transaction.categoryItem)
+  categoryItemId: number;
 
   @Column()
   date: Date;
