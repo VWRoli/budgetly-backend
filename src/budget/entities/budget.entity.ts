@@ -16,13 +16,13 @@ import { ApiProperty } from '@nestjs/swagger';
 
 @Entity()
 export class Budget {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+  @PrimaryGeneratedColumn('increment')
+  id: number;
 
   @Column()
   name: string;
 
-  @Column({ enum: ECurrency, enumName: 'ECurrency' })
+  @Column({ type: 'enum', enum: ECurrency, enumName: 'ECurrency' })
   currency: ECurrency;
 
   @ManyToOne(() => User, (user) => user.budgets)
@@ -30,13 +30,13 @@ export class Budget {
   user: User;
 
   @RelationId((budget: Budget) => budget.user)
-  userId: string;
+  userId: number;
 
   @OneToMany(() => Account, (account) => account.budget)
   accounts: Account[];
 
   @RelationId((budget: Budget) => budget.accounts)
-  accountIds: string[];
+  accountIds: number[];
 
   @CreateDateColumn()
   createTimeStamp: Date;

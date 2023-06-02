@@ -13,8 +13,8 @@ import {
 
 @Entity()
 export class Account {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+  @PrimaryGeneratedColumn('increment')
+  id: number;
 
   @Column()
   name: string;
@@ -24,7 +24,7 @@ export class Account {
   budget: Budget;
 
   @RelationId((account: Account) => account.budget)
-  budgetId: string;
+  budgetId: number;
 
   @Column()
   balance: number;

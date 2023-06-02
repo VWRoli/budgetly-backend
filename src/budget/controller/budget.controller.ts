@@ -25,7 +25,7 @@ export class BudgetController {
 
   @Get(':userId')
   @ApiOkResponse({ type: Budget, isArray: true })
-  getBudgets(@Param('userId') userId: string) {
+  getBudgets(@Param('userId') userId: number) {
     return this.budgetService.getAll(userId);
   }
 
@@ -38,7 +38,7 @@ export class BudgetController {
   @Put(':budgetId')
   @ApiOkResponse({ type: Budget })
   updateBudget(
-    @Param('budgetId') budgetId: string,
+    @Param('budgetId') budgetId: number,
     @Body() body: UpdateBudgetDto,
   ) {
     return this.budgetService.updateOne(budgetId, body);
@@ -46,7 +46,7 @@ export class BudgetController {
 
   @Delete(':budgetId')
   @HttpCode(HttpStatus.NO_CONTENT)
-  deleteBudget(@Param('budgetId') budgetId: string) {
+  deleteBudget(@Param('budgetId') budgetId: number) {
     return this.budgetService.deleteOne(budgetId);
   }
 }

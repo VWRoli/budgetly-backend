@@ -8,6 +8,6 @@ export class CreatAccountDto {
   readonly name: string;
 
   @IsMongoId()
-  @ApiProperty({ example: '507f1f77bcf86cd799439011', required: true })
-  readonly budgetId: string;
+  @ApiProperty({ example: 1, required: true })
+  readonly budgetId: number;
 }

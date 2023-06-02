@@ -25,7 +25,7 @@ export class AccountController {
 
   @Get(':budgetId')
   @ApiOkResponse({ type: Account, isArray: true })
-  getAccounts(@Param('budgetId') budgetId: string) {
+  getAccounts(@Param('budgetId') budgetId: number) {
     return this.accountService.getAll(budgetId);
   }
 
@@ -38,7 +38,7 @@ export class AccountController {
   @Put(':accountId')
   @ApiOkResponse({ type: Account })
   updateAccount(
-    @Param('accountId') accountId: string,
+    @Param('accountId') accountId: number,
     @Body() body: UpdateAccountDto,
   ) {
     return this.accountService.updateOne(accountId, body);
@@ -46,7 +46,7 @@ export class AccountController {
 
   @Delete(':accountId')
   @HttpCode(HttpStatus.NO_CONTENT)
-  deleteAccount(@Param('accountId') accountId: string) {
+  deleteAccount(@Param('accountId') accountId: number) {
     this.accountService.deleteOne(accountId);
   }
 }

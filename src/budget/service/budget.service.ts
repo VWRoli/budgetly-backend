@@ -22,9 +22,9 @@ export class BudgetService {
     private accountRepository: Repository<Account>,
   ) {}
 
-  async getAll(userId: string) {
+  async getAll(userId: number) {
     return await this.repository.find({
-      where: { userId: userId },
+      where: { userId },
     });
   }
   async createOne(data: CreateBudgetDto) {
@@ -56,7 +56,7 @@ export class BudgetService {
     return await this.repository.save(budget);
   }
 
-  async updateOne(id: string, data: UpdateBudgetDto) {
+  async updateOne(id: number, data: UpdateBudgetDto) {
     const currentBudget = await this.repository.findOne({
       where: { id: id },
     });
@@ -71,7 +71,7 @@ export class BudgetService {
     return currentBudget;
   }
 
-  async deleteOne(id: string) {
+  async deleteOne(id: number) {
     try {
       const currentBudget = await this.repository.findOne({
         where: { id },

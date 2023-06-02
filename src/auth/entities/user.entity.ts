@@ -11,8 +11,9 @@ import {
 
 @Entity()
 export class User {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+  //todo change to uuid later on, syncronize does not work with uuid on mysql, deletes column
+  @PrimaryGeneratedColumn('increment')
+  id: number;
 
   @Column()
   email: string;
