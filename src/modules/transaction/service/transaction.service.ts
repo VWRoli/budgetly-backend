@@ -3,7 +3,7 @@ import { CreateTransactionDto, UpdateTransactionDto } from '../dto';
 
 @Injectable()
 export class TransactionService {
-  async getAll(userId: number) {}
+  async getAll(accountId: number) {}
   async createOne(data: CreateTransactionDto) {}
 
   async updateOne(id: number, data: UpdateTransactionDto) {}

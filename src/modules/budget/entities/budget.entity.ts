@@ -12,6 +12,7 @@ import {
 } from 'typeorm';
 import { ECurrency } from '../enum';
 import { Account } from 'src/modules/account/entities';
+import { Category } from 'src/modules/category/entities';
 
 @Entity()
 export class Budget {
@@ -36,6 +37,12 @@ export class Budget {
 
   @RelationId((budget: Budget) => budget.accounts)
   accountIds: number[];
+
+  @OneToMany(() => Category, (category) => category.budget)
+  categories: Category[];
+
+  @RelationId((budget: Budget) => budget.categories)
+  categoryIds: number[];
 
   @CreateDateColumn()
   createTimeStamp: Date;
