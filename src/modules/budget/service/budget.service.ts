@@ -24,7 +24,7 @@ export class BudgetService {
 
   async getAll(userId: number) {
     return await this.repository.find({
-      where: { userId },
+      where: { user: { id: userId } },
     });
   }
   async createOne(data: CreateBudgetDto) {
@@ -34,13 +34,18 @@ export class BudgetService {
         id: data.userId,
       },
     });
+
     if (!user) {
       throw new NotFoundException(`No user with the provided id`);
     }
     // check if data is already created
     const existingBudget = await this.repository.findOne({
-      where: { userId: data.userId, currency: data.currency },
+      where: {
+        currency: data.currency,
+        user: { id: user.id }, // Filter by the user's ID
+      },
     });
+
     if (existingBudget) {
       throw new ConflictException(
         `You already have a budget with ${data.currency} currency.`,
@@ -50,19 +55,33 @@ export class BudgetService {
     const budget = this.repository.create({
       name: data.name,
       currency: data.currency,
+      user: user, // Assign the user object to the 'user' property
     });
-
     //save budget entity in DB
     return await this.repository.save(budget);
   }
 
   async updateOne(id: number, data: UpdateBudgetDto) {
     const currentBudget = await this.repository.findOne({
-      where: { id: id },
+      where: { id },
     });
     if (!currentBudget) {
       throw new NotFoundException('No budget found with the provided id.');
     }
+
+    // check if data is already created
+    const existingBudget = await this.repository.findOne({
+      where: {
+        currency: data.currency,
+        user: { id: data.userId }, // Filter by the user's ID
+      },
+    });
+    if (existingBudget) {
+      throw new ConflictException(
+        `You already have a budget with ${data.currency} currency.`,
+      );
+    }
+
     // Update the properties of the currentBudget entity
     currentBudget.name = data.name;
     currentBudget.currency = data.currency;
@@ -80,12 +99,12 @@ export class BudgetService {
       if (!currentBudget) {
         throw new NotFoundException('No budget found with the provided id.');
       }
-      console.log(currentBudget);
-      // Delete the associated accounts
-      for (const account of currentBudget.accounts) {
-        await this.accountRepository.delete(account.id);
-      }
-      await this.repository.delete(id);
+
+      //todo // Delete the associated accounts
+      // for (const account of currentBudget.accounts) {
+      //   await this.accountRepository.delete(account.id);
+      // }
+      await this.repository.softDelete(id);
     } catch (error) {
       throw error;
     }

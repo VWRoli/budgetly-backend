@@ -26,6 +26,9 @@ export class User {
   @RelationId((user: User) => user.budgets)
   budgetIds: string[];
 
+  @Column({ nullable: true })
+  defaultBudgetId: number;
+
   @CreateDateColumn()
   createTimeStamp: Date;
 
@@ -34,7 +37,4 @@ export class User {
 
   @Column({ default: null })
   deleteTimeStamp: Date | null;
-
-  @Column()
-  defaultBudgetId: number;
 }

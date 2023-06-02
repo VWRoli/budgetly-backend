@@ -2,6 +2,7 @@ import { User } from 'src/modules/auth/entities';
 import {
   Column,
   CreateDateColumn,
+  DeleteDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
@@ -50,6 +51,6 @@ export class Budget {
   @UpdateDateColumn()
   updateTimeStamp: Date;
 
-  @Column({ default: null })
+  @DeleteDateColumn({ default: null })
   deleteTimeStamp: Date | null;
 }
