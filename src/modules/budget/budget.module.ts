@@ -3,8 +3,8 @@ import { BudgetService } from './service';
 import { BudgetController } from './controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Budget } from './entities';
-import { User } from 'src/auth/entities';
-import { Account } from 'src/account/entities';
+import { User } from 'src/modules/auth/entities';
+import { Account } from 'src/modules/account/entities';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Budget, User, Account])],

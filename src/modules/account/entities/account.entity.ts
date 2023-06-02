@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Budget } from 'src/budget/entities';
+import { Budget } from 'src/modules/budget/entities';
 import {
   Column,
   CreateDateColumn,

@@ -1,4 +1,4 @@
-import { Budget } from 'src/budget/entities';
+import { Budget } from 'src/modules/budget/entities';
 import {
   Entity,
   Column,

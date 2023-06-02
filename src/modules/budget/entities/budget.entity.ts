@@ -1,4 +1,4 @@
-import { User } from 'src/auth/entities';
+import { User } from 'src/modules/auth/entities';
 import {
   Column,
   CreateDateColumn,
@@ -11,7 +11,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { ECurrency } from '../enum';
-import { Account } from 'src/account/entities';
+import { Account } from 'src/modules/account/entities';
 import { ApiProperty } from '@nestjs/swagger';
 
 @Entity()

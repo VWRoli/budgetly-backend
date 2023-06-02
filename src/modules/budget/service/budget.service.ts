@@ -7,9 +7,9 @@ import { CreateBudgetDto } from '../dto';
 import { Budget } from '../entities';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from 'src/auth/entities';
+import { User } from 'src/modules/auth/entities';
 import { UpdateBudgetDto } from '../dto/update-budget.dto';
-import { Account } from 'src/account/entities';
+import { Account } from 'src/modules/account/entities';
 
 @Injectable()
 export class BudgetService {

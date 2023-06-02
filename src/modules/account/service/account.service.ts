@@ -4,7 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Budget } from 'src/budget/entities';
+import { Budget } from 'src/modules/budget/entities';
 import { Repository } from 'typeorm';
 import { Account } from '../entities';
 import { CreatAccountDto } from '../dto';
