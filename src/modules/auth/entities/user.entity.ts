@@ -36,14 +36,5 @@ export class User {
   deleteTimeStamp: Date | null;
 
   @Column()
-  balance: number;
-
-  // @Column()
-  // budgeted: number;
-
-  // @Column()
-  // available: number;
-
-  // @Column()
-  // defaultBudget: string;
+  defaultBudgetId: number;
 }
