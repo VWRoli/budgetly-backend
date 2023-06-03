@@ -8,6 +8,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Category } from '../entities';
 import { Not, Repository } from 'typeorm';
 import { Budget } from 'src/modules/budget/entities';
+import { CategoryItem } from 'src/modules/category-item/entities';
 
 @Injectable()
 export class CategoryService {
@@ -16,6 +17,8 @@ export class CategoryService {
     private repository: Repository<Category>,
     @InjectRepository(Budget)
     private budgetRepository: Repository<Budget>,
+    @InjectRepository(CategoryItem)
+    private categoryItemRepository: Repository<CategoryItem>,
   ) {}
 
   async getAll(budgetId: number) {
@@ -79,14 +82,14 @@ export class CategoryService {
     });
     if (existingCategory) {
       throw new ConflictException(
-        `You already have an account with the same name.`,
+        `You already have a category with the same name.`,
       );
     }
 
-    // Update the properties of the currentAccount entity
+    // Update the properties of the currentCategory entity
     currentCategory.title = data.title;
 
-    // Save the updated Account entity in the database
+    // Save the updated Category entity in the database
     await this.repository.save(currentCategory);
     return currentCategory;
   }
@@ -95,11 +98,17 @@ export class CategoryService {
     try {
       const currentCategory = await this.repository.findOne({
         where: { id },
+        relations: { categoryItems: true },
       });
       if (!currentCategory) {
         throw new NotFoundException('No category found with the provided id.');
       }
-      //todo delete category items
+
+      // Delete the associated items
+      for (const item of currentCategory.categoryItems) {
+        await this.categoryItemRepository.softDelete(item.id);
+      }
+
       await this.repository.softDelete(id);
     } catch (error) {
       throw error;

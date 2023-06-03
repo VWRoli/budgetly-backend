@@ -112,6 +112,7 @@ export class BudgetService {
       for (const account of currentBudget.accounts) {
         await this.accountRepository.softDelete(account.id);
       }
+
       // Delete the associated categories
       for (const category of currentBudget.categories) {
         await this.categoryRepository.softDelete(category.id);
