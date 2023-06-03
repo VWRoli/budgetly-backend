@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import { CreateBudgetDto } from '../dto';
 import { Budget } from '../entities';
-import { Repository } from 'typeorm';
+import { Not, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/modules/auth/entities';
 import { UpdateBudgetDto } from '../dto/update-budget.dto';
@@ -72,6 +72,7 @@ export class BudgetService {
     // check if data is already created
     const existingBudget = await this.repository.findOne({
       where: {
+        id: Not(id), // Exclude the currentBudget ID from the results
         currency: data.currency,
         user: { id: data.userId }, // Filter by the user's ID
       },
