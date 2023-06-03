@@ -1,6 +1,7 @@
 import {
   Column,
   CreateDateColumn,
+  DeleteDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
@@ -55,6 +56,6 @@ export class Category {
   @UpdateDateColumn()
   updateTimeStamp: Date;
 
-  @Column({ default: null })
+  @DeleteDateColumn({ default: null })
   deleteTimeStamp: Date | null;
 }

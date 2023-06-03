@@ -21,7 +21,8 @@ export class AccountService {
 
   async getAll(budgetId: number) {
     return await this.repository.find({
-      where: { budgetId },
+      where: { budget: { id: budgetId } },
+      relations: { transactions: true },
     });
   }
 
@@ -61,7 +62,7 @@ export class AccountService {
 
   async updateOne(id: number, data: UpdateAccountDto) {
     const currentAccount = await this.repository.findOne({
-      where: { id: id },
+      where: { id },
     });
     if (!currentAccount) {
       throw new NotFoundException('No Account found with the provided id.');

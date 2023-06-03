@@ -10,6 +10,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/modules/auth/entities';
 import { UpdateBudgetDto } from '../dto/update-budget.dto';
 import { Account } from 'src/modules/account/entities';
+import { Category } from 'src/modules/category/entities';
 
 @Injectable()
 export class BudgetService {
@@ -20,6 +21,8 @@ export class BudgetService {
     private userRepository: Repository<User>,
     @InjectRepository(Account)
     private accountRepository: Repository<Account>,
+    @InjectRepository(Category)
+    private categoryRepository: Repository<Category>,
   ) {}
 
   async getAll(userId: number) {
@@ -99,7 +102,7 @@ export class BudgetService {
     try {
       const currentBudget = await this.repository.findOne({
         where: { id },
-        relations: { accounts: true }, // Specify the relations to be loaded
+        relations: { accounts: true, categories: true }, // Specify the relations to be loaded
       });
       if (!currentBudget) {
         throw new NotFoundException('No budget found with the provided id.');
@@ -108,6 +111,10 @@ export class BudgetService {
       // Delete the associated accounts
       for (const account of currentBudget.accounts) {
         await this.accountRepository.softDelete(account.id);
+      }
+      // Delete the associated categories
+      for (const category of currentBudget.categories) {
+        await this.categoryRepository.softDelete(category.id);
       }
 
       await this.repository.softDelete(id);
