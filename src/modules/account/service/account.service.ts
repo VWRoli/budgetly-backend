@@ -9,6 +9,7 @@ import { Not, Repository } from 'typeorm';
 import { Account } from '../entities';
 import { CreatAccountDto } from '../dto';
 import { UpdateAccountDto } from '../dto/update-account.dto';
+import { Transaction } from 'src/modules/transaction/entities';
 
 @Injectable()
 export class AccountService {
@@ -17,6 +18,8 @@ export class AccountService {
     private repository: Repository<Account>,
     @InjectRepository(Budget)
     private budgetRepository: Repository<Budget>,
+    @InjectRepository(Transaction)
+    private transactionRepository: Repository<Transaction>,
   ) {}
 
   async getAll(budgetId: number) {
@@ -93,11 +96,17 @@ export class AccountService {
     try {
       const currentAccount = await this.repository.findOne({
         where: { id },
+        relations: { transactions: true },
       });
       if (!currentAccount) {
         throw new NotFoundException('No account found with the provided id.');
       }
-      //todo delete transactions
+
+      // Delete the associated transactions
+      for (const transaction of currentAccount.transactions) {
+        await this.transactionRepository.softDelete(transaction.id);
+      }
+
       await this.repository.softDelete(id);
     } catch (error) {
       throw error;

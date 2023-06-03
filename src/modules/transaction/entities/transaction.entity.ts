@@ -5,6 +5,7 @@ import { Category } from 'src/modules/category/entities';
 import {
   Column,
   CreateDateColumn,
+  DeleteDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
@@ -59,6 +60,6 @@ export class Transaction {
   @UpdateDateColumn()
   updateTimeStamp: Date;
 
-  @Column({ default: null })
+  @DeleteDateColumn({ default: null })
   deleteTimeStamp: Date | null;
 }

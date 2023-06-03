@@ -1,5 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsDate, IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { Type } from 'class-transformer';
+import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
+import { isInflowOrOutflowNull } from '../decorators';
 
 export class CreateTransactionDto {
   @IsString()
@@ -19,18 +21,23 @@ export class CreateTransactionDto {
   @ApiProperty({ example: 1, required: true })
   readonly categoryItemId: number;
 
-  @IsDate()
+  @IsNotEmpty()
   @ApiProperty({
-    example: 'Fri Jun 02 2023 09:33:25 GMT+0200 (Central European Summer Time)',
+    example: '2023-06-03',
     required: true,
   })
+  @Type(() => Date)
   readonly date: Date;
 
   @IsNumber()
+  @IsOptional()
+  @isInflowOrOutflowNull()
   @ApiProperty({ example: 100 })
   readonly inflow: number;
 
   @IsNumber()
+  @IsOptional()
+  @isInflowOrOutflowNull()
   @ApiProperty({ example: 100 })
   readonly outflow: number;
 }
