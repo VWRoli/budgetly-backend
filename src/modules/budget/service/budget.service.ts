@@ -25,6 +25,7 @@ export class BudgetService {
   async getAll(userId: number) {
     return await this.repository.find({
       where: { user: { id: userId } },
+      relations: { accounts: true },
     });
   }
   async createOne(data: CreateBudgetDto) {
@@ -38,6 +39,7 @@ export class BudgetService {
     if (!user) {
       throw new NotFoundException(`No user with the provided id`);
     }
+
     // check if data is already created
     const existingBudget = await this.repository.findOne({
       where: {
@@ -51,12 +53,14 @@ export class BudgetService {
         `You already have a budget with ${data.currency} currency.`,
       );
     }
+
     // Create a new instance of the Budget entity
     const budget = this.repository.create({
       name: data.name,
       currency: data.currency,
       user: user, // Assign the user object to the 'user' property
     });
+
     //save budget entity in DB
     return await this.repository.save(budget);
   }
@@ -101,10 +105,11 @@ export class BudgetService {
         throw new NotFoundException('No budget found with the provided id.');
       }
 
-      //todo // Delete the associated accounts
-      // for (const account of currentBudget.accounts) {
-      //   await this.accountRepository.delete(account.id);
-      // }
+      // Delete the associated accounts
+      for (const account of currentBudget.accounts) {
+        await this.accountRepository.softDelete(account.id);
+      }
+
       await this.repository.softDelete(id);
     } catch (error) {
       throw error;
