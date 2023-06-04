@@ -10,17 +10,18 @@ import { Account } from '../entities';
 import { CreatAccountDto } from '../dto';
 import { UpdateAccountDto } from '../dto/update-account.dto';
 import { Transaction } from 'src/modules/transaction/entities';
+import { CommonService } from 'src/modules/common/service';
 
 @Injectable()
-export class AccountService {
+export class AccountService extends CommonService<Account> {
   constructor(
     @InjectRepository(Account)
-    private repository: Repository<Account>,
+    repository: Repository<Account>,
     @InjectRepository(Budget)
     private budgetRepository: Repository<Budget>,
-    @InjectRepository(Transaction)
-    private transactionRepository: Repository<Transaction>,
-  ) {}
+  ) {
+    super(repository);
+  }
 
   async getAll(budgetId: number) {
     return await this.repository.find({
@@ -93,23 +94,6 @@ export class AccountService {
   }
 
   async deleteOne(id: number) {
-    try {
-      const currentAccount = await this.repository.findOne({
-        where: { id },
-        relations: { transactions: true },
-      });
-      if (!currentAccount) {
-        throw new NotFoundException('No account found with the provided id.');
-      }
-
-      // Delete the associated transactions
-      for (const transaction of currentAccount.transactions) {
-        await this.transactionRepository.softDelete(transaction.id);
-      }
-
-      await this.repository.softDelete(id);
-    } catch (error) {
-      throw error;
-    }
+    return super.deleteOne(id);
   }
 }

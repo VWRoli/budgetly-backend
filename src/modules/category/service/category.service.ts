@@ -9,17 +9,18 @@ import { Category } from '../entities';
 import { Not, Repository } from 'typeorm';
 import { Budget } from 'src/modules/budget/entities';
 import { CategoryItem } from 'src/modules/category-item/entities';
+import { CommonService } from 'src/modules/common/service';
 
 @Injectable()
-export class CategoryService {
+export class CategoryService extends CommonService<Category> {
   constructor(
     @InjectRepository(Category)
-    private repository: Repository<Category>,
+    repository: Repository<Category>,
     @InjectRepository(Budget)
     private budgetRepository: Repository<Budget>,
-    @InjectRepository(CategoryItem)
-    private categoryItemRepository: Repository<CategoryItem>,
-  ) {}
+  ) {
+    super(repository);
+  }
 
   async getAll(budgetId: number) {
     return await this.repository.find({
@@ -95,23 +96,6 @@ export class CategoryService {
   }
 
   async deleteOne(id: number) {
-    try {
-      const currentCategory = await this.repository.findOne({
-        where: { id },
-        relations: { categoryItems: true },
-      });
-      if (!currentCategory) {
-        throw new NotFoundException('No category found with the provided id.');
-      }
-
-      // Delete the associated items
-      for (const item of currentCategory.categoryItems) {
-        await this.categoryItemRepository.softDelete(item.id);
-      }
-
-      await this.repository.softDelete(id);
-    } catch (error) {
-      throw error;
-    }
+    return super.deleteOne(id);
   }
 }

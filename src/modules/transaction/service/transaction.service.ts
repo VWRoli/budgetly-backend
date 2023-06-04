@@ -6,19 +6,22 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Category } from 'src/modules/category/entities';
 import { CategoryItem } from 'src/modules/category-item/entities';
 import { Account } from 'src/modules/account/entities';
+import { CommonService } from 'src/modules/common/service';
 
 @Injectable()
-export class TransactionService {
+export class TransactionService extends CommonService<Transaction> {
   constructor(
     @InjectRepository(Transaction)
-    private repository: Repository<Transaction>,
+    repository: Repository<Transaction>,
     @InjectRepository(Account)
     private accountRepository: Repository<Account>,
     @InjectRepository(CategoryItem)
     private categoryRepository: Repository<Category>,
     @InjectRepository(CategoryItem)
     private categoryItemRepository: Repository<CategoryItem>,
-  ) {}
+  ) {
+    super(repository);
+  }
 
   async getAll(accountId: number) {
     return await this.repository.find({
@@ -113,22 +116,7 @@ export class TransactionService {
       await this.repository.save(currentTransaction);
     return currentTransaction;
   }
-
   async deleteOne(id: number) {
-    try {
-      const currentTransaction = await this.repository.findOne({
-        where: { id },
-      });
-
-      if (!currentTransaction) {
-        throw new NotFoundException(
-          'No transaction found with the provided id.',
-        );
-      }
-
-      await this.repository.softDelete(id);
-    } catch (error) {
-      throw error;
-    }
+    return super.deleteOne(id);
   }
 }

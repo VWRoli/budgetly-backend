@@ -11,19 +11,18 @@ import { User } from 'src/modules/auth/entities';
 import { UpdateBudgetDto } from '../dto/update-budget.dto';
 import { Account } from 'src/modules/account/entities';
 import { Category } from 'src/modules/category/entities';
+import { CommonService } from 'src/modules/common/service';
 
 @Injectable()
-export class BudgetService {
+export class BudgetService extends CommonService<Budget> {
   constructor(
     @InjectRepository(Budget)
-    private repository: Repository<Budget>,
+    repository: Repository<Budget>,
     @InjectRepository(User)
     private userRepository: Repository<User>,
-    @InjectRepository(Account)
-    private accountRepository: Repository<Account>,
-    @InjectRepository(Category)
-    private categoryRepository: Repository<Category>,
-  ) {}
+  ) {
+    super(repository);
+  }
 
   async getAll(userId: number) {
     return await this.repository.find({
@@ -99,28 +98,6 @@ export class BudgetService {
   }
 
   async deleteOne(id: number) {
-    try {
-      const currentBudget = await this.repository.findOne({
-        where: { id },
-        relations: { accounts: true, categories: true }, // Specify the relations to be loaded
-      });
-      if (!currentBudget) {
-        throw new NotFoundException('No budget found with the provided id.');
-      }
-
-      // Delete the associated accounts
-      for (const account of currentBudget.accounts) {
-        await this.accountRepository.softDelete(account.id);
-      }
-
-      // Delete the associated categories
-      for (const category of currentBudget.categories) {
-        await this.categoryRepository.softDelete(category.id);
-      }
-
-      await this.repository.softDelete(id);
-    } catch (error) {
-      throw error;
-    }
+    return super.deleteOne(id);
   }
 }
