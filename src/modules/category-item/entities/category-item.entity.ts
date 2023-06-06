@@ -10,7 +10,6 @@ import {
   RelationId,
   UpdateDateColumn,
 } from 'typeorm';
-import { Budget } from 'src/modules/budget/entities';
 import { Category } from 'src/modules/category/entities';
 import { Transaction } from 'src/modules/transaction/entities';
 

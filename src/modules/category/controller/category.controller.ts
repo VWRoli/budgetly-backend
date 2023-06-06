@@ -15,9 +15,10 @@ import { JwtGuard } from 'src/modules/auth/guard';
 import { CategoryService } from '../service';
 import { Category } from '../entities';
 import { CreateCategoryDto, UpdateCategoryDto } from '../dto';
+import { ThrottlerGuard } from '@nestjs/throttler';
 
 @ApiTags('categories')
-@UseGuards(JwtGuard)
+@UseGuards(JwtGuard, ThrottlerGuard)
 @Controller('categories')
 export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}

@@ -16,9 +16,10 @@ import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { Budget } from '../entities';
 import { JwtGuard } from 'src/modules/auth/guard';
 import { UpdateBudgetDto } from '../dto/update-budget.dto';
+import { ThrottlerGuard } from '@nestjs/throttler';
 
 @ApiTags('budgets')
-@UseGuards(JwtGuard)
+@UseGuards(JwtGuard, ThrottlerGuard)
 @Controller('budgets')
 export class BudgetController {
   constructor(private readonly budgetService: BudgetService) {}

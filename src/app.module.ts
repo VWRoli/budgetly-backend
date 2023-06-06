@@ -3,6 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import databaseConfig from './app.development.config';
 import { DataSource } from 'typeorm';
+import { ThrottlerModule } from '@nestjs/throttler';
 //Modules
 import { AuthModule } from './modules/auth/auth.module';
 import { UserModule } from './modules/user/user.module';
@@ -16,6 +17,10 @@ import { CategoryModule } from './modules/category/category.module';
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRoot(databaseConfig),
+    ThrottlerModule.forRoot({
+      ttl: +process.env.THROTTLER_TTL,
+      limit: +process.env.THROTTLER_LIMIT,
+    }),
     AuthModule,
     UserModule,
     BudgetModule,

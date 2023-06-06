@@ -16,9 +16,10 @@ import { AccountService } from '../service';
 import { Account } from '../entities';
 import { CreatAccountDto } from '../dto';
 import { UpdateAccountDto } from '../dto/update-account.dto';
+import { ThrottlerGuard } from '@nestjs/throttler';
 
 @ApiTags('accounts')
-@UseGuards(JwtGuard)
+@UseGuards(JwtGuard, ThrottlerGuard)
 @Controller('accounts')
 export class AccountController {
   constructor(private readonly accountService: AccountService) {}

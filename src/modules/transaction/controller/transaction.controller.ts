@@ -15,9 +15,10 @@ import { JwtGuard } from 'src/modules/auth/guard';
 import { TransactionService } from '../service';
 import { Transaction } from '../entities';
 import { CreateTransactionDto, UpdateTransactionDto } from '../dto';
+import { ThrottlerGuard } from '@nestjs/throttler';
 
 @ApiTags('transactions')
-@UseGuards(JwtGuard)
+@UseGuards(JwtGuard, ThrottlerGuard)
 @Controller('transactions')
 export class TransactionController {
   constructor(private readonly transactionService: TransactionService) {}
