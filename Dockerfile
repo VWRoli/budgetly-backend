@@ -17,4 +17,4 @@ COPY . .
 EXPOSE 8080
 
 # Start the application
-CMD npm run start:dev
+CMD npm run test:e2e

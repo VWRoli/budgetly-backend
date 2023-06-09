@@ -30,39 +30,22 @@ describe('AuthController (E2E)', () => {
     const response = await request(app.getHttpServer())
       .post('/auth/signup')
       .send(signupData)
-      .expect(201); // Expected HTTP status code for successful signup
+      .expect(201);
 
-    // Assert any additional expectations
     expect(response.body).toBeDefined();
-    //expect(response.body.message).toBe('User created successfully');
-    // Add more assertions as needed
+    expect(response.body.access_token).toBeDefined();
   });
 
-  it('/auth/signin (POST) should return access token', async () => {
-    const response = await request(app.getHttpServer())
-      .post('/auth/signin')
-      .send({
-        email: 'test@example.com',
-        password: 'Password123',
-      })
-      .expect(200);
+  it('/auth/signup (POST) - Duplicate Signup', async () => {
+    const signupData = {
+      email: 'test@example.com',
+      password: 'Password123',
+      confirmPassword: 'Password123',
+    };
 
-    accessToken = response.body.access_token;
-    expect(accessToken).toBeDefined();
+    await request(app.getHttpServer())
+      .post('/auth/signup')
+      .send(signupData)
+      .expect(403); // Expected HTTP status code for duplicate signup
   });
-
-  // it('/users/me (GET) should return "Protected Content"', async () => {
-  //   const response = await request(app.getHttpServer())
-  //     .get('/users/me')
-  //     .set('Authorization', `Bearer ${accessToken}`)
-  //     .expect(200);
-
-  //   expect(response.body).toEqual('Protected Content');
-  // });
-
-  // it('/protected-route (GET) without access token should return Unauthorized', async () => {
-  //   await request(app.getHttpServer()).get('/protected-route').expect(401);
-  // });
-
-  // Additional test cases...
 });
