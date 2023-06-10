@@ -1,3 +1,4 @@
+import { IsEmail } from 'class-validator';
 import { Budget } from 'src/modules/budget/entities';
 import {
   Entity,
@@ -14,6 +15,7 @@ export class User {
   @PrimaryGeneratedColumn('increment')
   id: number;
 
+  @IsEmail()
   @Column()
   email: string;
 
