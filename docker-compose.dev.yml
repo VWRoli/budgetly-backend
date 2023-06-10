@@ -22,14 +22,17 @@ services:
     
   dev-db:
     image: mysql:5.7
+    command: --init-file /docker-entrypoint-initdb.d/init.sql
     ports:
       - '3306:3306'
     environment:
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
       - MYSQL_DATABASE=${MYSQL_DATABASE}
       - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_INITDB_WD=/docker-entrypoint-initdb.d
     volumes:
       - mysql_data:/var/lib/mysql
+      - ./init-scripts:/docker-entrypoint-initdb.d
     restart: unless-stopped
     extra_hosts:
     - "host.docker.internal:host-gateway"
