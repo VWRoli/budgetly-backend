@@ -1,15 +1,30 @@
-import { Controller, Get, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Delete,
+  Get,
+  HttpCode,
+  HttpStatus,
+  UseGuards,
+} from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { GetUser } from 'src/modules/auth/decorators';
-import { User } from 'src/modules/auth/entities';
-import { JwtGuard } from 'src/modules/auth/guard';
+import { UserService } from '../service';
+import { JwtGuard } from '../../auth/guard';
+import { GetUser } from '../../auth/decorators';
+import { User } from '../../auth/entities';
 
 @ApiTags('users')
 @UseGuards(JwtGuard)
 @Controller('users')
 export class UserController {
+  constructor(private readonly userService: UserService) {}
   @Get('me')
   getMe(@GetUser() user: User) {
     return user;
+  }
+
+  @Delete('me')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  deleteMe(@GetUser() user: User) {
+    return this.userService.deleteOne(user.id);
   }
 }

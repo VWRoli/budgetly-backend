@@ -34,7 +34,6 @@ describe('AuthController (E2E)', () => {
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
       .expect(400);
-    console.log(response);
   });
 
   it('/auth/signup (POST) - Invalid Email Address', async () => {
@@ -130,5 +129,19 @@ describe('AuthController (E2E)', () => {
       .post('/auth/signin')
       .send(signinData)
       .expect(403);
+  });
+
+  it('/users/me (GET) - Get own user', async () => {
+    await request(app.getHttpServer())
+      .get('/users/me')
+      .set('Authorization', `Bearer ${token}`)
+      .expect(200);
+  });
+
+  it('/users/me (DELETE) - Delete own user', async () => {
+    await request(app.getHttpServer())
+      .delete('/users/me')
+      .set('Authorization', `Bearer ${token}`)
+      .expect(204);
   });
 });

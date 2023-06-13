@@ -8,6 +8,7 @@ import {
   OneToMany,
   RelationId,
   PrimaryGeneratedColumn,
+  DeleteDateColumn,
 } from 'typeorm';
 
 @Entity()
@@ -37,6 +38,6 @@ export class User {
   @UpdateDateColumn()
   updateTimeStamp: Date;
 
-  @Column({ default: null })
+  @DeleteDateColumn({ default: null })
   deleteTimeStamp: Date | null;
 }
