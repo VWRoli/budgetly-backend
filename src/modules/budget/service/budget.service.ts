@@ -9,20 +9,15 @@ import { Not, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/modules/auth/entities';
 import { UpdateBudgetDto } from '../dto/update-budget.dto';
-import { Account } from 'src/modules/account/entities';
-import { Category } from 'src/modules/category/entities';
-import { CommonService } from 'src/modules/common/service';
 
 @Injectable()
-export class BudgetService extends CommonService<Budget> {
+export class BudgetService {
   constructor(
     @InjectRepository(Budget)
-    repository: Repository<Budget>,
+    private repository: Repository<Budget>,
     @InjectRepository(User)
     private userRepository: Repository<User>,
-  ) {
-    super(repository);
-  }
+  ) {}
 
   async getAll(userId: number) {
     return await this.repository.find({
@@ -98,6 +93,17 @@ export class BudgetService extends CommonService<Budget> {
   }
 
   async deleteOne(id: number) {
-    return super.deleteOne(id);
+    try {
+      const currentBudget = await this.repository.findOne({
+        where: { id },
+      });
+      if (!currentBudget) {
+        throw new NotFoundException('No budget found with the provided id.');
+      }
+
+      await this.repository.softDelete(id);
+    } catch (error) {
+      throw error;
+    }
   }
 }

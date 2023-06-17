@@ -8,19 +8,15 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Category } from '../entities';
 import { Not, Repository } from 'typeorm';
 import { Budget } from 'src/modules/budget/entities';
-import { CategoryItem } from 'src/modules/category-item/entities';
-import { CommonService } from 'src/modules/common/service';
 
 @Injectable()
-export class CategoryService extends CommonService<Category> {
+export class CategoryService {
   constructor(
     @InjectRepository(Category)
-    repository: Repository<Category>,
+    private repository: Repository<Category>,
     @InjectRepository(Budget)
     private budgetRepository: Repository<Budget>,
-  ) {
-    super(repository);
-  }
+  ) {}
 
   async getAll(budgetId: number) {
     return await this.repository.find({
@@ -96,6 +92,18 @@ export class CategoryService extends CommonService<Category> {
   }
 
   async deleteOne(id: number) {
-    return super.deleteOne(id);
+    try {
+      const currentCategory = await this.repository.findOne({
+        where: { id },
+        relations: { categoryItems: true },
+      });
+      if (!currentCategory) {
+        throw new NotFoundException('No category found with the provided id.');
+      }
+
+      await this.repository.softDelete(id);
+    } catch (error) {
+      throw error;
+    }
   }
 }

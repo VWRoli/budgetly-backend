@@ -1,19 +1,28 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/modules/auth/entities';
 import { CommonService } from 'src/modules/common/service';
 
 @Injectable()
-export class UserService extends CommonService<User> {
+export class UserService {
   constructor(
     @InjectRepository(User)
-    repository: Repository<User>,
-  ) {
-    super(repository);
-  }
+    private repository: Repository<User>,
+  ) {}
 
   async deleteOne(id: number) {
-    return super.deleteOne(id);
+    try {
+      const user = await this.repository.findOne({
+        where: { id },
+      });
+      if (!user) {
+        throw new NotFoundException('No user found with the provided id.');
+      }
+
+      await this.repository.softDelete(id);
+    } catch (error) {
+      throw error;
+    }
   }
 }

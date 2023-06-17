@@ -1,9 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AppModule } from '../src/app.module';
-import { INestApplication, ValidationPipe } from '@nestjs/common';
+import { HttpStatus, INestApplication, ValidationPipe } from '@nestjs/common';
 import * as request from 'supertest';
 
-describe('AuthController (E2E)', () => {
+describe('Auth and user endpoints (E2E)', () => {
   let app: INestApplication;
   let token: string;
 
@@ -28,12 +28,12 @@ describe('AuthController (E2E)', () => {
       confirmPassword: 'DifferentPassword', // Provide a different password here
     };
 
-    const response = await request(app.getHttpServer())
+    await request(app.getHttpServer())
       .post('/auth/signup')
       .send(signupData)
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
-      .expect(400);
+      .expect(HttpStatus.BAD_REQUEST);
   });
 
   it('/auth/signup (POST) - Invalid Email Address', async () => {
@@ -46,7 +46,7 @@ describe('AuthController (E2E)', () => {
     await request(app.getHttpServer())
       .post('/auth/signup')
       .send(signupData)
-      .expect(400);
+      .expect(HttpStatus.BAD_REQUEST);
   });
 
   it('/auth/signup (POST) - Weak Password', async () => {
@@ -59,7 +59,7 @@ describe('AuthController (E2E)', () => {
     await request(app.getHttpServer())
       .post('/auth/signup')
       .send(signupData)
-      .expect(400);
+      .expect(HttpStatus.BAD_REQUEST);
   });
 
   it('/auth/signup (POST)', async () => {
@@ -72,7 +72,7 @@ describe('AuthController (E2E)', () => {
     const response = await request(app.getHttpServer())
       .post('/auth/signup')
       .send(signupData)
-      .expect(201);
+      .expect(HttpStatus.CREATED);
 
     expect(response.body).toBeDefined();
     expect(response.body.access_token).toBeDefined();
@@ -88,7 +88,7 @@ describe('AuthController (E2E)', () => {
     await request(app.getHttpServer())
       .post('/auth/signup')
       .send(signupData)
-      .expect(403);
+      .expect(HttpStatus.FORBIDDEN);
   });
 
   it('/auth/signin (POST) - ', async () => {
@@ -100,7 +100,7 @@ describe('AuthController (E2E)', () => {
     const response = await request(app.getHttpServer())
       .post('/auth/signin')
       .send(signinData)
-      .expect(200);
+      .expect(HttpStatus.OK);
 
     expect(response.body).toBeDefined();
     expect(response.body.access_token).toBeDefined();
@@ -116,7 +116,7 @@ describe('AuthController (E2E)', () => {
     await request(app.getHttpServer())
       .post('/auth/signin')
       .send(signinData)
-      .expect(403);
+      .expect(HttpStatus.FORBIDDEN);
   });
 
   it('/auth/signin (POST) - Wrong Email Address', async () => {
@@ -128,20 +128,20 @@ describe('AuthController (E2E)', () => {
     await request(app.getHttpServer())
       .post('/auth/signin')
       .send(signinData)
-      .expect(403);
+      .expect(HttpStatus.FORBIDDEN);
   });
 
   it('/users/me (GET) - Get own user', async () => {
     await request(app.getHttpServer())
       .get('/users/me')
       .set('Authorization', `Bearer ${token}`)
-      .expect(200);
+      .expect(HttpStatus.OK);
   });
 
   it('/users/me (DELETE) - Delete own user', async () => {
     await request(app.getHttpServer())
       .delete('/users/me')
       .set('Authorization', `Bearer ${token}`)
-      .expect(204);
+      .expect(HttpStatus.NO_CONTENT);
   });
 });

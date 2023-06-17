@@ -9,19 +9,17 @@ import { Account } from 'src/modules/account/entities';
 import { CommonService } from 'src/modules/common/service';
 
 @Injectable()
-export class TransactionService extends CommonService<Transaction> {
+export class TransactionService {
   constructor(
     @InjectRepository(Transaction)
-    repository: Repository<Transaction>,
+    private repository: Repository<Transaction>,
     @InjectRepository(Account)
     private accountRepository: Repository<Account>,
     @InjectRepository(CategoryItem)
     private categoryRepository: Repository<Category>,
     @InjectRepository(CategoryItem)
     private categoryItemRepository: Repository<CategoryItem>,
-  ) {
-    super(repository);
-  }
+  ) {}
 
   async getAll(accountId: number) {
     return await this.repository.find({
@@ -117,6 +115,20 @@ export class TransactionService extends CommonService<Transaction> {
     return currentTransaction;
   }
   async deleteOne(id: number) {
-    return super.deleteOne(id);
+    try {
+      const currentTransaction = await this.repository.findOne({
+        where: { id },
+      });
+
+      if (!currentTransaction) {
+        throw new NotFoundException(
+          'No transaction found with the provided id.',
+        );
+      }
+
+      await this.repository.softDelete(id);
+    } catch (error) {
+      throw error;
+    }
   }
 }
