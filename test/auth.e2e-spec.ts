@@ -93,7 +93,7 @@ describe('Auth and user endpoints (E2E)', () => {
     });
   });
 
-  describe('/auth/signup', () => {
+  describe('/auth/signin', () => {
     it('Sign in', async () => {
       const signinData = {
         email: 'test@example.com',

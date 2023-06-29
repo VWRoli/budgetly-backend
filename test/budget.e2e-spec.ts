@@ -9,7 +9,7 @@ import * as request from 'supertest';
 describe('Budget endpoints (E2E)', () => {
   let app: INestApplication;
   let token: string;
-  let userId: number;
+  const userId = 61;
   let budgetId: number;
 
   beforeAll(async () => {
@@ -26,31 +26,21 @@ describe('Budget endpoints (E2E)', () => {
     await app.close();
   });
 
-  describe('Create user, save id and token', () => {
-    it('/auth/signup (POST)', async () => {
-      const signupData = {
-        email: 'test.budget@example.com',
+  describe('Log in test user', () => {
+    it('Sign in', async () => {
+      const signinData = {
+        email: 'testUser@test.com',
         password: 'Password123',
-        confirmPassword: 'Password123',
       };
 
       const response = await request(app.getHttpServer())
-        .post('/auth/signup')
-        .send(signupData)
-        .expect(HttpStatus.CREATED);
+        .post('/auth/signin')
+        .send(signinData)
+        .expect(HttpStatus.OK);
 
       expect(response.body).toBeDefined();
       expect(response.body.access_token).toBeDefined();
       token = response.body.access_token;
-    });
-
-    it('/users/me (GET) - Get own user', async () => {
-      const response = await request(app.getHttpServer())
-        .get('/users/me')
-        .set('Authorization', `Bearer ${token}`)
-        .expect(HttpStatus.OK);
-
-      userId = response.body.id;
     });
   });
 
@@ -169,15 +159,6 @@ describe('Budget endpoints (E2E)', () => {
         .delete(`/budgets/${budgetId + 1}`)
         .set('Authorization', `Bearer ${token}`)
         .expect(HttpStatus.NOT_FOUND);
-    });
-  });
-
-  describe('/users/me (DELETE)', () => {
-    it('Delete own user', async () => {
-      await request(app.getHttpServer())
-        .delete('/users/me')
-        .set('Authorization', `Bearer ${token}`)
-        .expect(HttpStatus.NO_CONTENT);
     });
   });
 });
