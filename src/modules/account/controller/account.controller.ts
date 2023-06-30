@@ -48,6 +48,6 @@ export class AccountController {
   @Delete(':accountId')
   @HttpCode(HttpStatus.NO_CONTENT)
   deleteAccount(@Param('accountId') accountId: number) {
-    this.accountService.deleteOne(accountId);
+    return this.accountService.deleteOne(accountId);
   }
 }

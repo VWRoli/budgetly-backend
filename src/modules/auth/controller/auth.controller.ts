@@ -9,7 +9,7 @@ import {
 import { CreateUserDto, LoginUserDto } from '../dto';
 import { ApiTags } from '@nestjs/swagger';
 import { AuthService } from '../services';
-import { Throttle, ThrottlerGuard } from '@nestjs/throttler';
+import { ThrottlerGuard } from '@nestjs/throttler';
 
 @UseGuards(ThrottlerGuard)
 @ApiTags('auth')

@@ -47,6 +47,6 @@ export class CategoryController {
   @Delete(':categoryId')
   @HttpCode(HttpStatus.NO_CONTENT)
   deleteCategory(@Param('categoryId') categoryId: number) {
-    this.categoryService.deleteOne(categoryId);
+    return this.categoryService.deleteOne(categoryId);
   }
 }

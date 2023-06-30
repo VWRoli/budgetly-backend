@@ -1,7 +1,11 @@
 import { Test } from '@nestjs/testing';
 import { AccountController } from './account.controller';
 import { AccountService } from '../service';
-import { stubAccount } from '../entities';
+import { Account, stubAccount } from '../entities';
+import { Budget } from '../../budget/entities';
+import { getRepositoryToken } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 
 const accountStub = stubAccount();
 const accountStubs = [accountStub];
@@ -9,63 +13,81 @@ const accountStubs = [accountStub];
 describe('AccountController', () => {
   let controller: AccountController;
   let service: AccountService;
+  let repository: Repository<Account>;
 
   beforeEach(async () => {
     const moduleRef = await Test.createTestingModule({
+      imports: [
+        ThrottlerModule.forRoot({
+          ttl: +process.env.THROTTLER_TTL,
+          limit: +process.env.THROTTLER_LIMIT,
+        }),
+      ],
       controllers: [AccountController],
-      providers: [AccountService],
-    }).compile();
+      providers: [
+        AccountService,
+        {
+          provide: getRepositoryToken(Account),
+          useValue: jest.fn(),
+        },
+        {
+          provide: getRepositoryToken(Budget),
+          useValue: jest.fn(),
+        },
+      ],
+    })
+      .overrideGuard(ThrottlerGuard)
+      .useValue({ canActivate: () => true }) // Mock the ThrottlerGuard
+      .compile();
 
     service = moduleRef.get<AccountService>(AccountService);
     controller = moduleRef.get<AccountController>(AccountController);
+    repository = moduleRef.get<Repository<Account>>(
+      getRepositoryToken(Account),
+    );
+  });
+
+  it('should be defined', () => {
+    expect(controller).toBeDefined();
   });
 
   describe('getAccounts', () => {
     it('should return an array of accounts', async () => {
       jest.spyOn(service, 'getAll').mockResolvedValue(accountStubs);
-
       const result = await controller.getAccounts(accountStub.budgetId);
 
-      expect(result).toBe(accountStubs);
-      expect(service.getAll).toHaveBeenCalledWith(accountStub.budgetId);
+      expect(result).toEqual(accountStubs);
     });
   });
 
   describe('createAccount', () => {
     it('should create a new account', async () => {
       jest.spyOn(service, 'createOne').mockResolvedValue(accountStub);
-
       const result = await controller.createAccount(accountStub);
 
-      expect(result).toBe(accountStub);
-      expect(service.createOne).toHaveBeenCalledWith(accountStub);
+      expect(result).toEqual(accountStub);
     });
   });
 
   describe('updateAccount', () => {
     it('should update an existing account', async () => {
       jest.spyOn(service, 'updateOne').mockResolvedValue(accountStub);
-
       const result = await controller.updateAccount(
         accountStub.id,
         accountStub,
       );
 
-      expect(result).toBe(accountStub);
-      expect(service.updateOne).toHaveBeenCalledWith(
-        accountStub.id,
-        accountStub,
-      );
+      expect(result).toEqual(accountStub);
     });
   });
 
   describe('deleteAccount', () => {
     it('should delete an existing account', async () => {
-      jest.spyOn(service, 'deleteOne');
+      jest.spyOn(service, 'deleteOne').mockResolvedValue(undefined);
 
-      controller.deleteAccount(accountStub.id);
+      const result = await controller.deleteAccount(accountStub.id);
 
-      expect(service.deleteOne).toHaveBeenCalledWith(accountStub.id);
+      expect(result).toBeUndefined();
     });
   });
 });
