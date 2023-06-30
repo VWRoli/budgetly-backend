@@ -1,4 +1,4 @@
-import { stubUser } from 'src/modules/auth/entities';
+import { stubUser } from '../../auth/entities';
 import { ECurrency } from '../enum';
 import { Budget } from './index';
 

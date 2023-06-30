@@ -1,7 +1,7 @@
-import { stubAccount } from 'src/modules/account/entities';
+import { stubAccount } from '../../account/entities';
+import { stubCategoryItem } from '../../category-item/entities/category-item.entity.stub';
+import { stubCategory } from '../../category/entities';
 import { Transaction } from './index';
-import { stubCategory } from 'src/modules/category/entities';
-import { stubCategoryItem } from 'src/modules/category-item/entities/category-item.entity.stub';
 
 export const stubTransaction = (): Transaction => {
   return {

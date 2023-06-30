@@ -1,5 +1,4 @@
 import { IsEmail } from 'class-validator';
-import { Budget } from 'src/modules/budget/entities';
 import {
   Entity,
   Column,
@@ -10,6 +9,7 @@ import {
   PrimaryGeneratedColumn,
   DeleteDateColumn,
 } from 'typeorm';
+import { Budget } from '../../budget/entities';
 
 @Entity()
 export class User {

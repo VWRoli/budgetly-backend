@@ -11,11 +11,11 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import { JwtGuard } from 'src/modules/auth/guard';
 import { CategoryService } from '../service';
 import { Category } from '../entities';
 import { CreateCategoryDto, UpdateCategoryDto } from '../dto';
 import { ThrottlerGuard } from '@nestjs/throttler';
+import { JwtGuard } from '../../auth/guard';
 
 @ApiTags('categories')
 @UseGuards(JwtGuard, ThrottlerGuard)

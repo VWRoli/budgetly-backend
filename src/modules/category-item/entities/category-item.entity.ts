@@ -10,8 +10,8 @@ import {
   RelationId,
   UpdateDateColumn,
 } from 'typeorm';
-import { Category } from 'src/modules/category/entities';
-import { Transaction } from 'src/modules/transaction/entities';
+import { Category } from '../../category/entities';
+import { Transaction } from '../../transaction/entities';
 
 @Entity()
 export class CategoryItem {

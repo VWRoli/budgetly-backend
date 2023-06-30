@@ -4,11 +4,11 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Budget } from 'src/modules/budget/entities';
 import { Not, Repository } from 'typeorm';
 import { Account } from '../entities';
 import { CreatAccountDto } from '../dto';
 import { UpdateAccountDto } from '../dto/update-account.dto';
+import { Budget } from '../../budget/entities';
 
 @Injectable()
 export class AccountService {

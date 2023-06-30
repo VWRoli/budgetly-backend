@@ -1,4 +1,3 @@
-import { User } from 'src/modules/auth/entities';
 import {
   Column,
   CreateDateColumn,
@@ -12,8 +11,9 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { ECurrency } from '../enum';
-import { Account } from 'src/modules/account/entities';
-import { Category } from 'src/modules/category/entities';
+import { User } from '../../auth/entities';
+import { Account } from '../../account/entities';
+import { Category } from '../../category/entities';
 
 @Entity()
 export class Budget {

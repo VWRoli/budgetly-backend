@@ -1,10 +1,10 @@
 import { HttpStatus, INestApplication, ValidationPipe } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import { AppModule } from 'src/app.module';
-import { CreateBudgetDto } from 'src/modules/budget/dto';
-import { UpdateBudgetDto } from 'src/modules/budget/dto/update-budget.dto';
 import { ECurrency } from 'src/modules/budget/enum';
 import * as request from 'supertest';
+import { AppModule } from '../src/app.module';
+import { CreateBudgetDto } from '../src/modules/budget/dto';
+import { UpdateBudgetDto } from '../src/modules/budget/dto/update-budget.dto';
 
 describe('Budget endpoints (E2E)', () => {
   let app: INestApplication;

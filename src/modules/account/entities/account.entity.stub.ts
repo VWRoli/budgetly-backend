@@ -1,4 +1,4 @@
-import { stubBudget } from 'src/modules/budget/entities';
+import { stubBudget } from '../../budget/entities';
 import { Account } from './index';
 
 export const stubAccount = (): Account => {

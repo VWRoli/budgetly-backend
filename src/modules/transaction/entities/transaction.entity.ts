@@ -1,7 +1,4 @@
 import { IsNumber } from 'class-validator';
-import { Account } from 'src/modules/account/entities';
-import { CategoryItem } from 'src/modules/category-item/entities';
-import { Category } from 'src/modules/category/entities';
 import {
   Column,
   CreateDateColumn,
@@ -13,6 +10,9 @@ import {
   RelationId,
   UpdateDateColumn,
 } from 'typeorm';
+import { Account } from '../../account/entities';
+import { Category } from '../../category/entities';
+import { CategoryItem } from '../../category-item/entities';
 
 @Entity()
 export class Transaction {

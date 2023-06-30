@@ -11,7 +11,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import { JwtGuard } from 'src/modules/auth/guard';
+import { JwtGuard } from '../../auth/guard';
 import { AccountService } from '../service';
 import { Account } from '../entities';
 import { CreatAccountDto } from '../dto';

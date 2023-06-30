@@ -3,10 +3,9 @@ import { CreateTransactionDto, UpdateTransactionDto } from '../dto';
 import { Transaction } from '../entities';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Category } from 'src/modules/category/entities';
-import { CategoryItem } from 'src/modules/category-item/entities';
-import { Account } from 'src/modules/account/entities';
-import { CommonService } from 'src/modules/common/service';
+import { Account } from '../../account/entities';
+import { Category } from '../../category/entities';
+import { CategoryItem } from '../../category-item/entities';
 
 @Injectable()
 export class TransactionService {
@@ -15,7 +14,7 @@ export class TransactionService {
     private repository: Repository<Transaction>,
     @InjectRepository(Account)
     private accountRepository: Repository<Account>,
-    @InjectRepository(CategoryItem)
+    @InjectRepository(Category)
     private categoryRepository: Repository<Category>,
     @InjectRepository(CategoryItem)
     private categoryItemRepository: Repository<CategoryItem>,

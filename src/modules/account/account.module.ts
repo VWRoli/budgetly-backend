@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { AccountController } from './controller/account.controller';
 import { AccountService } from './service/account.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Budget } from 'src/modules/budget/entities';
+import { Budget } from '../budget/entities';
 import { Account } from './entities';
 import { Transaction } from '../transaction/entities';
 

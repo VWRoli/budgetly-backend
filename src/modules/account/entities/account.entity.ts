@@ -1,5 +1,3 @@
-import { Budget } from 'src/modules/budget/entities';
-import { Transaction } from 'src/modules/transaction/entities';
 import {
   Column,
   CreateDateColumn,
@@ -12,6 +10,8 @@ import {
   RelationId,
   UpdateDateColumn,
 } from 'typeorm';
+import { Budget } from '../../budget/entities';
+import { Transaction } from '../../transaction/entities';
 
 @Entity()
 export class Account {

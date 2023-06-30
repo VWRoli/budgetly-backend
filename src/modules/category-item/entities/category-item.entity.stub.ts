@@ -1,4 +1,4 @@
-import { stubCategory } from 'src/modules/category/entities';
+import { stubCategory } from '../../category/entities';
 import { CategoryItem } from './index';
 
 export const stubCategoryItem = (): CategoryItem => {
