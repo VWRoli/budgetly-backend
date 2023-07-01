@@ -14,7 +14,7 @@ import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { JwtGuard } from '../../auth/guard';
 import { AccountService } from '../service';
 import { Account } from '../entities';
-import { CreatAccountDto } from '../dto';
+import { CreateAccountDto } from '../dto';
 import { UpdateAccountDto } from '../dto/update-account.dto';
 import { ThrottlerGuard } from '@nestjs/throttler';
 
@@ -32,7 +32,7 @@ export class AccountController {
 
   @Post()
   @ApiOkResponse({ type: Account })
-  createAccount(@Body() dto: CreatAccountDto) {
+  createAccount(@Body() dto: CreateAccountDto) {
     return this.accountService.createOne(dto);
   }
 

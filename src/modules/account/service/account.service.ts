@@ -6,7 +6,7 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { Not, Repository } from 'typeorm';
 import { Account } from '../entities';
-import { CreatAccountDto } from '../dto';
+import { CreateAccountDto } from '../dto';
 import { UpdateAccountDto } from '../dto/update-account.dto';
 import { Budget } from '../../budget/entities';
 
@@ -26,7 +26,7 @@ export class AccountService {
     });
   }
 
-  async createOne(data: CreatAccountDto) {
+  async createOne(data: CreateAccountDto) {
     //check if budget exists
     const budget = await this.budgetRepository.findOne({
       where: {

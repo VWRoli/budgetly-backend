@@ -33,7 +33,6 @@ export class CategoryItemService {
     if (!category) {
       throw new NotFoundException(`No category with the provided id`);
     }
-
     // check if data is already created
     const existingCategoryItem = await this.repository.findOne({
       where: {
@@ -46,7 +45,6 @@ export class CategoryItemService {
         `You already have a category item with the same name`,
       );
     }
-
     // Create a new instance of the Category Item entity
     const categoryItem = this.repository.create({
       title: data.title,
@@ -55,7 +53,6 @@ export class CategoryItemService {
       outflows: 0,
       category: category, // Assign the category object to the 'category' property
     });
-
     // Save the category Item entity in the DB
     return await this.repository.save(categoryItem);
   }

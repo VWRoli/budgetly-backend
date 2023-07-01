@@ -19,7 +19,7 @@ import { JwtGuard } from '../../auth/guard';
 
 @ApiTags('category-items')
 @UseGuards(JwtGuard, ThrottlerGuard)
-@Controller('category-item')
+@Controller('category-items')
 export class CategoryItemController {
   constructor(private readonly categoryItemService: CategoryItemService) {}
 
