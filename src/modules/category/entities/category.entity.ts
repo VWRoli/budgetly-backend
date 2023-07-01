@@ -12,7 +12,7 @@ import {
 } from 'typeorm';
 import { Budget } from '../../budget/entities';
 import { Transaction } from '../../transaction/entities';
-import { CategoryItem } from '../../category-item/entities';
+import { SubCategory } from '../../sub-category/entities';
 
 @Entity()
 export class Category {
@@ -44,11 +44,11 @@ export class Category {
   @RelationId((category: Category) => category.transactions)
   transactionIds: number[];
 
-  @OneToMany(() => CategoryItem, (categoryItem) => categoryItem.category)
-  categoryItems: CategoryItem[];
+  @OneToMany(() => SubCategory, (subCategory) => subCategory.category)
+  subCategorys: SubCategory[];
 
-  @RelationId((category: Category) => category.categoryItems)
-  categoryItemIds: number[];
+  @RelationId((category: Category) => category.subCategorys)
+  subCategoryIds: number[];
 
   @CreateDateColumn()
   createTimeStamp: Date;

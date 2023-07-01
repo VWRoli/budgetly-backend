@@ -5,11 +5,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Account } from '../account/entities';
 import { Transaction } from './entities';
 import { Category } from '../category/entities';
-import { CategoryItem } from '../category-item/entities';
+import { SubCategory } from '../sub-category/entities';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Account, Transaction, Category, CategoryItem]),
+    TypeOrmModule.forFeature([Account, Transaction, Category, SubCategory]),
   ],
   controllers: [TransactionController],
   providers: [TransactionService],

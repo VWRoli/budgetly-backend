@@ -5,7 +5,7 @@ import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Account } from '../../account/entities';
 import { Category } from '../../category/entities';
-import { CategoryItem } from '../../category-item/entities';
+import { SubCategory } from '../../sub-category/entities';
 
 @Injectable()
 export class TransactionService {
@@ -16,8 +16,8 @@ export class TransactionService {
     private accountRepository: Repository<Account>,
     @InjectRepository(Category)
     private categoryRepository: Repository<Category>,
-    @InjectRepository(CategoryItem)
-    private categoryItemRepository: Repository<CategoryItem>,
+    @InjectRepository(SubCategory)
+    private subCategoryRepository: Repository<SubCategory>,
   ) {}
 
   async getAll(accountId: number) {
@@ -47,22 +47,22 @@ export class TransactionService {
     if (!category) {
       throw new NotFoundException(`No category with the provided id`);
     }
-    //check if categoryItem exists
-    const categoryItem = await this.categoryItemRepository.findOne({
+    //check if subCategory exists
+    const subCategory = await this.subCategoryRepository.findOne({
       where: {
-        id: data.categoryItemId,
+        id: data.subCategoryId,
       },
     });
 
-    if (!categoryItem) {
-      throw new NotFoundException(`No category item with the provided id`);
+    if (!subCategory) {
+      throw new NotFoundException(`No sub category with the provided id`);
     }
 
     // Create a new instance of the Transaction entity
     const transaction = this.repository.create({
       payee: data.payee,
       category: category, // Assign the category object to the 'category' property
-      categoryItem: categoryItem, // Assign the categoryItem object to the 'categoryItem' property
+      subCategory: subCategory, // Assign the subCategory object to the 'subCategory' property
       date: data.date,
       inflow: data.inflow,
       outflow: data.outflow,
@@ -91,15 +91,15 @@ export class TransactionService {
     if (!category) {
       throw new NotFoundException(`No category with the provided id`);
     }
-    //check if categoryItem exists
-    const categoryItem = await this.categoryItemRepository.findOne({
+    //check if subCategory exists
+    const subCategory = await this.subCategoryRepository.findOne({
       where: {
-        id: data.categoryItemId,
+        id: data.subCategoryId,
       },
     });
 
-    if (!categoryItem) {
-      throw new NotFoundException(`No category item with the provided id`);
+    if (!subCategory) {
+      throw new NotFoundException(`No sub category with the provided id`);
     }
 
     // Update the properties of the currentBudget entity
@@ -108,7 +108,7 @@ export class TransactionService {
     currentTransaction.inflow = data.inflow;
     currentTransaction.outflow = data.outflow;
     (currentTransaction.category = category), // Assign the category object to the 'category' property
-      (currentTransaction.categoryItem = categoryItem), // Assign the categoryItem object to the 'categoryItem' property
+      (currentTransaction.subCategory = subCategory), // Assign the subCategory object to the 'subCategory' property
       // Save the updated budget entity in the database
       await this.repository.save(currentTransaction);
     return currentTransaction;

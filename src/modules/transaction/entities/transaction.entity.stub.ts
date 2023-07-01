@@ -1,5 +1,5 @@
 import { stubAccount } from '../../account/entities';
-import { stubCategoryItem } from '../../category-item/entities/category-item.entity.stub';
+import { stubSubCategory } from '../../sub-category/entities/sub-category.entity.stub';
 import { stubCategory } from '../../category/entities';
 import { Transaction } from './index';
 
@@ -11,8 +11,8 @@ export const stubTransaction = (): Transaction => {
     accountId: stubAccount().id,
     category: stubCategory(),
     categoryId: stubCategory().id,
-    categoryItem: stubCategoryItem(),
-    categoryItemId: stubCategoryItem().id,
+    subCategory: stubSubCategory(),
+    subCategoryId: stubSubCategory().id,
     date: new Date('2022-01-01'),
     inflow: 1000,
     outflow: 500,

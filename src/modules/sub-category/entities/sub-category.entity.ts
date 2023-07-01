@@ -14,7 +14,7 @@ import { Category } from '../../category/entities';
 import { Transaction } from '../../transaction/entities';
 
 @Entity()
-export class CategoryItem {
+export class SubCategory {
   @PrimaryGeneratedColumn('increment')
   id: number;
 
@@ -30,17 +30,17 @@ export class CategoryItem {
   @Column()
   balance: number;
 
-  @ManyToOne(() => Category, (category) => category.categoryItems)
+  @ManyToOne(() => Category, (category) => category.subCategorys)
   @JoinColumn()
   category: Category;
 
-  @RelationId((categoryItem: CategoryItem) => categoryItem.category)
+  @RelationId((subCategory: SubCategory) => subCategory.category)
   categoryId: number;
 
-  @OneToMany(() => Transaction, (transaction) => transaction.categoryItem)
+  @OneToMany(() => Transaction, (transaction) => transaction.subCategory)
   transactions: Transaction[];
 
-  @RelationId((categoryItem: CategoryItem) => categoryItem.transactions)
+  @RelationId((subCategory: SubCategory) => subCategory.transactions)
   transactionIds: number[];
 
   @CreateDateColumn()

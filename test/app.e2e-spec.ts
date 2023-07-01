@@ -16,10 +16,10 @@ import { Account } from '../src/modules/account/entities';
 import { Budget } from '../src/modules/budget/entities';
 import { CreateUserDto, LoginUserDto } from '../src/modules/auth/dto';
 import {
-  CreateCategoryItemDto,
-  UpdateCategoryItemDto,
-} from '../src/modules/category-item/dto';
-import { CategoryItem } from '../src/modules/category-item/entities';
+  CreateSubCategoryDto,
+  UpdateSubCategoryDto,
+} from '../src/modules/sub-category/dto';
+import { SubCategory } from '../src/modules/sub-category/entities';
 import {
   CreateTransactionDto,
   UpdateTransactionDto,
@@ -33,7 +33,7 @@ describe('App e2e tests', () => {
   let budgetId: number;
   let accountId: number;
   let categoryId: number;
-  let categoryItemId: number;
+  let subCategoryId: number;
   let transactionId: number;
 
   beforeAll(async () => {
@@ -425,74 +425,74 @@ describe('App e2e tests', () => {
     });
   });
 
-  describe('CategoryItem endpoints (E2E)', () => {
-    describe('POST /category-items', () => {
-      it('should create a new category item', async () => {
-        const createCategoryItemDto: CreateCategoryItemDto = {
+  describe('SubCategory endpoints (E2E)', () => {
+    describe('POST /sub-categories', () => {
+      it('should create a new sub category', async () => {
+        const createSubCategoryDto: CreateSubCategoryDto = {
           title: 'Example Category Item',
           categoryId,
         };
 
         const response = await request(app.getHttpServer())
-          .post('/category-items')
+          .post('/sub-categories')
           .set('Authorization', `Bearer ${token}`)
-          .send(createCategoryItemDto)
+          .send(createSubCategoryDto)
           .expect(HttpStatus.CREATED);
 
-        const categoryItem: CategoryItem = response.body;
+        const subCategory: SubCategory = response.body;
 
-        expect(categoryItem.title).toBeDefined();
-        expect(categoryItem.categoryId).toBe(categoryId);
-        categoryItemId = categoryItem.id;
+        expect(subCategory.title).toBeDefined();
+        expect(subCategory.categoryId).toBe(categoryId);
+        subCategoryId = subCategory.id;
       });
 
-      it('should throw an error if the category item title is missing', async () => {
-        const createCategoryItemDto = {
+      it('should throw an error if the sub category title is missing', async () => {
+        const createSubCategoryDto = {
           categoryId,
         };
 
         await request(app.getHttpServer())
-          .post('/category-items')
+          .post('/sub-categories')
           .set('Authorization', `Bearer ${token}`)
-          .send(createCategoryItemDto)
+          .send(createSubCategoryDto)
           .expect(HttpStatus.BAD_REQUEST);
       });
     });
 
-    describe('GET /category-items/:categoryId', () => {
-      it('should return an array of category items for the specified category', async () => {
+    describe('GET /sub-categories/:categoryId', () => {
+      it('should return an array of sub categorys for the specified category', async () => {
         const response = await request(app.getHttpServer())
-          .get(`/category-items/${categoryId}`)
+          .get(`/sub-categories/${categoryId}`)
           .set('Authorization', `Bearer ${token}`)
           .expect(HttpStatus.OK);
 
-        const categoryItems: CategoryItem[] = response.body;
+        const subCategorys: SubCategory[] = response.body;
 
-        expect(Array.isArray(categoryItems)).toBe(true);
-        categoryItems.forEach((categoryItem: CategoryItem) => {
-          expect(categoryItem.title).toBeDefined();
-          expect(categoryItem.categoryId).toBe(categoryId);
+        expect(Array.isArray(subCategorys)).toBe(true);
+        subCategorys.forEach((subCategory: SubCategory) => {
+          expect(subCategory.title).toBeDefined();
+          expect(subCategory.categoryId).toBe(categoryId);
         });
       });
     });
 
-    describe('PUT /category-items/:categoryItemId', () => {
-      it('should update an existing category item', async () => {
-        const updateCategoryItemDto: UpdateCategoryItemDto = {
-          title: 'Updated CategoryItem',
+    describe('PUT /sub-categories/:subCategoryId', () => {
+      it('should update an existing sub category', async () => {
+        const updateSubCategoryDto: UpdateSubCategoryDto = {
+          title: 'Updated SubCategory',
           categoryId,
         };
 
         const response = await request(app.getHttpServer())
-          .put(`/category-items/${categoryItemId}`)
+          .put(`/sub-categories/${subCategoryId}`)
           .set('Authorization', `Bearer ${token}`)
-          .send(updateCategoryItemDto)
+          .send(updateSubCategoryDto)
           .expect(HttpStatus.OK);
 
-        const categoryItem: CategoryItem = response.body;
+        const subCategory: SubCategory = response.body;
 
-        expect(categoryItem.title).toBe(updateCategoryItemDto.title);
-        expect(categoryItem.categoryId).toBe(updateCategoryItemDto.categoryId);
+        expect(subCategory.title).toBe(updateSubCategoryDto.title);
+        expect(subCategory.categoryId).toBe(updateSubCategoryDto.categoryId);
       });
     });
   });
@@ -504,7 +504,7 @@ describe('App e2e tests', () => {
           payee: 'Example Transaction',
           accountId,
           categoryId,
-          categoryItemId,
+          subCategoryId,
           date: new Date(),
           inflow: 100,
           outflow: null,
@@ -559,7 +559,7 @@ describe('App e2e tests', () => {
           payee: 'Updated Transaction',
           accountId,
           categoryId,
-          categoryItemId,
+          subCategoryId,
           date: new Date(),
           inflow: 100,
           outflow: null,
@@ -589,10 +589,10 @@ describe('App e2e tests', () => {
       });
     });
 
-    describe('DELETE /category-items/:categoryItemId', () => {
-      it('should delete a category item', async () => {
+    describe('DELETE /sub-categories/:subCategoryId', () => {
+      it('should delete a sub category', async () => {
         await request(app.getHttpServer())
-          .delete(`/category-items/${categoryItemId}`)
+          .delete(`/sub-categories/${subCategoryId}`)
           .set('Authorization', `Bearer ${token}`)
           .expect(HttpStatus.NO_CONTENT);
       });

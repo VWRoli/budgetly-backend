@@ -12,7 +12,7 @@ import {
 } from 'typeorm';
 import { Account } from '../../account/entities';
 import { Category } from '../../category/entities';
-import { CategoryItem } from '../../category-item/entities';
+import { SubCategory } from '../../sub-category/entities';
 
 @Entity()
 export class Transaction {
@@ -36,12 +36,12 @@ export class Transaction {
   @RelationId((transaction: Transaction) => transaction.category)
   categoryId: number;
 
-  @ManyToOne(() => CategoryItem, (categoryItem) => categoryItem.transactions)
+  @ManyToOne(() => SubCategory, (subCategory) => subCategory.transactions)
   @JoinColumn()
-  categoryItem: CategoryItem;
+  subCategory: SubCategory;
 
-  @RelationId((transaction: Transaction) => transaction.categoryItem)
-  categoryItemId: number;
+  @RelationId((transaction: Transaction) => transaction.subCategory)
+  subCategoryId: number;
 
   @Column()
   date: Date;

@@ -19,7 +19,7 @@ export class CreateTransactionDto {
 
   @IsNumber()
   @ApiProperty({ example: 1, required: true })
-  readonly categoryItemId: number;
+  readonly subCategoryId: number;
 
   @IsNotEmpty()
   @ApiProperty({

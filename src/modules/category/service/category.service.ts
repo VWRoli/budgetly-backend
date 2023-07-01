@@ -21,7 +21,7 @@ export class CategoryService {
   async getAll(budgetId: number) {
     return await this.repository.find({
       where: { budget: { id: budgetId } },
-      relations: { categoryItems: true },
+      relations: { subCategorys: true },
     });
   }
   async createOne(data: CreateCategoryDto) {
@@ -95,7 +95,7 @@ export class CategoryService {
     try {
       const currentCategory = await this.repository.findOne({
         where: { id },
-        relations: { categoryItems: true },
+        relations: { subCategorys: true },
       });
       if (!currentCategory) {
         throw new NotFoundException('No category found with the provided id.');

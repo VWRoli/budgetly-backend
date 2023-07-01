@@ -1,10 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
-export class CreateCategoryItemDto {
+export class CreateSubCategoryDto {
   @IsString()
   @IsNotEmpty()
-  @ApiProperty({ example: 'Example category item', required: true })
+  @ApiProperty({ example: 'Example sub category', required: true })
   readonly title: string;
 
   @IsNumber()

@@ -7,7 +7,7 @@ import { TransactionService } from '../service';
 import { Transaction, stubTransaction } from '../entities';
 import { Account } from '../../account/entities';
 import { Category } from '../../category/entities';
-import { CategoryItem } from '../../category-item/entities';
+import { SubCategory } from '../../sub-category/entities';
 
 const transactionStub = stubTransaction();
 const transactionStubs = [transactionStub];
@@ -41,7 +41,7 @@ describe('TransactionController', () => {
           useValue: jest.fn(),
         },
         {
-          provide: getRepositoryToken(CategoryItem),
+          provide: getRepositoryToken(SubCategory),
           useValue: jest.fn(),
         },
       ],

@@ -3,17 +3,17 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { CreateCategoryItemDto, UpdateCategoryItemDto } from '../dto';
-import { CategoryItem } from '../entities';
+import { CreateSubCategoryDto, UpdateSubCategoryDto } from '../dto';
+import { SubCategory } from '../entities';
 import { Not, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Category } from '../../category/entities';
 
 @Injectable()
-export class CategoryItemService {
+export class SubCategoryService {
   constructor(
-    @InjectRepository(CategoryItem)
-    private repository: Repository<CategoryItem>,
+    @InjectRepository(SubCategory)
+    private repository: Repository<SubCategory>,
     @InjectRepository(Category)
     private categoryRepository: Repository<Category>,
   ) {}
@@ -23,7 +23,7 @@ export class CategoryItemService {
       where: { category: { id: categoryId } },
     });
   }
-  async createOne(data: CreateCategoryItemDto) {
+  async createOne(data: CreateSubCategoryDto) {
     //check if category exists
     const category = await this.categoryRepository.findOne({
       where: {
@@ -34,19 +34,19 @@ export class CategoryItemService {
       throw new NotFoundException(`No category with the provided id`);
     }
     // check if data is already created
-    const existingCategoryItem = await this.repository.findOne({
+    const existingSubCategory = await this.repository.findOne({
       where: {
         title: data.title,
         category: { id: category.id }, // Filter by the category's ID
       },
     });
-    if (existingCategoryItem) {
+    if (existingSubCategory) {
       throw new ConflictException(
-        `You already have a category item with the same name`,
+        `You already have a sub category with the same name`,
       );
     }
     // Create a new instance of the Category Item entity
-    const categoryItem = this.repository.create({
+    const subCategory = this.repository.create({
       title: data.title,
       balance: 0,
       budgeted: 0,
@@ -54,49 +54,49 @@ export class CategoryItemService {
       category: category, // Assign the category object to the 'category' property
     });
     // Save the category Item entity in the DB
-    return await this.repository.save(categoryItem);
+    return await this.repository.save(subCategory);
   }
 
-  async updateOne(id: number, data: UpdateCategoryItemDto) {
-    const currentCategoryItem = await this.repository.findOne({
+  async updateOne(id: number, data: UpdateSubCategoryDto) {
+    const currentSubCategory = await this.repository.findOne({
       where: { id },
     });
-    if (!currentCategoryItem) {
+    if (!currentSubCategory) {
       throw new NotFoundException(
         'No Category Item found with the provided id.',
       );
     }
 
     // check if data is already created
-    const existingCategoryItem = await this.repository.findOne({
+    const existingSubCategory = await this.repository.findOne({
       where: {
-        id: Not(id), // Exclude the currentCategoryItem ID from the results
+        id: Not(id), // Exclude the currentSubCategory ID from the results
         title: data.title,
         category: { id: data.categoryId }, // Filter by the category's ID
       },
     });
-    if (existingCategoryItem) {
+    if (existingSubCategory) {
       throw new ConflictException(
         `You already have a category Item with the same name.`,
       );
     }
 
-    // Update the properties of the currentCategoryItem entity
-    currentCategoryItem.title = data.title;
+    // Update the properties of the currentSubCategory entity
+    currentSubCategory.title = data.title;
 
-    // Save the updated CategoryItem entity in the database
-    await this.repository.save(currentCategoryItem);
-    return currentCategoryItem;
+    // Save the updated SubCategory entity in the database
+    await this.repository.save(currentSubCategory);
+    return currentSubCategory;
   }
   async deleteOne(id: number) {
     try {
-      const currentCategoryItem = await this.repository.findOne({
+      const currentSubCategory = await this.repository.findOne({
         where: { id },
       });
 
-      if (!currentCategoryItem) {
+      if (!currentSubCategory) {
         throw new NotFoundException(
-          'No category item found with the provided id.',
+          'No sub category found with the provided id.',
         );
       }
 

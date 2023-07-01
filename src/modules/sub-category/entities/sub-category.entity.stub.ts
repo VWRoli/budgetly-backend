@@ -1,7 +1,7 @@
 import { stubCategory } from '../../category/entities';
-import { CategoryItem } from './index';
+import { SubCategory } from './index';
 
-export const stubCategoryItem = (): CategoryItem => {
+export const stubSubCategory = (): SubCategory => {
   return {
     id: 1,
     title: 'Test Category Item',

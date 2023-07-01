@@ -10,7 +10,7 @@ import { UserModule } from './modules/user/user.module';
 import { BudgetModule } from './modules/budget/budget.module';
 import { AccountModule } from './modules/account/account.module';
 import { TransactionModule } from './modules/transaction/transaction.module';
-import { CategoryItemModule } from './modules/category-item/category-item.module';
+import { SubCategoryModule } from './modules/sub-category/sub-category.module';
 import { CategoryModule } from './modules/category/category.module';
 
 @Module({
@@ -27,7 +27,7 @@ import { CategoryModule } from './modules/category/category.module';
     AccountModule,
     TransactionModule,
     CategoryModule,
-    CategoryItemModule,
+    SubCategoryModule,
   ],
   controllers: [],
   providers: [],
