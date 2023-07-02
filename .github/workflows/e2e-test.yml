@@ -24,6 +24,30 @@ jobs:
           - ./init-scripts:/docker-entrypoint-initdb.d
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
+        volumes:
+          mysql_data:
+
+      test-app:
+        build:
+          context: .
+          dockerfile: Dockerfile.test
+        ports:
+          - '8081:8081'
+        environment:
+          - NODE_ENV=test
+          - TYPEORM_HOST=${TYPEORM_HOST}
+          - TYPEORM_PORT=${TYPEORM_PORT}
+          - TYPEORM_USERNAME=${TYPEORM_USERNAME}
+          - TYPEORM_PASSWORD=${TYPEORM_PASSWORD}
+          - TYPEORM_DATABASE_TEST=${TYPEORM_DATABASE_TEST}
+        depends_on:
+          - db
+        volumes:
+          - ./:/app
+        restart: unless-stopped
+        extra_hosts:
+          - "host.docker.internal:host-gateway"
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
