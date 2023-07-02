@@ -19,30 +19,10 @@ jobs:
           MYSQL_USER: ${{ secrets.MYSQL_USER }}
         ports:
           - '3306:3306'
-        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
-
-      test-app:
-        build:
-          context: .
-          dockerfile: Dockerfile.test
-        ports:
-          - '8081:8081'
-        environment:
-          NODE_ENV: test
-          TYPEORM_HOST: ${{ secrets.TYPEORM_HOST }}
-          TYPEORM_PORT: ${{ secrets.TYPEORM_PORT }}
-          TYPEORM_USERNAME: ${{ secrets.TYPEORM_USERNAME }}
-          TYPEORM_PASSWORD: ${{ secrets.TYPEORM_PASSWORD }}
-          TYPEORM_DATABASE_TEST: ${{ secrets.TYPEORM_DATABASE_TEST }}
-        depends_on:
-          - db
         volumes:
-          - ./:/app
           - mysql_data:/var/lib/mysql
           - ./init-scripts:/docker-entrypoint-initdb.d
-        restart: unless-stopped
-        extra_hosts:
-          - 'host.docker.internal:host-gateway'
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
     steps:
       - name: Checkout code
@@ -71,6 +51,3 @@ jobs:
         run: |
           docker-compose up -d test-app
           docker-compose exec test-app npm run test:e2e
-
-volumes:
-  mysql_data:
