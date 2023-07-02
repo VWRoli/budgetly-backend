@@ -24,7 +24,7 @@ To run the Budgetly API, please follow these steps:
 $ npm install
 ```
 
-4. Create a `.env` filed based on the provided env example files file.
+4. Create a `.env` filed based on the provided env example file file.
 
 5. Start the application by running the following command:
 
@@ -32,10 +32,16 @@ $ npm install
 $ npm run docker:dev:build
 ```
 
-6. To run the tests for the application run the following command:
+6. To run the e2e tests for the application run the following command:
 
 ```
 $ npm run docker:test:build
+```
+
+7. To run the unit tests for the application run the following command:
+
+```
+$ npm run test
 ```
 
 Once you built the containers you can use the `npm run docker:dev` or `npm run docker:test` commands.
