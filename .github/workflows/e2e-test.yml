@@ -1,4 +1,4 @@
-name: E2E Test
+name: E2E Tests
 
 on:
   push:
@@ -6,25 +6,37 @@ on:
       - main
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
-      - name: Build and run tests
+    services:
+      db:
+        image: mysql:5.7
         env:
-          TYPEORM_HOST: ${{ secrets.TYPEORM_HOST }}
-          TYPEORM_PORT: ${{ secrets.TYPEORM_PORT }}
-          TYPEORM_USERNAME: ${{ secrets.TYPEORM_USERNAME }}
-          TYPEORM_PASSWORD: ${{ secrets.TYPEORM_PASSWORD }}
-          TYPEORM_DATABASE_TEST: ${{ secrets.TYPEORM_DATABASE_TEST }}
           MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
           MYSQL_DATABASE: ${{ secrets.MYSQL_DATABASE }}
           MYSQL_USER: ${{ secrets.MYSQL_USER }}
-        run: |
-          docker-compose -f docker-compose.test.yml up --build --exit-code-from=test-app --remove-orphans
+        ports:
+          - 3306:3306
+        volumes:
+          - mysql_data:/var/lib/mysql
+          - ./init-scripts:/docker-entrypoint-initdb.d
+        options: --health-cmd "mysqladmin ping" --health-interval 10s --health-timeout 5s --health-retries 3
 
-      - name: Stop containers
-        run: docker-compose -f docker-compose.test.yml down
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14
+
+      - name: Build and test
+        run: |
+          npm ci
+          npm run build
+          docker compose -f docker-compose.test.yml up --build
+
+volumes:
+  mysql_data:
