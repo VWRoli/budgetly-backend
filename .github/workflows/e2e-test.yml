@@ -19,13 +19,7 @@ jobs:
           MYSQL_USER: ${{ secrets.MYSQL_USER }}
         ports:
           - '3306:3306'
-        volumes:
-          - mysql_data:/var/lib/mysql
-          - ./init-scripts:/docker-entrypoint-initdb.d
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
-
-        volumes:
-          mysql_data:
 
       test-app:
         build:
@@ -44,9 +38,11 @@ jobs:
           - db
         volumes:
           - ./:/app
+          - mysql_data:/var/lib/mysql
+          - ./init-scripts:/docker-entrypoint-initdb.d
         restart: unless-stopped
         extra_hosts:
-          - "host.docker.internal:host-gateway"
+          - 'host.docker.internal:host-gateway'
 
     steps:
       - name: Checkout code
