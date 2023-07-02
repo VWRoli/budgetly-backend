@@ -1,40 +1,30 @@
-version: '3'
-services:
-  test-app:
-    build:
-      context: .
-      dockerfile: Dockerfile.test
-    ports:
-      - '8081:8081'
-    environment:
-      - NODE_ENV=test
-      - TYPEORM_HOST=${TYPEORM_HOST}
-      - TYPEORM_PORT=${TYPEORM_PORT}
-      - TYPEORM_USERNAME=${TYPEORM_USERNAME}
-      - TYPEORM_PASSWORD=${TYPEORM_PASSWORD}
-      - TYPEORM_DATABASE_TEST=${TYPEORM_DATABASE_TEST}
-    depends_on:
-      - db
-    volumes:
-      - ./:/app
-    extra_hosts:
-      - 'host.docker.internal:host-gateway'
+name: E2E Test
 
-  db:
-    image: mysql:5.7
-    command: --init-file /docker-entrypoint-initdb.d/init.sql
-    ports:
-      - '3306:3306'
-    environment:
-      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-      - MYSQL_DATABASE=${MYSQL_DATABASE}
-      - MYSQL_USER=${MYSQL_USER}
-      - MYSQL_INITDB_WD=/docker-entrypoint-initdb.d
-    volumes:
-      - mysql_data:/var/lib/mysql
-      - ./init-scripts:/docker-entrypoint-initdb.d
-    extra_hosts:
-      - 'host.docker.internal:host-gateway'
+on:
+  push:
+    branches:
+      - main
 
-volumes:
-  mysql_data:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Build and run tests
+        env:
+          TYPEORM_HOST: ${{ secrets.TYPEORM_HOST }}
+          TYPEORM_PORT: ${{ secrets.TYPEORM_PORT }}
+          TYPEORM_USERNAME: ${{ secrets.TYPEORM_USERNAME }}
+          TYPEORM_PASSWORD: ${{ secrets.TYPEORM_PASSWORD }}
+          TYPEORM_DATABASE_TEST: ${{ secrets.TYPEORM_DATABASE_TEST }}
+          MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
+          MYSQL_DATABASE: ${{ secrets.MYSQL_DATABASE }}
+          MYSQL_USER: ${{ secrets.MYSQL_USER }}
+        run: |
+          docker-compose -f docker-compose.test.yml up --build --exit-code-from=test-app --remove-orphans
+
+      - name: Stop containers
+        run: docker-compose -f docker-compose.test.yml down
