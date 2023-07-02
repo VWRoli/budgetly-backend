@@ -1,53 +1,40 @@
-name: E2E Test
+version: '3'
+services:
+  test-app:
+    build:
+      context: .
+      dockerfile: Dockerfile.test
+    ports:
+      - '8081:8081'
+    environment:
+      - NODE_ENV=test
+      - TYPEORM_HOST=${TYPEORM_HOST}
+      - TYPEORM_PORT=${TYPEORM_PORT}
+      - TYPEORM_USERNAME=${TYPEORM_USERNAME}
+      - TYPEORM_PASSWORD=${TYPEORM_PASSWORD}
+      - TYPEORM_DATABASE_TEST=${TYPEORM_DATABASE_TEST}
+    depends_on:
+      - db
+    volumes:
+      - ./:/app
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
 
-on:
-  push:
-    branches:
-      - main
-  pull_request:
+  db:
+    image: mysql:5.7
+    command: --init-file /docker-entrypoint-initdb.d/init.sql
+    ports:
+      - '3306:3306'
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_INITDB_WD=/docker-entrypoint-initdb.d
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./init-scripts:/docker-entrypoint-initdb.d
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
 
-jobs:
-  e2e-test:
-    runs-on: ubuntu-latest
-
-    services:
-      db:
-        image: mysql:5.7
-        env:
-          MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
-          MYSQL_DATABASE: ${{ secrets.MYSQL_DATABASE }}
-          MYSQL_USER: ${{ secrets.MYSQL_USER }}
-        ports:
-          - '3306:3306'
-        volumes:
-          - mysql_data:/var/lib/mysql
-          - ./init-scripts:/docker-entrypoint-initdb.d
-        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: 14
-
-      - name: Build test Docker container
-        run: |
-          docker build -t my-api-test -f Dockerfile.test .
-
-      - name: Start services
-        run: docker-compose up -d db
-
-      - name: Wait for database to start
-        run: |
-          until docker-compose exec -T db mysqladmin ping --silent; do
-            echo "Waiting for database to start..."
-            sleep 5
-          done
-
-      - name: Run e2e tests
-        run: |
-          docker-compose up -d test-app
-          docker-compose exec test-app npm run test:e2e
+volumes:
+  mysql_data:
