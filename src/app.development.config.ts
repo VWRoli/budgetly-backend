@@ -7,7 +7,10 @@ const databaseConfig: TypeOrmModuleOptions = {
   port: +process.env.TYPEORM_PORT,
   username: process.env.TYPEORM_USERNAME,
   password: process.env.TYPEORM_PASSWORD,
-  database: process.env.TYPEORM_DATABASE,
+  database:
+    process.env.NODE_ENV === 'test'
+      ? process.env.TYPEORM_DATABASE_TEST
+      : process.env.TYPEORM_DATABASE_DEV,
   entities: [join(__dirname, '**/**.entity{.ts,.js}')],
   logging: false,
   synchronize: true,
