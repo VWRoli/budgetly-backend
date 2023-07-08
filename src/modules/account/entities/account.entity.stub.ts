@@ -9,7 +9,7 @@ export const stubAccount = (): Account => {
     budgetId: stubBudget().id,
     transactions: [],
     transactionIds: [],
-    balance: 1000,
+    balance: 0,
     createTimeStamp: new Date('2022-01-01'),
     updateTimeStamp: new Date('2022-01-02'),
     deleteTimeStamp: null,

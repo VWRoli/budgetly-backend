@@ -45,9 +45,9 @@ export class Category {
   transactionIds: number[];
 
   @OneToMany(() => SubCategory, (subCategory) => subCategory.category)
-  subCategorys: SubCategory[];
+  subCategories: SubCategory[];
 
-  @RelationId((category: Category) => category.subCategorys)
+  @RelationId((category: Category) => category.subCategories)
   subCategoryIds: number[];
 
   @CreateDateColumn()

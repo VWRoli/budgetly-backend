@@ -12,7 +12,7 @@ export const stubCategory = (): Category => {
     budgetId: stubBudget().id,
     transactions: [],
     transactionIds: [],
-    subCategorys: [],
+    subCategories: [],
     subCategoryIds: [],
     createTimeStamp: new Date('2022-01-01'),
     updateTimeStamp: new Date('2022-01-02'),
