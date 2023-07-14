@@ -7,6 +7,8 @@ import { Test } from '@nestjs/testing';
 import { Category } from '../../category/entities';
 import { SubCategory } from '../../sub-category/entities';
 import { NotFoundException } from '@nestjs/common';
+import { AccountService } from '../../account/service';
+import { Budget } from '../../budget/entities';
 
 const transactionStub = stubTransaction();
 const transactionStubs = [transactionStub];
@@ -20,6 +22,7 @@ describe('TransactionService', () => {
     const moduleRef = await Test.createTestingModule({
       providers: [
         TransactionService,
+        AccountService,
         {
           provide: getRepositoryToken(Transaction),
           useValue: {
@@ -34,6 +37,7 @@ describe('TransactionService', () => {
           provide: getRepositoryToken(Account),
           useValue: {
             findOne: jest.fn().mockResolvedValue(transactionStub.account),
+            save: jest.fn(),
           },
         },
         {
@@ -47,6 +51,10 @@ describe('TransactionService', () => {
           useValue: {
             findOne: jest.fn().mockResolvedValue(transactionStub.subCategory),
           },
+        },
+        {
+          provide: getRepositoryToken(Budget),
+          useClass: Repository,
         },
       ],
     }).compile();
@@ -80,7 +88,13 @@ describe('TransactionService', () => {
     it('should create a new transaction', async () => {
       jest
         .spyOn(accountRepository, 'findOne')
-        .mockResolvedValue(transactionStub.account);
+        .mockResolvedValue(transactionStub.account)
+        .mockResolvedValueOnce(transactionStub.account)
+        .mockResolvedValueOnce(transactionStub.account)
+        .mockResolvedValueOnce(null)
+        .mockResolvedValueOnce(transactionStub.account)
+        .mockResolvedValueOnce(null);
+
       jest.spyOn(repository, 'findOne').mockResolvedValue(null);
       jest.spyOn(repository, 'create').mockReturnValue(transactionStub);
       jest.spyOn(repository, 'save').mockResolvedValue(transactionStub);
