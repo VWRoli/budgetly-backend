@@ -59,7 +59,15 @@ export class BudgetService {
     });
 
     //save budget entity in DB
-    return await this.repository.save(budget);
+    const savedBudget = await this.repository.save(budget);
+
+    //set default budget
+    await this.setDefault(user.id, savedBudget.id);
+
+    // Remove the user relation property before returning the savedBudget
+    delete savedBudget.user;
+
+    return savedBudget;
   }
 
   async updateOne(id: number, data: UpdateBudgetDto) {
@@ -105,5 +113,29 @@ export class BudgetService {
     } catch (error) {
       throw error;
     }
+  }
+
+  async setDefault(userId: number, budgetId: number) {
+    //check if user exists
+    const user = await this.userRepository.findOne({
+      where: {
+        id: userId,
+      },
+    });
+
+    if (!user) {
+      throw new NotFoundException(`No user with the provided id`);
+    }
+
+    const currentBudget = await this.repository.findOne({
+      where: { id: budgetId },
+    });
+    if (!currentBudget) {
+      throw new NotFoundException('No budget found with the provided id.');
+    }
+
+    const newUser: User = { ...user, defaultBudgetId: budgetId };
+
+    await this.userRepository.save(newUser);
   }
 }
