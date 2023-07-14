@@ -9,6 +9,8 @@ import { SubCategory } from '../../sub-category/entities';
 import { NotFoundException } from '@nestjs/common';
 import { AccountService } from '../../account/service';
 import { Budget } from '../../budget/entities';
+import { CategoryService } from '../../category/service';
+import { SubCategoryService } from '../../sub-category/service';
 
 const transactionStub = stubTransaction();
 const transactionStubs = [transactionStub];
@@ -17,12 +19,16 @@ describe('TransactionService', () => {
   let service: TransactionService;
   let repository: Repository<Transaction>;
   let accountRepository: Repository<Account>;
+  let categoryRepository: Repository<Category>;
+  let subCategoryRepository: Repository<SubCategory>;
 
   beforeEach(async () => {
     const moduleRef = await Test.createTestingModule({
       providers: [
         TransactionService,
         AccountService,
+        CategoryService,
+        SubCategoryService,
         {
           provide: getRepositoryToken(Transaction),
           useValue: {
@@ -44,12 +50,14 @@ describe('TransactionService', () => {
           provide: getRepositoryToken(Category),
           useValue: {
             findOne: jest.fn().mockResolvedValue(transactionStub.category),
+            save: jest.fn(),
           },
         },
         {
           provide: getRepositoryToken(SubCategory),
           useValue: {
             findOne: jest.fn().mockResolvedValue(transactionStub.subCategory),
+            save: jest.fn(),
           },
         },
         {
@@ -65,6 +73,12 @@ describe('TransactionService', () => {
     );
     accountRepository = moduleRef.get<Repository<Account>>(
       getRepositoryToken(Account),
+    );
+    categoryRepository = moduleRef.get<Repository<Category>>(
+      getRepositoryToken(Category),
+    );
+    subCategoryRepository = moduleRef.get<Repository<SubCategory>>(
+      getRepositoryToken(SubCategory),
     );
   });
 
@@ -93,6 +107,22 @@ describe('TransactionService', () => {
         .mockResolvedValueOnce(transactionStub.account)
         .mockResolvedValueOnce(null)
         .mockResolvedValueOnce(transactionStub.account)
+        .mockResolvedValueOnce(null);
+      jest
+        .spyOn(categoryRepository, 'findOne')
+        .mockResolvedValue(transactionStub.category)
+        .mockResolvedValueOnce(transactionStub.category)
+        .mockResolvedValueOnce(transactionStub.category)
+        .mockResolvedValueOnce(null)
+        .mockResolvedValueOnce(transactionStub.category)
+        .mockResolvedValueOnce(null);
+      jest
+        .spyOn(subCategoryRepository, 'findOne')
+        .mockResolvedValue(transactionStub.subCategory)
+        .mockResolvedValueOnce(transactionStub.subCategory)
+        .mockResolvedValueOnce(transactionStub.subCategory)
+        .mockResolvedValueOnce(null)
+        .mockResolvedValueOnce(transactionStub.subCategory)
         .mockResolvedValueOnce(null);
 
       jest.spyOn(repository, 'findOne').mockResolvedValue(null);

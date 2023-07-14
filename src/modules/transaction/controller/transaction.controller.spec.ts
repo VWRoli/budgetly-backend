@@ -8,6 +8,10 @@ import { Transaction, stubTransaction } from '../entities';
 import { Account } from '../../account/entities';
 import { Category } from '../../category/entities';
 import { SubCategory } from '../../sub-category/entities';
+import { AccountService } from '../../account/service';
+import { CategoryService } from '../../category/service';
+import { SubCategoryService } from '../../sub-category/service';
+import { Budget } from '../../budget/entities';
 
 const transactionStub = stubTransaction();
 const transactionStubs = [transactionStub];
@@ -28,6 +32,9 @@ describe('TransactionController', () => {
       controllers: [TransactionController],
       providers: [
         TransactionService,
+        AccountService,
+        CategoryService,
+        SubCategoryService,
         {
           provide: getRepositoryToken(Transaction),
           useValue: jest.fn(),
@@ -43,6 +50,10 @@ describe('TransactionController', () => {
         {
           provide: getRepositoryToken(SubCategory),
           useValue: jest.fn(),
+        },
+        {
+          provide: getRepositoryToken(Budget),
+          useClass: Repository,
         },
       ],
     })
