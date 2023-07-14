@@ -132,6 +132,6 @@ export class BudgetService {
 
     const newUser: User = { ...user, defaultBudgetId: budgetId };
 
-    return await this.userRepository.save(newUser);
+    await this.userRepository.save(newUser);
   }
 }

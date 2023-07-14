@@ -50,4 +50,14 @@ export class BudgetController {
   deleteBudget(@Param('budgetId') budgetId: number) {
     return this.budgetService.deleteOne(budgetId);
   }
+
+  @Put(':userId/:budgetId')
+  @ApiOkResponse({ type: Budget })
+  @HttpCode(HttpStatus.NO_CONTENT)
+  setDefaultBudget(
+    @Param('userId') userId: number,
+    @Param('budgetId') budgetId: number,
+  ) {
+    return this.budgetService.setDefault(userId, budgetId);
+  }
 }

@@ -85,4 +85,16 @@ describe('BudgetController', () => {
       expect(result).toBeUndefined();
     });
   });
+
+  describe('set as default budget', () => {
+    it('should set budget as default for user', async () => {
+      jest.spyOn(service, 'setDefault').mockResolvedValue(undefined);
+      const result = await controller.setDefaultBudget(
+        budgetStub.user.id,
+        budgetStub.id,
+      );
+
+      expect(result).toBeUndefined();
+    });
+  });
 });
