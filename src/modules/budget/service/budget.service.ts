@@ -63,10 +63,6 @@ export class BudgetService {
 
     //set default budget
     await this.setDefault(user.id, savedBudget.id);
-
-    // Remove the user relation property before returning the savedBudget
-    delete savedBudget.user;
-
     return savedBudget;
   }
 
@@ -136,6 +132,6 @@ export class BudgetService {
 
     const newUser: User = { ...user, defaultBudgetId: budgetId };
 
-    await this.userRepository.save(newUser);
+    return await this.userRepository.save(newUser);
   }
 }

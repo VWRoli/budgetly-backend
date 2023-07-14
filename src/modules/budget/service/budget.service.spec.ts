@@ -27,11 +27,18 @@ describe('BudgetService', () => {
             find: jest.fn(),
             create: jest.fn(),
             softDelete: jest.fn(),
+            setDefault: jest.fn(),
           },
         },
         {
           provide: getRepositoryToken(User),
-          useClass: Repository,
+          useValue: {
+            findOne: jest.fn(),
+            save: jest.fn(),
+            find: jest.fn(),
+            create: jest.fn(),
+            softDelete: jest.fn(),
+          },
         },
       ],
     }).compile();
@@ -60,14 +67,23 @@ describe('BudgetService', () => {
   describe('createOne', () => {
     it('should create a new budget', async () => {
       jest.spyOn(userRepository, 'findOne').mockResolvedValue(budgetStub.user);
-      jest.spyOn(repository, 'findOne').mockResolvedValue(null);
+      jest
+        .spyOn(repository, 'findOne')
+        .mockResolvedValue(null)
+        .mockResolvedValueOnce(null)
+        .mockResolvedValueOnce(budgetStub);
       jest.spyOn(repository, 'create').mockReturnValue(budgetStub);
       jest.spyOn(repository, 'save').mockResolvedValue(budgetStub);
+      jest.spyOn(service, 'setDefault').mockResolvedValue(undefined);
 
       const result = await service.createOne(budgetStub);
 
       expect(result).toEqual(budgetStub);
       expect(repository.save).toHaveBeenCalledWith(budgetStub);
+      expect(service.setDefault).toHaveBeenCalledWith(
+        budgetStub.user.id,
+        budgetStub.id,
+      );
     });
 
     it('should throw a NotFoundException if budget does not exist', async () => {
@@ -78,7 +94,7 @@ describe('BudgetService', () => {
       );
     });
 
-    it('should throw a ConflictException if account with the same name already exists', async () => {
+    it('should throw a ConflictException if budget with the same name already exists', async () => {
       const user = budgetStub.user;
       jest.spyOn(userRepository, 'findOne').mockResolvedValue(user);
       jest.spyOn(repository, 'findOne').mockResolvedValue(budgetStub);
@@ -143,6 +159,45 @@ describe('BudgetService', () => {
       await expect(service.deleteOne(budgetStub.id)).rejects.toThrowError(
         NotFoundException,
       );
+    });
+  });
+
+  describe('setDefault', () => {
+    it('should set the default budget for the user', async () => {
+      jest.spyOn(userRepository, 'findOne').mockResolvedValue(budgetStub.user);
+      jest.spyOn(repository, 'findOne').mockResolvedValue(budgetStub);
+      jest.spyOn(userRepository, 'save').mockResolvedValue({
+        ...budgetStub.user,
+        defaultBudgetId: budgetStub.id,
+      });
+
+      await service.setDefault(budgetStub.user.id, budgetStub.id);
+
+      expect(userRepository.findOne).toHaveBeenCalled();
+      expect(repository.findOne).toHaveBeenCalledWith({
+        where: { id: budgetStub.id },
+      });
+      expect(userRepository.save).toHaveBeenCalledWith({
+        ...budgetStub.user,
+        defaultBudgetId: budgetStub.id,
+      });
+    });
+
+    it('should throw NotFoundException if the user is not found', async () => {
+      jest.spyOn(userRepository, 'findOne').mockResolvedValue(null);
+
+      await expect(
+        service.setDefault(budgetStub.user.id, budgetStub.id),
+      ).rejects.toThrowError(NotFoundException);
+    });
+
+    it('should throw NotFoundException if the budget is not found', async () => {
+      jest.spyOn(userRepository, 'findOne').mockResolvedValue(budgetStub.user);
+      jest.spyOn(repository, 'findOne').mockResolvedValue(null);
+
+      await expect(
+        service.setDefault(budgetStub.user.id, budgetStub.id),
+      ).rejects.toThrowError(NotFoundException);
     });
   });
 });
