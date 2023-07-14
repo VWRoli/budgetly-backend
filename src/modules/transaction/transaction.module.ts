@@ -8,6 +8,8 @@ import { SubCategory } from '../sub-category/entities';
 import { AccountService } from '../account/service';
 import { Budget } from '../budget/entities';
 import { TransactionService } from './service';
+import { SubCategoryService } from '../sub-category/service';
+import { CategoryService } from '../category/service';
 
 @Module({
   imports: [
@@ -20,6 +22,11 @@ import { TransactionService } from './service';
     ]),
   ],
   controllers: [TransactionController],
-  providers: [TransactionService, AccountService],
+  providers: [
+    TransactionService,
+    AccountService,
+    SubCategoryService,
+    CategoryService,
+  ],
 })
 export class TransactionModule {}

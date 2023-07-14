@@ -83,6 +83,7 @@ export class SubCategoryService {
 
     // Update the properties of the currentSubCategory entity
     currentSubCategory.title = data.title;
+    currentSubCategory.balance = data.balance;
 
     // Save the updated SubCategory entity in the database
     await this.repository.save(currentSubCategory);

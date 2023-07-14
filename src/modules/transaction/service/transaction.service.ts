@@ -7,6 +7,8 @@ import { Account } from '../../account/entities';
 import { Category } from '../../category/entities';
 import { SubCategory } from '../../sub-category/entities';
 import { AccountService } from '../../account/service';
+import { SubCategoryService } from '../../sub-category/service';
+import { CategoryService } from '../../category/service';
 
 @Injectable()
 export class TransactionService {
@@ -20,6 +22,8 @@ export class TransactionService {
     @InjectRepository(SubCategory)
     private subCategoryRepository: Repository<SubCategory>,
     private readonly accountService: AccountService,
+    private readonly categoryService: CategoryService,
+    private readonly subCategoryService: SubCategoryService,
   ) {}
 
   async getAll(accountId: number) {
@@ -77,6 +81,16 @@ export class TransactionService {
         ...account,
         balance: account.balance + transaction.inflow,
       });
+      //update category
+      await this.categoryService.updateOne(transaction.categoryId, {
+        ...category,
+        balance: category.balance + transaction.inflow,
+      });
+      //update subcategory
+      await this.subCategoryService.updateOne(transaction.subCategoryId, {
+        ...subCategory,
+        balance: subCategory.balance + transaction.inflow,
+      });
     }
 
     if (data.outflow) {
@@ -84,6 +98,16 @@ export class TransactionService {
       await this.accountService.updateOne(transaction.accountId, {
         ...account,
         balance: account.balance - transaction.outflow,
+      });
+      //update category
+      await this.categoryService.updateOne(transaction.categoryId, {
+        ...category,
+        balance: category.balance - transaction.outflow,
+      });
+      //update subcategory
+      await this.subCategoryService.updateOne(transaction.subCategoryId, {
+        ...subCategory,
+        balance: subCategory.balance - transaction.outflow,
       });
     }
     //save transaction entity in DB
