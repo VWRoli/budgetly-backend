@@ -99,24 +99,27 @@ describe('AccountService', () => {
   });
 
   describe('updateOne', () => {
-    //todo it('should update an existing account', async () => {
-    //   const accountId = accountStub.id;
-    //   const updateAccountDto: UpdateAccountDto = {
-    //     name: 'Updated Account',
-    //     budgetId: accountStub.budgetId,
-    //   };
+    it('should update an existing account', async () => {
+      const updatedAccount: Account = {
+        ...accountStub,
+        name: 'Updated Account',
+      };
+      jest
+        .spyOn(repository, 'findOne')
+        .mockResolvedValue(accountStub)
+        .mockResolvedValueOnce(accountStub)
+        .mockResolvedValueOnce(null);
 
-    //   const updatedAccount = { ...accountStub, name: 'Updated Account' };
-    //   jest.spyOn(repository, 'findOne').mockResolvedValue(accountStub);
-    //   jest.spyOn(repository, 'findOne').mockResolvedValue(null);
-    //   jest.spyOn(repository, 'save').mockResolvedValue(updatedAccount);
+      jest.spyOn(repository, 'save').mockResolvedValue(updatedAccount);
 
-    //   const result = await service.updateOne(accountId, updateAccountDto);
-
-    //   expect(result).toEqual(updatedAccount);
-
-    //   expect(repository.save).toHaveBeenCalledWith(updatedAccount);
-    // });
+      const result = await service.updateOne(
+        accountStub.budgetId,
+        updatedAccount,
+      );
+      expect(repository.findOne).toHaveBeenCalledTimes(2);
+      expect(result).toEqual(accountStub);
+      expect(repository.save).toHaveBeenCalledWith(accountStub);
+    });
 
     it('should throw a NotFoundException if account does not exist', async () => {
       jest.spyOn(repository, 'findOne').mockResolvedValue(null);

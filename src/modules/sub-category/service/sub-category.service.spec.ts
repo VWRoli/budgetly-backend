@@ -95,24 +95,27 @@ describe('SubCategoryService', () => {
   });
 
   describe('updateOne', () => {
-    //todo it('should update an existing subcategory', async () => {
-    //   const accountId = accountStub.id;
-    //   const updateAccountDto: UpdateAccountDto = {
-    //     name: 'Updated Account',
-    //     budgetId: accountStub.budgetId,
-    //   };
+    it('should update an existing subcategory', async () => {
+      const updatedSubCategory: SubCategory = {
+        ...subCategoryStub,
+        title: 'Updated SubCategory',
+      };
+      jest
+        .spyOn(repository, 'findOne')
+        .mockResolvedValue(subCategoryStub)
+        .mockResolvedValueOnce(subCategoryStub)
+        .mockResolvedValueOnce(null);
 
-    //   const updatedAccount = { ...accountStub, name: 'Updated Account' };
-    //   jest.spyOn(repository, 'findOne').mockResolvedValue(accountStub);
-    //   jest.spyOn(repository, 'findOne').mockResolvedValue(null);
-    //   jest.spyOn(repository, 'save').mockResolvedValue(updatedAccount);
+      jest.spyOn(repository, 'save').mockResolvedValue(updatedSubCategory);
 
-    //   const result = await service.updateOne(accountId, updateAccountDto);
-
-    //   expect(result).toEqual(updatedAccount);
-
-    //   expect(repository.save).toHaveBeenCalledWith(updatedAccount);
-    // });
+      const result = await service.updateOne(
+        subCategoryStub.categoryId,
+        updatedSubCategory,
+      );
+      expect(repository.findOne).toHaveBeenCalledTimes(2);
+      expect(result).toEqual(subCategoryStub);
+      expect(repository.save).toHaveBeenCalledWith(subCategoryStub);
+    });
 
     it('should throw a NotFoundException if subcategory does not exist', async () => {
       jest.spyOn(repository, 'findOne').mockResolvedValue(null);

@@ -5,6 +5,7 @@ import { User } from '../../auth/entities';
 import { Test } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { ConflictException, NotFoundException } from '@nestjs/common';
+import { ECurrency } from '../enum';
 
 const budgetStub = stubBudget();
 const budgetStubs = [budgetStub];
@@ -21,10 +22,10 @@ describe('BudgetService', () => {
         {
           provide: getRepositoryToken(Budget),
           useValue: {
-            findOne: jest.fn().mockResolvedValue(budgetStub),
-            save: jest.fn().mockResolvedValue(budgetStub),
-            find: jest.fn().mockResolvedValue(budgetStub),
-            create: jest.fn().mockResolvedValue(budgetStub),
+            findOne: jest.fn(),
+            save: jest.fn(),
+            find: jest.fn(),
+            create: jest.fn(),
             softDelete: jest.fn(),
           },
         },
@@ -89,24 +90,25 @@ describe('BudgetService', () => {
   });
 
   describe('updateOne', () => {
-    //todo it('should update an existing account', async () => {
-    //   const accountId = accountStub.id;
-    //   const updateAccountDto: UpdateAccountDto = {
-    //     name: 'Updated Account',
-    //     budgetId: accountStub.budgetId,
-    //   };
+    it('should update an existing budget', async () => {
+      const updatedBudget: Budget = {
+        ...budgetStub,
+        name: 'Updated Budget',
+        currency: ECurrency.GBP,
+      };
+      jest
+        .spyOn(repository, 'findOne')
+        .mockResolvedValue(budgetStub)
+        .mockResolvedValueOnce(budgetStub)
+        .mockResolvedValueOnce(null);
 
-    //   const updatedAccount = { ...accountStub, name: 'Updated Account' };
-    //   jest.spyOn(repository, 'findOne').mockResolvedValue(accountStub);
-    //   jest.spyOn(repository, 'findOne').mockResolvedValue(null);
-    //   jest.spyOn(repository, 'save').mockResolvedValue(updatedAccount);
+      jest.spyOn(repository, 'save').mockResolvedValue(updatedBudget);
 
-    //   const result = await service.updateOne(accountId, updateAccountDto);
-
-    //   expect(result).toEqual(updatedAccount);
-
-    //   expect(repository.save).toHaveBeenCalledWith(updatedAccount);
-    // });
+      const result = await service.updateOne(budgetStub.userId, updatedBudget);
+      expect(repository.findOne).toHaveBeenCalledTimes(2);
+      expect(result).toEqual(budgetStub);
+      expect(repository.save).toHaveBeenCalledWith(budgetStub);
+    });
 
     it('should throw a NotFoundException if budget does not exist', async () => {
       jest.spyOn(repository, 'findOne').mockResolvedValue(null);

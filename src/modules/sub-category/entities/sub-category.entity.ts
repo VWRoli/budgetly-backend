@@ -30,7 +30,7 @@ export class SubCategory {
   @Column()
   balance: number;
 
-  @ManyToOne(() => Category, (category) => category.subCategorys)
+  @ManyToOne(() => Category, (category) => category.subCategories)
   @JoinColumn()
   category: Category;
 

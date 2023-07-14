@@ -101,24 +101,22 @@ describe('TransactionService', () => {
   });
 
   describe('updateOne', () => {
-    //todo it('should update an existing account', async () => {
-    //   const accountId = accountStub.id;
-    //   const updateAccountDto: UpdateAccountDto = {
-    //     name: 'Updated Account',
-    //     budgetId: accountStub.budgetId,
-    //   };
+    it('should update an existing transaction', async () => {
+      const accountId = transactionStub.accountId;
 
-    //   const updatedAccount = { ...accountStub, name: 'Updated Account' };
-    //   jest.spyOn(repository, 'findOne').mockResolvedValue(accountStub);
-    //   jest.spyOn(repository, 'findOne').mockResolvedValue(null);
-    //   jest.spyOn(repository, 'save').mockResolvedValue(updatedAccount);
+      const updatedTransaction: Transaction = {
+        ...transactionStub,
+        payee: 'Updated Payee',
+      };
+      jest.spyOn(repository, 'findOne').mockResolvedValue(transactionStub);
+      jest.spyOn(repository, 'save').mockResolvedValue(updatedTransaction);
 
-    //   const result = await service.updateOne(accountId, updateAccountDto);
+      const result = await service.updateOne(accountId, updatedTransaction);
 
-    //   expect(result).toEqual(updatedAccount);
+      expect(result).toEqual(updatedTransaction);
 
-    //   expect(repository.save).toHaveBeenCalledWith(updatedAccount);
-    // });
+      expect(repository.save).toHaveBeenCalledWith(updatedTransaction);
+    });
 
     it('should throw a NotFoundException if transaction does not exist', async () => {
       jest.spyOn(repository, 'findOne').mockResolvedValue(null);
