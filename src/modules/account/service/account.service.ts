@@ -83,6 +83,7 @@ export class AccountService {
 
     // Update the properties of the currentAccount entity
     currentAccount.name = data.name;
+    currentAccount.balance = data.balance;
 
     // Save the updated Account entity in the database
     await this.repository.save(currentAccount);

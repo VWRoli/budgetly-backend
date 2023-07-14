@@ -6,6 +6,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Account } from '../../account/entities';
 import { Category } from '../../category/entities';
 import { SubCategory } from '../../sub-category/entities';
+import { AccountService } from '../../account/service';
 
 @Injectable()
 export class TransactionService {
@@ -18,6 +19,7 @@ export class TransactionService {
     private categoryRepository: Repository<Category>,
     @InjectRepository(SubCategory)
     private subCategoryRepository: Repository<SubCategory>,
+    private readonly accountService: AccountService,
   ) {}
 
   async getAll(accountId: number) {
@@ -69,6 +71,21 @@ export class TransactionService {
       account: account, // Assign the account object to the 'account' property
     });
 
+    if (data.inflow) {
+      //update account
+      await this.accountService.updateOne(transaction.accountId, {
+        ...account,
+        balance: account.balance + transaction.inflow,
+      });
+    }
+
+    if (data.outflow) {
+      //update account
+      await this.accountService.updateOne(transaction.accountId, {
+        ...account,
+        balance: account.balance - transaction.outflow,
+      });
+    }
     //save transaction entity in DB
     return await this.repository.save(transaction);
   }
