@@ -8,6 +8,8 @@ import { ValidationPipe } from '@nestjs/common';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  const port = process.env.PORT || 8080;
+
   //secure app by setting HTTP response headers
   app.use(helmet());
 
@@ -16,6 +18,6 @@ async function bootstrap() {
 
   app.use(json({ limit: '100kb' }));
   initializeSwagger(app);
-  await app.listen(8080);
+  await app.listen(port);
 }
 bootstrap();
