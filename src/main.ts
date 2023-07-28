@@ -14,7 +14,7 @@ async function bootstrap() {
   app.use(helmet());
 
   //enable cors
-  app.enableCors({ origin: process.env.FRONTEND_URL });
+  app.enableCors({ origin: process.env.FRONTEND_URL, credentials: true });
 
   //validation pipeline
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
