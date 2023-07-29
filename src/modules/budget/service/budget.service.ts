@@ -22,9 +22,21 @@ export class BudgetService {
   async getAll(userId: number) {
     return await this.repository.find({
       where: { user: { id: userId } },
-      relations: { accounts: true },
     });
   }
+
+  async getOne(id: number) {
+    const budget = await this.repository.findOne({
+      where: { id },
+      relations: { accounts: true },
+    });
+
+    if (!budget) {
+      throw new NotFoundException(`No user with the provided id`);
+    }
+    return budget;
+  }
+
   async createOne(data: CreateBudgetDto) {
     //check if user exists
     const user = await this.userRepository.findOne({

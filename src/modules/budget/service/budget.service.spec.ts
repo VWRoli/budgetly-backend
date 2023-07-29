@@ -53,7 +53,7 @@ describe('BudgetService', () => {
   });
 
   describe('getAll', () => {
-    it('should return all budgets for a given budget', async () => {
+    it('should return all budgets for a given user', async () => {
       const userId = budgetStub.userId;
       jest.spyOn(repository, 'find').mockResolvedValue(budgetStubs);
 
@@ -61,6 +61,25 @@ describe('BudgetService', () => {
 
       expect(result).toEqual(budgetStubs);
       expect(repository.find).toHaveBeenCalled();
+    });
+  });
+
+  describe('getOne', () => {
+    it('should return a budget', async () => {
+      jest.spyOn(repository, 'findOne').mockResolvedValue(budgetStub);
+
+      const result = await service.getOne(budgetStub.id);
+
+      expect(result).toEqual(budgetStub);
+      expect(repository.findOne).toHaveBeenCalled();
+    });
+
+    it('should throw a NotFoundException if budget does not exist', async () => {
+      jest.spyOn(repository, 'findOne').mockResolvedValue(null);
+
+      await expect(service.getOne(budgetStub.id)).rejects.toThrowError(
+        NotFoundException,
+      );
     });
   });
 

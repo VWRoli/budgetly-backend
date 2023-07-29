@@ -58,6 +58,15 @@ describe('BudgetController', () => {
     });
   });
 
+  describe('getBudget', () => {
+    it('should return a budget', async () => {
+      jest.spyOn(service, 'getOne').mockResolvedValue(budgetStub);
+      const result = await controller.getBudget(budgetStub.id);
+
+      expect(result).toEqual(budgetStub);
+    });
+  });
+
   describe('createBudget', () => {
     it('should create a new budget', async () => {
       jest.spyOn(service, 'createOne').mockResolvedValue(budgetStub);
