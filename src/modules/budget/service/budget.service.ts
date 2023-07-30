@@ -9,6 +9,7 @@ import { Not, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UpdateBudgetDto } from '../dto/update-budget.dto';
 import { User } from '../../auth/entities';
+import { setLoacle } from '../budget.helpers';
 
 @Injectable()
 export class BudgetService {
@@ -67,6 +68,7 @@ export class BudgetService {
     const budget = this.repository.create({
       name: data.name,
       currency: data.currency,
+      locale: setLoacle(data.currency),
       user: user, // Assign the user object to the 'user' property
     });
 

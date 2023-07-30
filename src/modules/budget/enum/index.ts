@@ -1,1 +1,2 @@
-export * from './budget.enum';
+export * from './currency.enum';
+export * from './locale.enum';

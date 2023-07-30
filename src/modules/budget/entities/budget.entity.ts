@@ -10,7 +10,7 @@ import {
   RelationId,
   UpdateDateColumn,
 } from 'typeorm';
-import { ECurrency } from '../enum';
+import { ECurrency, ELocale } from '../enum';
 import { User } from '../../auth/entities';
 import { Account } from '../../account/entities';
 import { Category } from '../../category/entities';
@@ -25,6 +25,9 @@ export class Budget {
 
   @Column({ type: 'enum', enum: ECurrency, enumName: 'ECurrency' })
   currency: ECurrency;
+
+  @Column({ type: 'enum', enum: ELocale, enumName: 'ELocale' })
+  locale: ELocale;
 
   @ManyToOne(() => User, (user) => user.budgets)
   @JoinColumn()

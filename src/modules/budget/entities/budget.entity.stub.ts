@@ -1,5 +1,5 @@
 import { stubUser } from '../../auth/entities';
-import { ECurrency } from '../enum';
+import { ECurrency, ELocale } from '../enum';
 import { Budget } from './index';
 
 export const stubBudget = (): Budget => {
@@ -7,6 +7,7 @@ export const stubBudget = (): Budget => {
     id: 1,
     name: 'Test Budget',
     currency: ECurrency.USD,
+    locale: ELocale.US,
     user: stubUser(),
     userId: stubUser().id,
     accounts: [],
