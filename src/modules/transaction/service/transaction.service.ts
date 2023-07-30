@@ -9,6 +9,7 @@ import { SubCategory } from '../../sub-category/entities';
 import { AccountService } from '../../account/service';
 import { SubCategoryService } from '../../sub-category/service';
 import { CategoryService } from '../../category/service';
+import { IResponseTransaction } from 'src/modules/transaction/response-transaction.interface';
 
 @Injectable()
 export class TransactionService {
@@ -27,9 +28,25 @@ export class TransactionService {
   ) {}
 
   async getAll(accountId: number) {
-    return await this.repository.find({
+    const transactions = await this.repository.find({
       where: { account: { id: accountId } },
+      relations: { account: true, category: true, subCategory: true },
+      select: ['id', 'payee', 'date', 'inflow', 'outflow'],
     });
+    const reducedTransactions: IResponseTransaction[] = transactions.map(
+      (txn) => ({
+        id: txn.id,
+        payee: txn.payee,
+        date: txn.date,
+        inflow: txn.inflow,
+        outflow: txn.outflow,
+        account: { id: txn.account.id, name: txn.account.name },
+        category: { id: txn.category.id, title: txn.category.title },
+        subCategory: { id: txn.subCategory.id, title: txn.subCategory.title },
+      }),
+    );
+
+    return reducedTransactions;
   }
   async createOne(data: CreateTransactionDto) {
     //check if account exists

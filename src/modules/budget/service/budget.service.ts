@@ -21,9 +21,17 @@ export class BudgetService {
   ) {}
 
   async getAll(userId: number) {
-    return await this.repository.find({
+    const budgets = await this.repository.find({
       where: { user: { id: userId } },
+      select: ['id', 'name', 'locale', 'currency'],
     });
+
+    //remove accountIds and categoryIds
+    budgets.map((b) => {
+      delete b.accountIds;
+      delete b.categoryIds;
+    });
+    return budgets;
   }
 
   async getOne(id: number) {

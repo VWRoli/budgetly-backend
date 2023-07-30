@@ -12,8 +12,11 @@ import { AccountService } from '../../account/service';
 import { CategoryService } from '../../category/service';
 import { SubCategoryService } from '../../sub-category/service';
 import { Budget } from '../../budget/entities';
+import { stubTransactionResponse } from '../entities/response-transaction.stub';
 
 const transactionStub = stubTransaction();
+const transactionStubResponse = stubTransactionResponse();
+const transactionResponseStubs = [transactionStubResponse];
 const transactionStubs = [transactionStub];
 
 describe('TransactionController', () => {
@@ -74,12 +77,12 @@ describe('TransactionController', () => {
 
   describe('getTransactions', () => {
     it('should return an array of transactions', async () => {
-      jest.spyOn(service, 'getAll').mockResolvedValue(transactionStubs);
+      jest.spyOn(service, 'getAll').mockResolvedValue(transactionResponseStubs);
       const result = await controller.getTransactions(
         transactionStub.accountId,
       );
 
-      expect(result).toEqual(transactionStubs);
+      expect(result).toEqual(transactionResponseStubs);
     });
   });
 

@@ -59,7 +59,7 @@ describe('AccountService', () => {
       expect(result).toEqual(accountStubs);
       expect(repository.find).toHaveBeenCalledWith({
         where: { budget: { id: budgetId } },
-        relations: { transactions: true },
+        select: ['id', 'name', 'balance'],
       });
     });
   });

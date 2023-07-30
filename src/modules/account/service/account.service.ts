@@ -20,10 +20,15 @@ export class AccountService {
   ) {}
 
   async getAll(budgetId: number) {
-    return await this.repository.find({
+    const accounts = await this.repository.find({
       where: { budget: { id: budgetId } },
-      relations: { transactions: true },
+      select: ['id', 'name', 'balance'],
     });
+
+    //remove transactionIds
+    accounts.map((acc) => delete acc.transactionIds);
+
+    return accounts;
   }
 
   async createOne(data: CreateAccountDto) {

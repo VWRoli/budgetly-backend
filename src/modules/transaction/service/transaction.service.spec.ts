@@ -11,6 +11,10 @@ import { AccountService } from '../../account/service';
 import { Budget } from '../../budget/entities';
 import { CategoryService } from '../../category/service';
 import { SubCategoryService } from '../../sub-category/service';
+import { stubTransactionResponse } from '../entities/response-transaction.stub';
+
+const transactionStubResponse = stubTransactionResponse();
+const transactionResponseStubs = [transactionStubResponse];
 
 const transactionStub = stubTransaction();
 const transactionStubs = [transactionStub];
@@ -93,7 +97,7 @@ describe('TransactionService', () => {
 
       const result = await service.getAll(accountId);
 
-      expect(result).toEqual(transactionStubs);
+      expect(result).toEqual(transactionResponseStubs);
       expect(repository.find).toHaveBeenCalled();
     });
   });

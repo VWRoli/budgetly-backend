@@ -19,9 +19,17 @@ export class SubCategoryService {
   ) {}
 
   async getAll(categoryId: number) {
-    return await this.repository.find({
+    const subCategories = await this.repository.find({
       where: { category: { id: categoryId } },
+      select: ['id', 'title', 'budgeted', 'outflows', 'balance'],
     });
+
+    //remove transactionIds and subCategoryIds
+    subCategories.map((cat) => {
+      delete cat.transactionIds;
+    });
+
+    return subCategories;
   }
   async createOne(data: CreateSubCategoryDto) {
     //check if category exists

@@ -19,11 +19,32 @@ export class CategoryService {
   ) {}
 
   async getAll(budgetId: number) {
-    return await this.repository.find({
+    const categories = await this.repository.find({
       where: { budget: { id: budgetId } },
       relations: { subCategories: true },
+      select: ['id', 'title', 'budgeted', 'outflows', 'balance'],
     });
+
+    const reducedSubCategories = categories.map((cat) => ({
+      ...cat,
+      subCategories: cat.subCategories.map((subCat) => ({
+        id: subCat.id,
+        title: subCat.title,
+        balance: subCat.balance,
+        budgeted: subCat.budgeted,
+        outflows: subCat.outflows,
+      })),
+    }));
+
+    //remove transactionIds and subCategoryIds
+    reducedSubCategories.map((cat) => {
+      delete cat.transactionIds;
+      delete cat.subCategoryIds;
+    });
+
+    return reducedSubCategories;
   }
+
   async createOne(data: CreateCategoryDto) {
     //check if budget exists
     const budget = await this.budgetRepository.findOne({
