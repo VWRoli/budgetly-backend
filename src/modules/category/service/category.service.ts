@@ -25,7 +25,7 @@ export class CategoryService {
       select: ['id', 'title', 'budgeted', 'outflows', 'balance'],
     });
 
-    const reducedSubCategories = categories.map((cat) => ({
+    const cleanedSubCategories = categories.map((cat) => ({
       ...cat,
       subCategories: cat.subCategories.map((subCat) => ({
         id: subCat.id,
@@ -36,13 +36,7 @@ export class CategoryService {
       })),
     }));
 
-    //remove transactionIds and subCategoryIds
-    reducedSubCategories.map((cat) => {
-      delete cat.transactionIds;
-      delete cat.subCategoryIds;
-    });
-
-    return reducedSubCategories;
+    return cleanedSubCategories;
   }
 
   async createOne(data: CreateCategoryDto) {

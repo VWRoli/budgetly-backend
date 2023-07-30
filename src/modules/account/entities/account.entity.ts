@@ -31,9 +31,6 @@ export class Account {
   @OneToMany(() => Transaction, (transaction) => transaction.account)
   transactions: Transaction[];
 
-  @RelationId((account: Account) => account.transactions)
-  transactionIds: number[];
-
   @Column()
   balance: number;
 

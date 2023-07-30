@@ -40,20 +40,11 @@ export class Budget {
   @OneToMany(() => Transaction, (transaction) => transaction.budget)
   transactions: Transaction[];
 
-  @RelationId((budget: Budget) => budget.transactions)
-  transactionIds: number[];
-
   @OneToMany(() => Account, (account) => account.budget)
   accounts: Account[];
 
-  @RelationId((budget: Budget) => budget.accounts)
-  accountIds: number[];
-
   @OneToMany(() => Category, (category) => category.budget)
   categories: Category[];
-
-  @RelationId((budget: Budget) => budget.categories)
-  categoryIds: number[];
 
   @CreateDateColumn()
   createTimeStamp: Date;

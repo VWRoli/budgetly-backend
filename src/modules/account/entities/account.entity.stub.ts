@@ -8,7 +8,6 @@ export const stubAccount = (): Account => {
     budget: stubBudget(),
     budgetId: stubBudget().id,
     transactions: [],
-    transactionIds: [],
     balance: 0,
     createTimeStamp: new Date('2022-01-01'),
     updateTimeStamp: new Date('2022-01-02'),

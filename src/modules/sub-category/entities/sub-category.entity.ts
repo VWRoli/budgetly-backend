@@ -40,9 +40,6 @@ export class SubCategory {
   @OneToMany(() => Transaction, (transaction) => transaction.subCategory)
   transactions: Transaction[];
 
-  @RelationId((subCategory: SubCategory) => subCategory.transactions)
-  transactionIds: number[];
-
   @CreateDateColumn()
   createTimeStamp: Date;
 

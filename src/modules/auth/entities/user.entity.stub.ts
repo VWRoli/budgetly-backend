@@ -6,7 +6,6 @@ export const stubUser = (): User => {
     email: 'test@example.com',
     hash: 'passwordHash',
     budgets: [],
-    budgetIds: [],
     defaultBudgetId: null,
     createTimeStamp: new Date('2022-01-01'),
     updateTimeStamp: new Date('2022-01-02'),

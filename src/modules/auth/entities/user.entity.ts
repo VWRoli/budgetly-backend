@@ -5,7 +5,6 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   OneToMany,
-  RelationId,
   PrimaryGeneratedColumn,
   DeleteDateColumn,
 } from 'typeorm';
@@ -25,9 +24,6 @@ export class User {
 
   @OneToMany(() => Budget, (budget) => budget.user)
   budgets: Budget[];
-
-  @RelationId((user: User) => user.budgets)
-  budgetIds: string[];
 
   @Column({ nullable: true })
   defaultBudgetId: number;

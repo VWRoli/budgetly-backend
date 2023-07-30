@@ -25,9 +25,6 @@ export class AccountService {
       select: ['id', 'name', 'balance'],
     });
 
-    //remove transactionIds
-    accounts.map((acc) => delete acc.transactionIds);
-
     return accounts;
   }
 

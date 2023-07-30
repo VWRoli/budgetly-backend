@@ -11,7 +11,6 @@ export const stubSubCategory = (): SubCategory => {
     category: stubCategory(),
     categoryId: stubCategory().id,
     transactions: [],
-    transactionIds: [],
     createTimeStamp: new Date('2022-01-01'),
     updateTimeStamp: new Date('2022-01-02'),
     deleteTimeStamp: null,

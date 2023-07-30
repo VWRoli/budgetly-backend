@@ -26,12 +26,6 @@ export class BudgetService {
       select: ['id', 'name', 'locale', 'currency'],
     });
 
-    //remove accountIds and categoryIds and transactionIds
-    budgets.map((b) => {
-      delete b.accountIds;
-      delete b.categoryIds;
-      delete b.transactionIds;
-    });
     return budgets;
   }
 
