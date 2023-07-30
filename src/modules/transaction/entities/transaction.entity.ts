@@ -12,6 +12,7 @@ import {
 } from 'typeorm';
 import { Account } from '../../account/entities';
 import { Category } from '../../category/entities';
+import { Budget } from '../../budget/entities';
 import { SubCategory } from '../../sub-category/entities';
 
 @Entity()
@@ -21,6 +22,13 @@ export class Transaction {
 
   @Column()
   payee: string;
+
+  @ManyToOne(() => Budget, (budget) => budget.transactions)
+  @JoinColumn()
+  budget: Budget;
+
+  @RelationId((transaction: Transaction) => transaction.budget)
+  budgetId: number;
 
   @ManyToOne(() => Account, (account) => account.transactions)
   @JoinColumn()

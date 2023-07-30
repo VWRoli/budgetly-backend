@@ -4,6 +4,9 @@ export interface IResponseTransaction {
   date: Date;
   inflow: number | null;
   outflow: number | null;
+  budget: {
+    id: number;
+  };
   account: {
     id: number;
     name: string;

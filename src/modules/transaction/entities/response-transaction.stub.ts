@@ -7,6 +7,9 @@ export const stubTransactionResponse = (): IResponseTransaction => {
     date: new Date('2022-01-01'),
     inflow: 1000,
     outflow: 500,
+    budget: {
+      id: 1,
+    },
     account: {
       id: 1,
       name: 'Test Account',

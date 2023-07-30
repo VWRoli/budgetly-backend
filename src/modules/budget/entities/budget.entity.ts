@@ -14,6 +14,7 @@ import { ECurrency, ELocale } from '../enum';
 import { User } from '../../auth/entities';
 import { Account } from '../../account/entities';
 import { Category } from '../../category/entities';
+import { Transaction } from '../../transaction/entities';
 
 @Entity()
 export class Budget {
@@ -35,6 +36,12 @@ export class Budget {
 
   @RelationId((budget: Budget) => budget.user)
   userId: number;
+
+  @OneToMany(() => Transaction, (transaction) => transaction.budget)
+  transactions: Transaction[];
+
+  @RelationId((budget: Budget) => budget.transactions)
+  transactionIds: number[];
 
   @OneToMany(() => Account, (account) => account.budget)
   accounts: Account[];

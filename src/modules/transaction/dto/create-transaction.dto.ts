@@ -11,6 +11,10 @@ export class CreateTransactionDto {
 
   @IsNumber()
   @ApiProperty({ example: 1, required: true })
+  readonly budgetId: number;
+
+  @IsNumber()
+  @ApiProperty({ example: 1, required: true })
   readonly accountId: number;
 
   @IsNumber()

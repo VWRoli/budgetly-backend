@@ -10,6 +10,7 @@ import { Budget } from '../budget/entities';
 import { TransactionService } from './service';
 import { SubCategoryService } from '../sub-category/service';
 import { CategoryService } from '../category/service';
+import { BudgetService } from '../budget/service';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { CategoryService } from '../category/service';
   ],
   controllers: [TransactionController],
   providers: [
+    BudgetService,
     TransactionService,
     AccountService,
     SubCategoryService,

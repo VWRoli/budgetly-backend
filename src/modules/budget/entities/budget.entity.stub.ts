@@ -12,6 +12,8 @@ export const stubBudget = (): Budget => {
     userId: stubUser().id,
     accounts: [],
     accountIds: [],
+    transactions: [],
+    transactionIds: [],
     categories: [],
     categoryIds: [],
     createTimeStamp: new Date('2022-01-01'),

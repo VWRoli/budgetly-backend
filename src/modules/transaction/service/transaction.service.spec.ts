@@ -12,6 +12,8 @@ import { Budget } from '../../budget/entities';
 import { CategoryService } from '../../category/service';
 import { SubCategoryService } from '../../sub-category/service';
 import { stubTransactionResponse } from '../entities/response-transaction.stub';
+import { BudgetService } from '../../budget/service';
+import { User } from '../../auth/entities';
 
 const transactionStubResponse = stubTransactionResponse();
 const transactionResponseStubs = [transactionStubResponse];
@@ -22,6 +24,7 @@ const transactionStubs = [transactionStub];
 describe('TransactionService', () => {
   let service: TransactionService;
   let repository: Repository<Transaction>;
+  let budgetRepository: Repository<Budget>;
   let accountRepository: Repository<Account>;
   let categoryRepository: Repository<Category>;
   let subCategoryRepository: Repository<SubCategory>;
@@ -30,6 +33,7 @@ describe('TransactionService', () => {
     const moduleRef = await Test.createTestingModule({
       providers: [
         TransactionService,
+        BudgetService,
         AccountService,
         CategoryService,
         SubCategoryService,
@@ -41,6 +45,13 @@ describe('TransactionService', () => {
             find: jest.fn().mockResolvedValue(transactionStub),
             create: jest.fn().mockResolvedValue(transactionStub),
             softDelete: jest.fn(),
+          },
+        },
+        {
+          provide: getRepositoryToken(Budget),
+          useValue: {
+            findOne: jest.fn().mockResolvedValue(transactionStub.budget),
+            save: jest.fn(),
           },
         },
         {
@@ -65,7 +76,7 @@ describe('TransactionService', () => {
           },
         },
         {
-          provide: getRepositoryToken(Budget),
+          provide: getRepositoryToken(User),
           useClass: Repository,
         },
       ],
@@ -74,6 +85,9 @@ describe('TransactionService', () => {
     service = moduleRef.get<TransactionService>(TransactionService);
     repository = moduleRef.get<Repository<Transaction>>(
       getRepositoryToken(Transaction),
+    );
+    budgetRepository = moduleRef.get<Repository<Budget>>(
+      getRepositoryToken(Budget),
     );
     accountRepository = moduleRef.get<Repository<Account>>(
       getRepositoryToken(Account),
@@ -104,6 +118,14 @@ describe('TransactionService', () => {
 
   describe('createOne', () => {
     it('should create a new transaction', async () => {
+      jest
+        .spyOn(budgetRepository, 'findOne')
+        .mockResolvedValue(transactionStub.budget)
+        .mockResolvedValueOnce(transactionStub.budget)
+        .mockResolvedValueOnce(transactionStub.budget)
+        .mockResolvedValueOnce(null)
+        .mockResolvedValueOnce(transactionStub.budget)
+        .mockResolvedValueOnce(null);
       jest
         .spyOn(accountRepository, 'findOne')
         .mockResolvedValue(transactionStub.account)
@@ -140,7 +162,7 @@ describe('TransactionService', () => {
     });
 
     it('should throw a NotFoundException if transaction does not exist', async () => {
-      jest.spyOn(accountRepository, 'findOne').mockResolvedValue(null);
+      jest.spyOn(budgetRepository, 'findOne').mockResolvedValue(null);
 
       await expect(service.createOne(transactionStub)).rejects.toThrowError(
         NotFoundException,

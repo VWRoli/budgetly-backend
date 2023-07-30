@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Account } from '../../account/entities';
 import { Category } from '../../category/entities';
+import { Budget } from '../../budget/entities';
 import { SubCategory } from '../../sub-category/entities';
 import { AccountService } from '../../account/service';
 import { SubCategoryService } from '../../sub-category/service';
@@ -16,6 +17,8 @@ export class TransactionService {
   constructor(
     @InjectRepository(Transaction)
     private repository: Repository<Transaction>,
+    @InjectRepository(Budget)
+    private budgetRepository: Repository<Budget>,
     @InjectRepository(Account)
     private accountRepository: Repository<Account>,
     @InjectRepository(Category)
@@ -40,6 +43,7 @@ export class TransactionService {
         date: txn.date,
         inflow: txn.inflow,
         outflow: txn.outflow,
+        budget: { id: txn.budget.id },
         account: { id: txn.account.id, name: txn.account.name },
         category: { id: txn.category.id, title: txn.category.title },
         subCategory: { id: txn.subCategory.id, title: txn.subCategory.title },
@@ -49,6 +53,17 @@ export class TransactionService {
     return reducedTransactions;
   }
   async createOne(data: CreateTransactionDto) {
+    //check if account exists
+    const budget = await this.budgetRepository.findOne({
+      where: {
+        id: data.budgetId,
+      },
+    });
+
+    if (!budget) {
+      throw new NotFoundException(`No budget with the provided id`);
+    }
+
     //check if account exists
     const account = await this.accountRepository.findOne({
       where: {
@@ -90,6 +105,7 @@ export class TransactionService {
       inflow: data.inflow,
       outflow: data.outflow,
       account: account, // Assign the account object to the 'account' property
+      budget: budget, // Assign the account object to the 'budget' property
     });
 
     if (data.inflow) {
