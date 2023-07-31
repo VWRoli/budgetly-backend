@@ -36,7 +36,7 @@ export class BudgetService {
     });
 
     if (!budget) {
-      throw new NotFoundException(`No user with the provided id`);
+      throw new NotFoundException(`No Budget with the provided id`);
     }
     return budget;
   }
@@ -50,7 +50,7 @@ export class BudgetService {
     });
 
     if (!user) {
-      throw new NotFoundException(`No user with the provided id`);
+      throw new NotFoundException(`No Budget with the provided id`);
     }
 
     // check if data is already created

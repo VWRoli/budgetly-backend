@@ -30,10 +30,15 @@ export class TransactionService {
     private readonly subCategoryService: SubCategoryService,
   ) {}
 
-  async getAll(accountId: number) {
+  async getAll(findCondition: any) {
     const transactions = await this.repository.find({
-      where: { account: { id: accountId } },
-      relations: { account: true, category: true, subCategory: true },
+      ...findCondition,
+      relations: {
+        account: true,
+        category: true,
+        subCategory: true,
+        budget: true,
+      },
       select: ['id', 'payee', 'date', 'inflow', 'outflow'],
     });
     const reducedTransactions: IResponseTransaction[] = transactions.map(
@@ -52,6 +57,7 @@ export class TransactionService {
 
     return reducedTransactions;
   }
+
   async createOne(data: CreateTransactionDto) {
     //check if account exists
     const budget = await this.budgetRepository.findOne({

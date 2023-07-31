@@ -25,8 +25,17 @@ export class TransactionController {
 
   @Get(':accountId')
   @ApiOkResponse({ type: Transaction, isArray: true })
-  getTransactions(@Param('accountId') accountId: number) {
-    return this.transactionService.getAll(accountId);
+  getTransactionsByAccountId(@Param('accountId') accountId: number) {
+    return this.transactionService.getAll({
+      where: { account: { id: accountId } },
+    });
+  }
+  @Get('/budget/:budgetId')
+  @ApiOkResponse({ type: Transaction, isArray: true })
+  getTransactionsByBudgetId(@Param('budgetId') budgetId: number) {
+    return this.transactionService.getAll({
+      where: { budget: { id: budgetId } },
+    });
   }
 
   @Post()

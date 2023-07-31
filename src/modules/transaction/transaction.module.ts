@@ -7,6 +7,7 @@ import { Category } from '../category/entities';
 import { SubCategory } from '../sub-category/entities';
 import { AccountService } from '../account/service';
 import { Budget } from '../budget/entities';
+import { User } from '../auth/entities';
 import { TransactionService } from './service';
 import { SubCategoryService } from '../sub-category/service';
 import { CategoryService } from '../category/service';
@@ -20,6 +21,7 @@ import { BudgetService } from '../budget/service';
       Category,
       SubCategory,
       Budget,
+      User,
     ]),
   ],
   controllers: [TransactionController],

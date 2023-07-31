@@ -114,6 +114,16 @@ describe('TransactionService', () => {
       expect(result).toEqual(transactionResponseStubs);
       expect(repository.find).toHaveBeenCalled();
     });
+
+    it('should return all transactions for a given account', async () => {
+      const budgetId = transactionStub.budgetId;
+      jest.spyOn(repository, 'find').mockResolvedValue(transactionStubs);
+
+      const result = await service.getAll(budgetId);
+
+      expect(result).toEqual(transactionResponseStubs);
+      expect(repository.find).toHaveBeenCalled();
+    });
   });
 
   describe('createOne', () => {

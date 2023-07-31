@@ -76,10 +76,18 @@ describe('TransactionController', () => {
   });
 
   describe('getTransactions', () => {
-    it('should return an array of transactions', async () => {
+    it('should return an array of transactions, search by accountID', async () => {
       jest.spyOn(service, 'getAll').mockResolvedValue(transactionResponseStubs);
-      const result = await controller.getTransactions(
+      const result = await controller.getTransactionsByAccountId(
         transactionStub.accountId,
+      );
+
+      expect(result).toEqual(transactionResponseStubs);
+    });
+    it('should return an array of transactions, search by budgetId', async () => {
+      jest.spyOn(service, 'getAll').mockResolvedValue(transactionResponseStubs);
+      const result = await controller.getTransactionsByBudgetId(
+        transactionStub.budgetId,
       );
 
       expect(result).toEqual(transactionResponseStubs);
