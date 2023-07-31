@@ -10,7 +10,8 @@ import { SubCategory } from '../../sub-category/entities';
 import { AccountService } from '../../account/service';
 import { SubCategoryService } from '../../sub-category/service';
 import { CategoryService } from '../../category/service';
-import { IResponseTransaction } from 'src/modules/transaction/response-transaction.interface';
+import { TransactionResponseDto } from '../dto';
+import { createResponseDto } from '../../transaction/transaction.helper';
 
 @Injectable()
 export class TransactionService {
@@ -41,18 +42,8 @@ export class TransactionService {
       },
       select: ['id', 'payee', 'date', 'inflow', 'outflow'],
     });
-    const reducedTransactions: IResponseTransaction[] = transactions.map(
-      (txn) => ({
-        id: txn.id,
-        payee: txn.payee,
-        date: txn.date,
-        inflow: txn.inflow,
-        outflow: txn.outflow,
-        budget: { id: txn.budget.id },
-        account: { id: txn.account.id, name: txn.account.name },
-        category: { id: txn.category.id, title: txn.category.title },
-        subCategory: { id: txn.subCategory.id, title: txn.subCategory.title },
-      }),
+    const reducedTransactions: TransactionResponseDto[] = transactions.map(
+      (txn) => createResponseDto(txn),
     );
 
     return reducedTransactions;
@@ -81,6 +72,33 @@ export class TransactionService {
       throw new NotFoundException(`No account with the provided id`);
     }
 
+    //if there is no category id then it is a transfer between accounts
+    const isTransfer = !data.categoryId;
+    if (isTransfer) {
+      const transfer = this.createTransfer(data, account, budget);
+      return transfer;
+    } else {
+      const transaction: TransactionResponseDto = await this.createTransaction(
+        data,
+        account,
+        budget,
+      );
+      return transaction;
+    }
+  }
+  async createTransfer(
+    data: CreateTransactionDto,
+    account: Account,
+    budget: Budget,
+  ) {
+    console.log('transfer');
+  }
+
+  async createTransaction(
+    data: CreateTransactionDto,
+    account: Account,
+    budget: Budget,
+  ): Promise<TransactionResponseDto> {
     //check if category exists
     const category = await this.categoryRepository.findOne({
       where: {
@@ -150,7 +168,10 @@ export class TransactionService {
       });
     }
     //save transaction entity in DB
-    return await this.repository.save(transaction);
+    const savedTransaction = await this.repository.save(transaction);
+
+    //format response
+    return createResponseDto(savedTransaction);
   }
 
   async updateOne(id: number, data: UpdateTransactionDto) {
@@ -188,10 +209,13 @@ export class TransactionService {
     currentTransaction.inflow = data.inflow;
     currentTransaction.outflow = data.outflow;
     (currentTransaction.category = category), // Assign the category object to the 'category' property
-      (currentTransaction.subCategory = subCategory), // Assign the subCategory object to the 'subCategory' property
-      // Save the updated budget entity in the database
-      await this.repository.save(currentTransaction);
-    return currentTransaction;
+      (currentTransaction.subCategory = subCategory); // Assign the subCategory object to the 'subCategory' property
+
+    //save transaction entity in DB
+    const savedTransaction = await this.repository.save(currentTransaction);
+
+    //format response
+    return createResponseDto(savedTransaction);
   }
   async deleteOne(id: number) {
     try {

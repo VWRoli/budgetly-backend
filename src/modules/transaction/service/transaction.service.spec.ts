@@ -15,8 +15,8 @@ import { stubTransactionResponse } from '../entities/response-transaction.stub';
 import { BudgetService } from '../../budget/service';
 import { User } from '../../auth/entities';
 
-const transactionStubResponse = stubTransactionResponse();
-const transactionResponseStubs = [transactionStubResponse];
+const transactionResponseStub = stubTransactionResponse();
+const transactionResponseStubs = [transactionResponseStub];
 
 const transactionStub = stubTransaction();
 const transactionStubs = [transactionStub];
@@ -167,7 +167,7 @@ describe('TransactionService', () => {
 
       const result = await service.createOne(transactionStub);
 
-      expect(result).toEqual(transactionStub);
+      expect(result).toEqual(transactionResponseStub);
       expect(repository.save).toHaveBeenCalledWith(transactionStub);
     });
 
@@ -193,7 +193,10 @@ describe('TransactionService', () => {
 
       const result = await service.updateOne(accountId, updatedTransaction);
 
-      expect(result).toEqual(updatedTransaction);
+      expect(result).toEqual({
+        ...transactionResponseStub,
+        payee: 'Updated Payee',
+      });
 
       expect(repository.save).toHaveBeenCalledWith(updatedTransaction);
     });

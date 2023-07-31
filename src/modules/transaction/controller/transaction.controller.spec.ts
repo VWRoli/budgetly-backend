@@ -15,9 +15,8 @@ import { Budget } from '../../budget/entities';
 import { stubTransactionResponse } from '../entities/response-transaction.stub';
 
 const transactionStub = stubTransaction();
-const transactionStubResponse = stubTransactionResponse();
-const transactionResponseStubs = [transactionStubResponse];
-const transactionStubs = [transactionStub];
+const transactionResponseStub = stubTransactionResponse();
+const transactionResponseStubs = [transactionResponseStub];
 
 describe('TransactionController', () => {
   let controller: TransactionController;
@@ -96,22 +95,26 @@ describe('TransactionController', () => {
 
   describe('createTransaction', () => {
     it('should create a new transaction', async () => {
-      jest.spyOn(service, 'createOne').mockResolvedValue(transactionStub);
+      jest
+        .spyOn(service, 'createOne')
+        .mockResolvedValue(transactionResponseStub);
       const result = await controller.createTransaction(transactionStub);
 
-      expect(result).toEqual(transactionStub);
+      expect(result).toEqual(transactionResponseStub);
     });
   });
 
   describe('updateTransaction', () => {
     it('should update an existing transaction', async () => {
-      jest.spyOn(service, 'updateOne').mockResolvedValue(transactionStub);
+      jest
+        .spyOn(service, 'updateOne')
+        .mockResolvedValue(transactionResponseStub);
       const result = await controller.updateTransaction(
         transactionStub.id,
         transactionStub,
       );
 
-      expect(result).toEqual(transactionStub);
+      expect(result).toEqual(transactionResponseStub);
     });
   });
 

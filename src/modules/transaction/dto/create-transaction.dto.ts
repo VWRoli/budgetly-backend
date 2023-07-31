@@ -18,12 +18,14 @@ export class CreateTransactionDto {
   readonly accountId: number;
 
   @IsNumber()
-  @ApiProperty({ example: 1, required: true })
-  readonly categoryId: number;
+  @ApiProperty({ example: 1, required: false })
+  @IsOptional()
+  readonly categoryId?: number;
 
   @IsNumber()
-  @ApiProperty({ example: 1, required: true })
-  readonly subCategoryId: number;
+  @ApiProperty({ example: 1, required: false })
+  @IsOptional()
+  readonly subCategoryId?: number;
 
   @IsNotEmpty()
   @ApiProperty({

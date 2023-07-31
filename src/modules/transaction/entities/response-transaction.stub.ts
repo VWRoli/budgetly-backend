@@ -1,15 +1,13 @@
-import { IResponseTransaction } from 'src/modules/transaction/response-transaction.interface';
+import { TransactionResponseDto } from '../../transaction/dto';
 
-export const stubTransactionResponse = (): IResponseTransaction => {
+export const stubTransactionResponse = (): TransactionResponseDto => {
   return {
     id: 1,
     payee: 'Test Payee',
     date: new Date('2022-01-01'),
     inflow: 1000,
     outflow: 500,
-    budget: {
-      id: 1,
-    },
+    budgetId: 1,
     account: {
       id: 1,
       name: 'Test Account',

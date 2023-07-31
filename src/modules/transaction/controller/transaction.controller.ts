@@ -24,7 +24,12 @@ export class TransactionController {
   constructor(private readonly transactionService: TransactionService) {}
 
   @Get(':accountId')
-  @ApiOkResponse({ type: Transaction, isArray: true })
+  @ApiOkResponse({
+    status: 200,
+    description: 'List of transactions',
+    type: Transaction,
+    isArray: true,
+  })
   getTransactionsByAccountId(@Param('accountId') accountId: number) {
     return this.transactionService.getAll({
       where: { account: { id: accountId } },
