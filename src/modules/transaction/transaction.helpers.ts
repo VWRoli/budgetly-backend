@@ -5,7 +5,7 @@ export const createTransactionResponseDto = (
   transaction: Transaction,
 ): TransactionResponseDto => {
   //if there is no category id then it is a transfer between accounts
-  const isTransfer = !transaction.categoryId;
+  const isTransfer = !transaction.category?.id;
   if (isTransfer) {
     return {
       id: transaction.id,

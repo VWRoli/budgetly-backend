@@ -45,7 +45,6 @@ export class TransactionService {
     const responseTransactions: TransactionResponseDto[] = transactions.map(
       (txn) => createTransactionResponseDto(txn),
     );
-
     return responseTransactions;
   }
 
