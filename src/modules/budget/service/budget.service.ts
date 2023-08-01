@@ -3,13 +3,13 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { CreateBudgetDto } from '../dto';
+import { BudgetResponseDto, CreateBudgetDto } from '../dto';
 import { Budget } from '../entities';
 import { Not, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { UpdateBudgetDto } from '../dto/update-budget.dto';
+import { UpdateBudgetDto } from '../dto';
 import { User } from '../../auth/entities';
-import { setLoacle } from '../budget.helpers';
+import { createBudgetResponseDto, setLoacle } from '../budget.helpers';
 
 @Injectable()
 export class BudgetService {
@@ -20,16 +20,21 @@ export class BudgetService {
     private userRepository: Repository<User>,
   ) {}
 
-  async getAll(userId: number) {
+  async getAll(userId: number): Promise<BudgetResponseDto[]> {
     const budgets = await this.repository.find({
       where: { user: { id: userId } },
       select: ['id', 'name', 'locale', 'currency'],
     });
 
-    return budgets;
+    //format response
+    const responseBudgets: BudgetResponseDto[] = budgets.map((budget) =>
+      createBudgetResponseDto(budget),
+    );
+
+    return responseBudgets;
   }
 
-  async getOne(id: number) {
+  async getOne(id: number): Promise<Budget> {
     const budget = await this.repository.findOne({
       where: { id },
       relations: { accounts: true },
@@ -41,7 +46,7 @@ export class BudgetService {
     return budget;
   }
 
-  async createOne(data: CreateBudgetDto) {
+  async createOne(data: CreateBudgetDto): Promise<BudgetResponseDto> {
     //check if user exists
     const user = await this.userRepository.findOne({
       where: {
@@ -80,10 +85,15 @@ export class BudgetService {
 
     //set default budget
     await this.setDefault(user.id, savedBudget.id);
-    return savedBudget;
+
+    //format response
+    return createBudgetResponseDto(savedBudget);
   }
 
-  async updateOne(id: number, data: UpdateBudgetDto) {
+  async updateOne(
+    id: number,
+    data: UpdateBudgetDto,
+  ): Promise<BudgetResponseDto> {
     const currentBudget = await this.repository.findOne({
       where: { id },
     });
@@ -110,7 +120,9 @@ export class BudgetService {
     currentBudget.currency = data.currency;
     // Save the updated budget entity in the database
     await this.repository.save(currentBudget);
-    return currentBudget;
+
+    //format response
+    return createBudgetResponseDto(currentBudget);
   }
 
   async deleteOne(id: number) {

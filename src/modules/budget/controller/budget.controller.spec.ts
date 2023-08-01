@@ -1,11 +1,13 @@
 import { Repository } from 'typeorm';
-import { Budget, stubBudget } from '../entities';
+import { Budget, stubBudget, stubBudgetResponse } from '../entities';
 import { BudgetService } from '../service';
 import { BudgetController } from './budget.controller';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { Test } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { User } from '../../auth/entities';
+
+const budgetResponseStub = stubBudgetResponse();
 
 const budgetStub = stubBudget();
 const budgetStubs = [budgetStub];
@@ -69,19 +71,19 @@ describe('BudgetController', () => {
 
   describe('createBudget', () => {
     it('should create a new budget', async () => {
-      jest.spyOn(service, 'createOne').mockResolvedValue(budgetStub);
+      jest.spyOn(service, 'createOne').mockResolvedValue(budgetResponseStub);
       const result = await controller.createBudget(budgetStub);
 
-      expect(result).toEqual(budgetStub);
+      expect(result).toEqual(budgetResponseStub);
     });
   });
 
   describe('updateBudget', () => {
     it('should update an existing budget', async () => {
-      jest.spyOn(service, 'updateOne').mockResolvedValue(budgetStub);
+      jest.spyOn(service, 'updateOne').mockResolvedValue(budgetResponseStub);
       const result = await controller.updateBudget(budgetStub.id, budgetStub);
 
-      expect(result).toEqual(budgetStub);
+      expect(result).toEqual(budgetResponseStub);
     });
   });
 

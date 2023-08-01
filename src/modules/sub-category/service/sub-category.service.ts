@@ -3,11 +3,16 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { CreateSubCategoryDto, UpdateSubCategoryDto } from '../dto';
+import {
+  CreateSubCategoryDto,
+  SubCategoryResponseDto,
+  UpdateSubCategoryDto,
+} from '../dto';
 import { SubCategory } from '../entities';
 import { Not, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Category } from '../../category/entities';
+import { createSubCategoryResponseDto } from '../../sub-category/sub-category.helperes';
 
 @Injectable()
 export class SubCategoryService {
@@ -18,15 +23,20 @@ export class SubCategoryService {
     private categoryRepository: Repository<Category>,
   ) {}
 
-  async getAll(categoryId: number) {
+  async getAll(categoryId: number): Promise<SubCategoryResponseDto[]> {
     const subCategories = await this.repository.find({
       where: { category: { id: categoryId } },
       select: ['id', 'title', 'budgeted', 'outflows', 'balance'],
     });
 
-    return subCategories;
+    //format response
+    const responseSubCategories: SubCategoryResponseDto[] = subCategories.map(
+      (subCategory) => createSubCategoryResponseDto(subCategory),
+    );
+
+    return responseSubCategories;
   }
-  async createOne(data: CreateSubCategoryDto) {
+  async createOne(data: CreateSubCategoryDto): Promise<SubCategoryResponseDto> {
     //check if category exists
     const category = await this.categoryRepository.findOne({
       where: {
@@ -57,10 +67,16 @@ export class SubCategoryService {
       category: category, // Assign the category object to the 'category' property
     });
     // Save the category Item entity in the DB
-    return await this.repository.save(subCategory);
+    const savedSubCategory = await this.repository.save(subCategory);
+
+    //format response
+    return createSubCategoryResponseDto(savedSubCategory);
   }
 
-  async updateOne(id: number, data: UpdateSubCategoryDto) {
+  async updateOne(
+    id: number,
+    data: UpdateSubCategoryDto,
+  ): Promise<SubCategoryResponseDto> {
     const currentSubCategory = await this.repository.findOne({
       where: { id },
     });
@@ -90,7 +106,9 @@ export class SubCategoryService {
 
     // Save the updated SubCategory entity in the database
     await this.repository.save(currentSubCategory);
-    return currentSubCategory;
+
+    //format response
+    return createSubCategoryResponseDto(currentSubCategory);
   }
   async deleteOne(id: number) {
     try {

@@ -1,7 +1,7 @@
 import { Transaction } from './entities';
 import { TransactionResponseDto } from './dto';
 
-export const createResponseDto = (
+export const createTransactionResponseDto = (
   transaction: Transaction,
 ): TransactionResponseDto => {
   return {

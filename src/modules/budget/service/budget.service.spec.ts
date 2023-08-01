@@ -1,11 +1,14 @@
 import { Repository } from 'typeorm';
-import { Budget, stubBudget } from '../entities';
+import { Budget, stubBudget, stubBudgetResponse } from '../entities';
 import { BudgetService } from './budget.service';
 import { User } from '../../auth/entities';
 import { Test } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { ConflictException, NotFoundException } from '@nestjs/common';
 import { ECurrency } from '../enum';
+
+const budgetResponseStub = stubBudgetResponse();
+const budgetResponseStubs = [budgetResponseStub];
 
 const budgetStub = stubBudget();
 const budgetStubs = [budgetStub];
@@ -59,7 +62,7 @@ describe('BudgetService', () => {
 
       const result = await service.getAll(userId);
 
-      expect(result).toEqual(budgetStubs);
+      expect(result).toEqual(budgetResponseStubs);
       expect(repository.find).toHaveBeenCalled();
     });
   });
@@ -97,7 +100,7 @@ describe('BudgetService', () => {
 
       const result = await service.createOne(budgetStub);
 
-      expect(result).toEqual(budgetStub);
+      expect(result).toEqual(budgetResponseStub);
       expect(repository.save).toHaveBeenCalledWith(budgetStub);
       expect(service.setDefault).toHaveBeenCalledWith(
         budgetStub.user.id,
@@ -141,7 +144,11 @@ describe('BudgetService', () => {
 
       const result = await service.updateOne(budgetStub.userId, updatedBudget);
       expect(repository.findOne).toHaveBeenCalledTimes(2);
-      expect(result).toEqual(budgetStub);
+      expect(result).toEqual({
+        ...budgetResponseStub,
+        name: 'Updated Budget',
+        currency: ECurrency.GBP,
+      });
       expect(repository.save).toHaveBeenCalledWith(budgetStub);
     });
 

@@ -6,9 +6,12 @@ import { Budget } from '../../budget/entities';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
+import { stubAccountResponse } from '../../account/entities';
+
+const accountResponseStub = stubAccountResponse();
+const accountResponseStubs = [accountResponseStub];
 
 const accountStub = stubAccount();
-const accountStubs = [accountStub];
 
 describe('AccountController', () => {
   let controller: AccountController;
@@ -53,31 +56,31 @@ describe('AccountController', () => {
 
   describe('getAccounts', () => {
     it('should return an array of accounts', async () => {
-      jest.spyOn(service, 'getAll').mockResolvedValue(accountStubs);
+      jest.spyOn(service, 'getAll').mockResolvedValue(accountResponseStubs);
       const result = await controller.getAccounts(accountStub.budgetId);
 
-      expect(result).toEqual(accountStubs);
+      expect(result).toEqual(accountResponseStubs);
     });
   });
 
   describe('createAccount', () => {
     it('should create a new account', async () => {
-      jest.spyOn(service, 'createOne').mockResolvedValue(accountStub);
+      jest.spyOn(service, 'createOne').mockResolvedValue(accountResponseStub);
       const result = await controller.createAccount(accountStub);
 
-      expect(result).toEqual(accountStub);
+      expect(result).toEqual(accountResponseStub);
     });
   });
 
   describe('updateAccount', () => {
     it('should update an existing account', async () => {
-      jest.spyOn(service, 'updateOne').mockResolvedValue(accountStub);
+      jest.spyOn(service, 'updateOne').mockResolvedValue(accountResponseStub);
       const result = await controller.updateAccount(
         accountStub.id,
         accountStub,
       );
 
-      expect(result).toEqual(accountStub);
+      expect(result).toEqual(accountResponseStub);
     });
   });
 

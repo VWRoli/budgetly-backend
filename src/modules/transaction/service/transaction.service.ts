@@ -11,7 +11,7 @@ import { AccountService } from '../../account/service';
 import { SubCategoryService } from '../../sub-category/service';
 import { CategoryService } from '../../category/service';
 import { TransactionResponseDto } from '../dto';
-import { createResponseDto } from '../../transaction/transaction.helper';
+import { createTransactionResponseDto } from '../transaction.helpers';
 
 @Injectable()
 export class TransactionService {
@@ -42,11 +42,11 @@ export class TransactionService {
       },
       select: ['id', 'payee', 'date', 'inflow', 'outflow'],
     });
-    const reducedTransactions: TransactionResponseDto[] = transactions.map(
-      (txn) => createResponseDto(txn),
+    const responseTransactions: TransactionResponseDto[] = transactions.map(
+      (txn) => createTransactionResponseDto(txn),
     );
 
-    return reducedTransactions;
+    return responseTransactions;
   }
 
   async createOne(data: CreateTransactionDto) {
@@ -171,7 +171,7 @@ export class TransactionService {
     const savedTransaction = await this.repository.save(transaction);
 
     //format response
-    return createResponseDto(savedTransaction);
+    return createTransactionResponseDto(savedTransaction);
   }
 
   async updateOne(id: number, data: UpdateTransactionDto) {
@@ -215,7 +215,7 @@ export class TransactionService {
     const savedTransaction = await this.repository.save(currentTransaction);
 
     //format response
-    return createResponseDto(savedTransaction);
+    return createTransactionResponseDto(savedTransaction);
   }
   async deleteOne(id: number) {
     try {

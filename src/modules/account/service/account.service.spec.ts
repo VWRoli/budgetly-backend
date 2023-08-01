@@ -6,6 +6,10 @@ import { AccountService } from './account.service';
 import { Account } from '../entities/account.entity';
 import { Budget } from '../../budget/entities/budget.entity';
 import { stubAccount } from '../entities';
+import { stubAccountResponse } from '../../account/entities';
+
+const accountResponseStub = stubAccountResponse();
+const accountResponseStubs = [accountResponseStub];
 
 const accountStub = stubAccount();
 const accountStubs = [accountStub];
@@ -56,7 +60,7 @@ describe('AccountService', () => {
 
       const result = await service.getAll(budgetId);
 
-      expect(result).toEqual(accountStubs);
+      expect(result).toEqual(accountResponseStubs);
       expect(repository.find).toHaveBeenCalledWith({
         where: { budget: { id: budgetId } },
         select: ['id', 'name', 'balance'],
@@ -75,7 +79,7 @@ describe('AccountService', () => {
 
       const result = await service.createOne(accountStub);
 
-      expect(result).toEqual(accountStub);
+      expect(result).toEqual(accountResponseStub);
       expect(repository.save).toHaveBeenCalledWith(accountStub);
     });
 
@@ -117,7 +121,10 @@ describe('AccountService', () => {
         updatedAccount,
       );
       expect(repository.findOne).toHaveBeenCalledTimes(2);
-      expect(result).toEqual(accountStub);
+      expect(result).toEqual({
+        ...accountResponseStub,
+        name: 'Updated Account',
+      });
       expect(repository.save).toHaveBeenCalledWith(accountStub);
     });
 

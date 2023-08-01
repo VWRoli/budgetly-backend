@@ -1,10 +1,13 @@
 import { Repository } from 'typeorm';
-import { Category, stubCategory } from '../entities';
+import { Category, stubCategory, stubCategoryResponse } from '../entities';
 import { CategoryService } from './category.service';
 import { Budget } from '../../budget/entities';
 import { Test } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { ConflictException, NotFoundException } from '@nestjs/common';
+
+const categoryResponseStub = stubCategoryResponse();
+const categoryResponseStubs = [categoryResponseStub];
 
 const categoryStub = stubCategory();
 const categoryStubs = [categoryStub];
@@ -57,6 +60,7 @@ describe('CategoryService', () => {
       const result = await service.getAll(budgetId);
 
       expect(result).toBeDefined();
+      expect(result).toEqual(categoryResponseStubs);
       expect(repository.find).toHaveBeenCalled();
     });
   });
@@ -72,7 +76,7 @@ describe('CategoryService', () => {
 
       const result = await service.createOne(categoryStub);
 
-      expect(result).toEqual(categoryStub);
+      expect(result).toEqual(categoryResponseStub);
       expect(repository.save).toHaveBeenCalledWith(categoryStub);
     });
 
@@ -114,7 +118,10 @@ describe('CategoryService', () => {
         updatedCategory,
       );
       expect(repository.findOne).toHaveBeenCalledTimes(2);
-      expect(result).toEqual(categoryStub);
+      expect(result).toEqual({
+        ...categoryResponseStub,
+        title: 'Updated Category',
+      });
       expect(repository.save).toHaveBeenCalledWith(categoryStub);
     });
 

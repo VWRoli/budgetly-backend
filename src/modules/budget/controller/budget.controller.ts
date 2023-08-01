@@ -14,7 +14,7 @@ import { BudgetService } from '../service';
 import { CreateBudgetDto } from '../dto';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { Budget } from '../entities';
-import { UpdateBudgetDto } from '../dto/update-budget.dto';
+import { UpdateBudgetDto } from '../dto';
 import { ThrottlerGuard } from '@nestjs/throttler';
 import { JwtGuard } from '../../auth/guard';
 

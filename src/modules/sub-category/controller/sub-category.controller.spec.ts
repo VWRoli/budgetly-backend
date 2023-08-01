@@ -1,11 +1,18 @@
 import { Repository } from 'typeorm';
-import { SubCategory, stubSubCategory } from '../entities';
+import {
+  SubCategory,
+  stubSubCategory,
+  stubSubCategoryResponse,
+} from '../entities';
 import { SubCategoryService } from '../service';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Test } from '@nestjs/testing';
 import { SubCategoryController } from './index';
 import { Category } from '../../category/entities';
+
+const subCategoryResponseStub = stubSubCategoryResponse();
+const subCategoryResponseStubs = [subCategoryResponseStub];
 
 const subCategoryStub = stubSubCategory();
 const subCategoryStubs = [subCategoryStub];
@@ -48,33 +55,37 @@ describe('SubCategoryController', () => {
 
   describe('getSubCategorys', () => {
     it('should return an array of sub categorys', async () => {
-      jest.spyOn(service, 'getAll').mockResolvedValue(subCategoryStubs);
+      jest.spyOn(service, 'getAll').mockResolvedValue(subCategoryResponseStubs);
       const result = await controller.getSubCategorys(
         subCategoryStub.categoryId,
       );
 
-      expect(result).toEqual(subCategoryStubs);
+      expect(result).toEqual(subCategoryResponseStubs);
     });
   });
 
   describe('createSubCategory', () => {
     it('should create a new sub category', async () => {
-      jest.spyOn(service, 'createOne').mockResolvedValue(subCategoryStub);
+      jest
+        .spyOn(service, 'createOne')
+        .mockResolvedValue(subCategoryResponseStub);
       const result = await controller.createSubCategory(subCategoryStub);
 
-      expect(result).toEqual(subCategoryStub);
+      expect(result).toEqual(subCategoryResponseStub);
     });
   });
 
   describe('updateSubCategory', () => {
     it('should update an existing sub category', async () => {
-      jest.spyOn(service, 'updateOne').mockResolvedValue(subCategoryStub);
+      jest
+        .spyOn(service, 'updateOne')
+        .mockResolvedValue(subCategoryResponseStub);
       const result = await controller.updateSubCategory(
         subCategoryStub.id,
         subCategoryStub,
       );
 
-      expect(result).toEqual(subCategoryStub);
+      expect(result).toEqual(subCategoryResponseStub);
     });
   });
 
@@ -82,7 +93,7 @@ describe('SubCategoryController', () => {
     it('should delete an existing sub category', async () => {
       jest.spyOn(service, 'deleteOne').mockResolvedValue(undefined);
 
-      const result = await controller.deleteSubCategory(subCategoryStub.id);
+      const result = controller.deleteSubCategory(subCategoryStub.id);
 
       expect(result).toBeUndefined();
     });

@@ -7,8 +7,10 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Not, Repository } from 'typeorm';
 import { Account } from '../entities';
 import { CreateAccountDto } from '../dto';
-import { UpdateAccountDto } from '../dto/update-account.dto';
+import { UpdateAccountDto } from '../dto';
 import { Budget } from '../../budget/entities';
+import { AccountResponseDto } from '../../account/dto';
+import { createAccountResponseDto } from '../account.helpers';
 
 @Injectable()
 export class AccountService {
@@ -19,16 +21,21 @@ export class AccountService {
     private budgetRepository: Repository<Budget>,
   ) {}
 
-  async getAll(budgetId: number) {
+  async getAll(budgetId: number): Promise<AccountResponseDto[]> {
     const accounts = await this.repository.find({
       where: { budget: { id: budgetId } },
       select: ['id', 'name', 'balance'],
     });
 
-    return accounts;
+    //format response
+    const responseAccounts: AccountResponseDto[] = accounts.map((account) =>
+      createAccountResponseDto(account),
+    );
+
+    return responseAccounts;
   }
 
-  async createOne(data: CreateAccountDto) {
+  async createOne(data: CreateAccountDto): Promise<AccountResponseDto> {
     //check if budget exists
     const budget = await this.budgetRepository.findOne({
       where: {
@@ -59,10 +66,16 @@ export class AccountService {
     });
 
     // Save the account entity in the DB
-    return await this.repository.save(account);
+    const savedAccount = await this.repository.save(account);
+
+    //format response
+    return createAccountResponseDto(savedAccount);
   }
 
-  async updateOne(id: number, data: UpdateAccountDto) {
+  async updateOne(
+    id: number,
+    data: UpdateAccountDto,
+  ): Promise<AccountResponseDto> {
     const currentAccount = await this.repository.findOne({
       where: { id },
     });
@@ -89,7 +102,9 @@ export class AccountService {
 
     // Save the updated Account entity in the database
     await this.repository.save(currentAccount);
-    return currentAccount;
+
+    //format response
+    return createAccountResponseDto(currentAccount);
   }
 
   async deleteOne(id: number) {

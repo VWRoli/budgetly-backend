@@ -1,4 +1,6 @@
+import { Budget } from 'src/modules/budget/entities';
 import { ECurrency, ELocale } from '../budget/enum';
+import { BudgetResponseDto } from 'src/modules/budget/dto';
 
 export function setLoacle(currency: ECurrency) {
   switch (currency) {
@@ -14,3 +16,12 @@ export function setLoacle(currency: ECurrency) {
       return ELocale.DE;
   }
 }
+
+export const createBudgetResponseDto = (budget: Budget): BudgetResponseDto => {
+  return {
+    id: budget.id,
+    name: budget.name,
+    locale: budget.locale,
+    currency: budget.currency,
+  };
+};

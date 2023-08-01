@@ -6,9 +6,12 @@ import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Test } from '@nestjs/testing';
 import { Budget } from '../../budget/entities';
+import { stubCategoryResponse } from '../../category/entities';
+
+const categoryResponseStub = stubCategoryResponse();
+const categoryResponseStubs = [categoryResponseStub];
 
 const categoryStub = stubCategory();
-const categoryStubs = [categoryStub];
 
 describe('CategoryController', () => {
   let controller: CategoryController;
@@ -48,31 +51,31 @@ describe('CategoryController', () => {
 
   describe('getCategories', () => {
     it('should return an array of categories', async () => {
-      jest.spyOn(service, 'getAll').mockResolvedValue(categoryStubs);
+      jest.spyOn(service, 'getAll').mockResolvedValue(categoryResponseStubs);
       const result = await controller.getCategories(categoryStub.budgetId);
 
-      expect(result).toEqual(categoryStubs);
+      expect(result).toEqual(categoryResponseStubs);
     });
   });
 
   describe('createCategory', () => {
     it('should create a new category', async () => {
-      jest.spyOn(service, 'createOne').mockResolvedValue(categoryStub);
+      jest.spyOn(service, 'createOne').mockResolvedValue(categoryResponseStub);
       const result = await controller.createCategory(categoryStub);
 
-      expect(result).toEqual(categoryStub);
+      expect(result).toEqual(categoryResponseStub);
     });
   });
 
   describe('updateCategory', () => {
     it('should update an existing category', async () => {
-      jest.spyOn(service, 'updateOne').mockResolvedValue(categoryStub);
+      jest.spyOn(service, 'updateOne').mockResolvedValue(categoryResponseStub);
       const result = await controller.updateCategory(
         categoryStub.id,
         categoryStub,
       );
 
-      expect(result).toEqual(categoryStub);
+      expect(result).toEqual(categoryResponseStub);
     });
   });
 
