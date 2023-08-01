@@ -86,12 +86,67 @@ export class TransactionService {
       return transaction;
     }
   }
+
   async createTransfer(
     data: CreateTransactionDto,
-    account: Account,
+    sendingAccount: Account,
     budget: Budget,
-  ) {
-    console.log('transfer');
+  ): Promise<TransactionResponseDto> {
+    const receiverAccount = await this.accountRepository.findOne({
+      where: {
+        name: data.payee,
+      },
+    });
+    const transferFrom = this.repository.create({
+      payee: sendingAccount.name, //from account name
+      date: data.date,
+      inflow: data.inflow,
+      outflow: data.outflow, //pays the amount
+      account: sendingAccount,
+      budget: budget,
+    });
+
+    //save transferFrom entity in DB
+    const savedTransaction = await this.repository.save(transferFrom);
+
+    if (data.inflow) {
+      //update sending account
+      await this.accountService.updateOne(sendingAccount.id, {
+        ...sendingAccount,
+        balance: sendingAccount.balance + data.inflow,
+      });
+      //update receiving account
+      await this.accountService.updateOne(receiverAccount.id, {
+        ...receiverAccount,
+        balance: receiverAccount.balance - data.inflow,
+      });
+    }
+    if (data.outflow) {
+      //update sending account
+      await this.accountService.updateOne(sendingAccount.id, {
+        ...sendingAccount,
+        balance: sendingAccount.balance - data.outflow,
+      });
+      //update receiving account
+      await this.accountService.updateOne(receiverAccount.id, {
+        ...receiverAccount,
+        balance: receiverAccount.balance + data.outflow,
+      });
+    }
+
+    const transferTo = this.repository.create({
+      payee: receiverAccount.name, //to account name
+      date: data.date,
+      inflow: data.outflow, //receives the amount
+      outflow: data.inflow,
+      account: receiverAccount,
+      budget: budget,
+    });
+
+    //save transferTo entity in DB
+    await this.repository.save(transferTo);
+    //format response
+    return createTransactionResponseDto(savedTransaction);
   }
 
   async createTransaction(

@@ -26,13 +26,13 @@ export class TransactionResponseDto {
   };
 
   @ApiProperty({ example: { id: 3, title: 'Groceries' } })
-  category: {
+  category?: {
     id: number;
     title: string;
   };
 
   @ApiProperty({ example: { id: 4, title: 'Fruits' } })
-  subCategory: {
+  subCategory?: {
     id: number;
     title: string;
   };
