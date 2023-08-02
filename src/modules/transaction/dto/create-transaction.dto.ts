@@ -1,11 +1,25 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
+import {
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsPositive,
+  IsString,
+  Length,
+} from 'class-validator';
 import { isInflowOrOutflowNull } from '../decorators';
+import {
+  MAX_LENGTH,
+  MIN_LENGTH,
+} from '../../transaction/transaction.constants';
 
 export class CreateTransactionDto {
   @IsString()
   @IsNotEmpty()
+  @Length(MIN_LENGTH, MAX_LENGTH, {
+    message: `Title must be between ${MIN_LENGTH} and ${MAX_LENGTH} characters`,
+  })
   @ApiProperty({ example: 'Store', required: true })
   readonly payee: string;
 
@@ -36,12 +50,14 @@ export class CreateTransactionDto {
   readonly date: Date;
 
   @IsNumber()
+  @IsPositive()
   @IsOptional()
   @isInflowOrOutflowNull()
   @ApiProperty({ example: 100 })
   readonly inflow: number;
 
   @IsNumber()
+  @IsPositive()
   @IsOptional()
   @isInflowOrOutflowNull()
   @ApiProperty({ example: 100 })
