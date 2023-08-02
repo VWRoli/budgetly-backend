@@ -7,7 +7,7 @@ import {
   Length,
 } from 'class-validator';
 import { ECurrency } from '../enum';
-import { MAX_LENGTH, MIN_LENGTH } from '../../budget/budget.constants';
+import { MAX_LENGTH, MIN_LENGTH } from '../../../utils/constants';
 
 export class CreateBudgetDto {
   @IsString()

@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsNumber, IsString, Length } from 'class-validator';
-import { MAX_LENGTH, MIN_LENGTH } from '../../account/account.constants';
+import { MAX_LENGTH, MIN_LENGTH } from '../../../utils/constants';
 
 export class CreateAccountDto {
   @IsString()

@@ -1,9 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsNumber, IsString, Length } from 'class-validator';
-import {
-  MAX_LENGTH,
-  MIN_LENGTH,
-} from '../../sub-category/sub-category.constants';
+import { MAX_LENGTH, MIN_LENGTH } from '../../../utils/constants';
 
 export class CreateSubCategoryDto {
   @IsString()

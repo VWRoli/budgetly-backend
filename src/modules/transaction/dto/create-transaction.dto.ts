@@ -9,10 +9,7 @@ import {
   Length,
 } from 'class-validator';
 import { isInflowOrOutflowNull } from '../decorators';
-import {
-  MAX_LENGTH,
-  MIN_LENGTH,
-} from '../../transaction/transaction.constants';
+import { MAX_LENGTH, MIN_LENGTH } from '../../../utils/constants';
 
 export class CreateTransactionDto {
   @IsString()
