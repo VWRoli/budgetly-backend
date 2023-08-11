@@ -71,19 +71,55 @@ export class TransactionService {
       throw new NotFoundException(`No account with the provided id`);
     }
 
-    //if there is no category id then it is a transfer between accounts
-    const isTransfer = !data.categoryId;
-    if (isTransfer) {
-      const transfer = this.createTransfer(data, account, budget);
-      return transfer;
-    } else {
+    //if categoryId is 0 it is an income
+    const income = data.categoryId === 0;
+    //if categoryID is bigger than 0 and a valid number it is a transaction
+    const isTransaction = data.categoryId >= 1;
+    //else it is a transfer
+
+    if (income) {
+      const transaction: TransactionResponseDto =
+        await this.createIncomeTransaction(data, account, budget);
+      return transaction;
+    } else if (isTransaction) {
       const transaction: TransactionResponseDto = await this.createTransaction(
         data,
         account,
         budget,
       );
       return transaction;
+    } else {
+      const transfer = this.createTransfer(data, account, budget);
+      return transfer;
     }
+  }
+
+  async createIncomeTransaction(
+    data: CreateTransactionDto,
+    account: Account,
+    budget: Budget,
+  ) {
+    // Create a new instance of the Transaction entity
+    const transaction = this.repository.create({
+      payee: data.payee,
+      date: data.date,
+      inflow: data.inflow,
+      outflow: null,
+      account: account, // Assign the account object to the 'account' property
+      budget: budget, // Assign the account object to the 'budget' property
+    });
+
+    //update account
+    await this.accountService.updateOne(transaction.accountId, {
+      ...account,
+      balance: account.balance + transaction.inflow,
+    });
+
+    //save transaction entity in DB
+    const savedTransaction = await this.repository.save(transaction);
+
+    //format response
+    return createTransactionResponseDto(savedTransaction);
   }
 
   async createTransfer(
