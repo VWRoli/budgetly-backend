@@ -24,6 +24,9 @@ export class Budget {
   @Column()
   name: string;
 
+  @Column()
+  availableToBudget: number;
+
   @Column({ type: 'enum', enum: ECurrency, enumName: 'ECurrency' })
   currency: ECurrency;
 

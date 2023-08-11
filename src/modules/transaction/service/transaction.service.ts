@@ -12,6 +12,7 @@ import { SubCategoryService } from '../../sub-category/service';
 import { CategoryService } from '../../category/service';
 import { TransactionResponseDto } from '../dto';
 import { createTransactionResponseDto } from '../transaction.helpers';
+import { BudgetService } from 'src/modules/budget/service';
 
 @Injectable()
 export class TransactionService {
@@ -27,6 +28,7 @@ export class TransactionService {
     @InjectRepository(SubCategory)
     private subCategoryRepository: Repository<SubCategory>,
     private readonly accountService: AccountService,
+    private readonly budgetService: BudgetService,
     private readonly categoryService: CategoryService,
     private readonly subCategoryService: SubCategoryService,
   ) {}
@@ -113,6 +115,12 @@ export class TransactionService {
     await this.accountService.updateOne(account.id, {
       ...account,
       balance: account.balance + transaction.inflow,
+    });
+
+    //update budget with available amount
+    await this.budgetService.updateOne(budget.id, {
+      ...budget,
+      availableToBudget: budget.availableToBudget + transaction.inflow,
     });
 
     //save transaction entity in DB
@@ -241,7 +249,6 @@ export class TransactionService {
     }
 
     if (data.outflow) {
-      console.log('outflow amount', category.outflows + transaction.outflow);
       //update account
       await this.accountService.updateOne(account.id, {
         ...account,

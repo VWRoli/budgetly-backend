@@ -6,6 +6,7 @@ export const stubBudget = (): Budget => {
   return {
     id: 1,
     name: 'Test Budget',
+    availableToBudget: 0,
     currency: ECurrency.USD,
     locale: ELocale.US,
     user: stubUser(),

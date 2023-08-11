@@ -76,6 +76,7 @@ export class BudgetService {
     const budget = this.repository.create({
       name: data.name,
       currency: data.currency,
+      availableToBudget: 0,
       locale: setLoacle(data.currency),
       user: user, // Assign the user object to the 'user' property
     });
@@ -118,6 +119,7 @@ export class BudgetService {
     // Update the properties of the currentBudget entity
     currentBudget.name = data.name;
     currentBudget.currency = data.currency;
+    currentBudget.availableToBudget = data.availableToBudget;
     // Save the updated budget entity in the database
     await this.repository.save(currentBudget);
 
