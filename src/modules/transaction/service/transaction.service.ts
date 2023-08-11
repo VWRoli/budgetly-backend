@@ -110,7 +110,7 @@ export class TransactionService {
     });
 
     //update account
-    await this.accountService.updateOne(transaction.accountId, {
+    await this.accountService.updateOne(account.id, {
       ...account,
       balance: account.balance + transaction.inflow,
     });
@@ -224,17 +224,17 @@ export class TransactionService {
 
     if (data.inflow) {
       //update account
-      await this.accountService.updateOne(transaction.accountId, {
+      await this.accountService.updateOne(account.id, {
         ...account,
         balance: account.balance + transaction.inflow,
       });
       //update category
-      await this.categoryService.updateOne(transaction.categoryId, {
+      await this.categoryService.updateOne(category.id, {
         ...category,
         balance: category.balance + transaction.inflow,
       });
       //update subcategory
-      await this.subCategoryService.updateOne(transaction.subCategoryId, {
+      await this.subCategoryService.updateOne(subCategory.id, {
         ...subCategory,
         balance: subCategory.balance + transaction.inflow,
       });
@@ -242,17 +242,17 @@ export class TransactionService {
 
     if (data.outflow) {
       //update account
-      await this.accountService.updateOne(transaction.accountId, {
+      await this.accountService.updateOne(account.id, {
         ...account,
         balance: account.balance - transaction.outflow,
       });
       //update category
-      await this.categoryService.updateOne(transaction.categoryId, {
+      await this.categoryService.updateOne(category.id, {
         ...category,
         balance: category.balance - transaction.outflow,
       });
       //update subcategory
-      await this.subCategoryService.updateOne(transaction.subCategoryId, {
+      await this.subCategoryService.updateOne(subCategory.id, {
         ...subCategory,
         balance: subCategory.balance - transaction.outflow,
       });

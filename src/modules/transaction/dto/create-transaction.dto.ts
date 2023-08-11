@@ -15,7 +15,7 @@ export class CreateTransactionDto {
   @IsString()
   @IsNotEmpty()
   @Length(MIN_LENGTH, MAX_LENGTH, {
-    message: `Title must be between ${MIN_LENGTH} and ${MAX_LENGTH} characters`,
+    message: `Payee must be between ${MIN_LENGTH} and ${MAX_LENGTH} characters`,
   })
   @ApiProperty({ example: 'Store', required: true })
   readonly payee: string;
