@@ -12,7 +12,10 @@ import { SubCategory } from '../entities';
 import { Not, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Category } from '../../category/entities';
-import { createSubCategoryResponseDto } from '../../sub-category/sub-category.helperes';
+import { createSubCategoryResponseDto } from '../sub-category.helpers';
+import { CategoryService } from '../../category/service';
+import { Budget } from '../../budget/entities';
+import { BudgetService } from '../../budget/service';
 
 @Injectable()
 export class SubCategoryService {
@@ -21,6 +24,10 @@ export class SubCategoryService {
     private repository: Repository<SubCategory>,
     @InjectRepository(Category)
     private categoryRepository: Repository<Category>,
+    @InjectRepository(Budget)
+    private budgetRepository: Repository<Budget>,
+    private readonly categoryService: CategoryService,
+    private readonly budgetService: BudgetService,
   ) {}
 
   async getAll(categoryId: number): Promise<SubCategoryResponseDto[]> {
@@ -58,7 +65,7 @@ export class SubCategoryService {
         `You already have a sub category with the same name`,
       );
     }
-    // Create a new instance of the Category Item entity
+    // Create a new instance of the SubCategory entity
     const subCategory = this.repository.create({
       title: data.title,
       balance: 0,
@@ -66,7 +73,7 @@ export class SubCategoryService {
       outflows: 0,
       category: category, // Assign the category object to the 'category' property
     });
-    // Save the category Item entity in the DB
+    // Save the SubCategory entity in the DB
     const savedSubCategory = await this.repository.save(subCategory);
 
     //format response
@@ -81,11 +88,20 @@ export class SubCategoryService {
       where: { id },
     });
     if (!currentSubCategory) {
-      throw new NotFoundException(
-        'No Category Item found with the provided id.',
-      );
+      throw new NotFoundException('No SubCategory found with the provided id.');
     }
 
+    const category = await this.categoryRepository.findOne({
+      where: {
+        id: data.categoryId,
+      },
+    });
+
+    const budget = await this.budgetRepository.findOne({
+      where: {
+        id: category.budgetId,
+      },
+    });
     // check if data is already created
     const existingSubCategory = await this.repository.findOne({
       where: {
@@ -96,14 +112,33 @@ export class SubCategoryService {
     });
     if (existingSubCategory) {
       throw new ConflictException(
-        `You already have a category Item with the same name.`,
+        `You already have a SubCategory with the same name.`,
       );
     }
 
     // Update the properties of the currentSubCategory entity
-    currentSubCategory.title = data.title;
-    currentSubCategory.balance = data.balance;
-    currentSubCategory.outflows = data.outflows;
+    if (data.title) {
+      currentSubCategory.title = data.title;
+    }
+    if (data.balance) {
+      currentSubCategory.balance = data.balance;
+    }
+    if (data.outflows) {
+      currentSubCategory.outflows = data.outflows;
+    }
+    if (data.budgeted) {
+      currentSubCategory.budgeted = data.budgeted;
+      //update ADD amount to category budgeted value
+      await this.categoryService.updateOne(category.id, {
+        ...category,
+        budgeted: category.budgeted + data.budgeted,
+      });
+      //update extract amount from available to budget
+      await this.budgetService.updateOne(budget.id, {
+        ...budget,
+        availableToBudget: budget.availableToBudget - data.budgeted,
+      });
+    }
 
     // Save the updated SubCategory entity in the database
     await this.repository.save(currentSubCategory);
@@ -111,6 +146,7 @@ export class SubCategoryService {
     //format response
     return createSubCategoryResponseDto(currentSubCategory);
   }
+
   async deleteOne(id: number) {
     try {
       const currentSubCategory = await this.repository.findOne({

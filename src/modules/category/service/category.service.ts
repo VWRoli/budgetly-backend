@@ -12,7 +12,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Category } from '../entities';
 import { Not, Repository } from 'typeorm';
 import { Budget } from '../../budget/entities';
-import { createSubCategoryResponseDto } from '../../sub-category/sub-category.helperes';
+import { createSubCategoryResponseDto } from '../../sub-category/sub-category.helpers';
 import { createCategoryResponseDto } from '../../category/category.helpers';
 
 @Injectable()
@@ -115,6 +115,7 @@ export class CategoryService {
     currentCategory.title = data.title;
     currentCategory.balance = data.balance;
     currentCategory.outflows = data.outflows;
+    currentCategory.budgeted = data.budgeted;
 
     // Save the updated Category entity in the database
     await this.repository.save(currentCategory);

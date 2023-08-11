@@ -1,5 +1,5 @@
-import { SubCategoryResponseDto } from '../sub-category/dto';
-import { SubCategory } from '../sub-category/entities';
+import { SubCategoryResponseDto } from './dto';
+import { SubCategory } from './entities';
 
 export const createSubCategoryResponseDto = (
   subCat: SubCategory | SubCategoryResponseDto,
