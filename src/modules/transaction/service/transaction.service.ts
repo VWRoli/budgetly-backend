@@ -241,6 +241,7 @@ export class TransactionService {
     }
 
     if (data.outflow) {
+      console.log('outflow amount', category.outflows + transaction.outflow);
       //update account
       await this.accountService.updateOne(account.id, {
         ...account,
@@ -250,11 +251,13 @@ export class TransactionService {
       await this.categoryService.updateOne(category.id, {
         ...category,
         balance: category.balance - transaction.outflow,
+        outflows: category.outflows + transaction.outflow,
       });
       //update subcategory
       await this.subCategoryService.updateOne(subCategory.id, {
         ...subCategory,
         balance: subCategory.balance - transaction.outflow,
+        outflows: subCategory.outflows + transaction.outflow,
       });
     }
     //save transaction entity in DB

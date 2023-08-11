@@ -7,4 +7,8 @@ export class UpdateCategoryDto extends PartialType(CreateCategoryDto) {
   @IsNumber()
   @ApiProperty({ example: 1 })
   readonly balance: number;
+
+  @IsNumber()
+  @ApiProperty({ example: 1 })
+  readonly outflows: number;
 }

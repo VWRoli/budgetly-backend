@@ -114,6 +114,7 @@ export class CategoryService {
     // Update the properties of the currentCategory entity
     currentCategory.title = data.title;
     currentCategory.balance = data.balance;
+    currentCategory.outflows = data.outflows;
 
     // Save the updated Category entity in the database
     await this.repository.save(currentCategory);
