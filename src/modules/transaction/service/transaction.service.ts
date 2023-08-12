@@ -12,7 +12,7 @@ import { SubCategoryService } from '../../sub-category/service';
 import { CategoryService } from '../../category/service';
 import { TransactionResponseDto } from '../dto';
 import { createTransactionResponseDto } from '../transaction.helpers';
-import { BudgetService } from 'src/modules/budget/service';
+import { BudgetService } from '../../budget/service';
 
 @Injectable()
 export class TransactionService {

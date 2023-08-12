@@ -10,6 +10,10 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { Test } from '@nestjs/testing';
 import { SubCategoryController } from './index';
 import { Category } from '../../category/entities';
+import { Budget } from '../../budget/entities';
+import { CategoryService } from '../../category/service';
+import { BudgetService } from '../../budget/service';
+import { User } from '../../auth/entities';
 
 const subCategoryResponseStub = stubSubCategoryResponse();
 const subCategoryResponseStubs = [subCategoryResponseStub];
@@ -28,12 +32,22 @@ describe('SubCategoryController', () => {
       controllers: [SubCategoryController],
       providers: [
         SubCategoryService,
+        CategoryService,
+        BudgetService,
         {
           provide: getRepositoryToken(SubCategory),
           useValue: jest.fn(),
         },
         {
           provide: getRepositoryToken(Category),
+          useValue: jest.fn(),
+        },
+        {
+          provide: getRepositoryToken(Budget),
+          useValue: jest.fn(),
+        },
+        {
+          provide: getRepositoryToken(User),
           useValue: jest.fn(),
         },
       ],

@@ -13,6 +13,8 @@ import { CategoryService } from '../../category/service';
 import { SubCategoryService } from '../../sub-category/service';
 import { Budget } from '../../budget/entities';
 import { stubTransactionResponse } from '../entities/response-transaction.stub';
+import { BudgetService } from '../../budget/service';
+import { User } from '../../auth/entities';
 
 const transactionStub = stubTransaction();
 const transactionResponseStub = stubTransactionResponse();
@@ -36,6 +38,7 @@ describe('TransactionController', () => {
         TransactionService,
         AccountService,
         CategoryService,
+        BudgetService,
         SubCategoryService,
         {
           provide: getRepositoryToken(Transaction),
@@ -55,6 +58,10 @@ describe('TransactionController', () => {
         },
         {
           provide: getRepositoryToken(Budget),
+          useClass: Repository,
+        },
+        {
+          provide: getRepositoryToken(User),
           useClass: Repository,
         },
       ],
