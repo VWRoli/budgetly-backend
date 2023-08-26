@@ -93,7 +93,7 @@ export class SubCategoryService {
 
     const category = await this.categoryRepository.findOne({
       where: {
-        id: data.categoryId,
+        id: currentSubCategory.categoryId,
       },
     });
 
@@ -106,8 +106,8 @@ export class SubCategoryService {
     const existingSubCategory = await this.repository.findOne({
       where: {
         id: Not(id), // Exclude the currentSubCategory ID from the results
-        title: data.title,
-        category: { id: data.categoryId }, // Filter by the category's ID
+        title: currentSubCategory.title,
+        category: { id: currentSubCategory.categoryId }, // Filter by the category's ID
       },
     });
     if (existingSubCategory) {
@@ -127,16 +127,19 @@ export class SubCategoryService {
       currentSubCategory.outflows = data.outflows;
     }
     if (data.budgeted) {
+      //get difference between old and new values to update category and availabale to budget values
+      const difference = currentSubCategory.budgeted - data.budgeted;
+
       currentSubCategory.budgeted = data.budgeted;
       //update ADD amount to category budgeted value
       await this.categoryService.updateOne(category.id, {
         ...category,
-        budgeted: category.budgeted + data.budgeted,
+        budgeted: category.budgeted - difference,
       });
       //update extract amount from available to budget
       await this.budgetService.updateOne(budget.id, {
         ...budget,
-        availableToBudget: budget.availableToBudget - data.budgeted,
+        availableToBudget: budget.availableToBudget + difference,
       });
     }
 
