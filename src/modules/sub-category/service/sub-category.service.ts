@@ -126,15 +126,21 @@ export class SubCategoryService {
     if (data.outflows) {
       currentSubCategory.outflows = data.outflows;
     }
+
     if (data.budgeted) {
       //get difference between old and new values to update category and availabale to budget values
       const difference = currentSubCategory.budgeted - data.budgeted;
 
       currentSubCategory.budgeted = data.budgeted;
+
+      //update balance
+      currentSubCategory.balance = currentSubCategory.balance - difference;
+
       //update ADD amount to category budgeted value
       await this.categoryService.updateOne(category.id, {
         ...category,
         budgeted: category.budgeted - difference,
+        balance: category.balance - difference,
       });
       //update extract amount from available to budget
       await this.budgetService.updateOne(budget.id, {
