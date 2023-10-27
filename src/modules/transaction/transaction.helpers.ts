@@ -5,7 +5,7 @@ export const createTransactionResponseDto = (
   transaction: Transaction,
 ): TransactionResponseDto => {
   //if there is no category id then it is a transfer between accounts
-  const isTransfer = !transaction.category?.id;
+  const isTransfer = transaction.payee.startsWith('Transfer:');
   if (isTransfer) {
     return {
       id: transaction.id,
@@ -32,13 +32,18 @@ export const createTransactionResponseDto = (
         name: transaction.account.name,
       },
       category: {
-        id: transaction.category.id,
-        title: transaction.category.title,
+        id: transaction.category?.id,
+        title: transaction.category?.title || getIncomeMonth(transaction.date),
       },
       subCategory: {
-        id: transaction.subCategory.id,
-        title: transaction.subCategory.title,
+        id: transaction.subCategory?.id,
+        title: transaction.subCategory?.title,
       },
     };
   }
 };
+
+export function getIncomeMonth(date: Date) {
+  const month = date.toLocaleString('default', { month: 'long' });
+  return `Income for ${month}`;
+}

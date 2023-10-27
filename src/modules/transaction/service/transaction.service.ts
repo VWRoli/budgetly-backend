@@ -44,10 +44,12 @@ export class TransactionService {
       },
       select: ['id', 'payee', 'date', 'inflow', 'outflow'],
     });
+
     const responseTransactions: TransactionResponseDto[] = transactions.map(
       (txn) => createTransactionResponseDto(txn),
     );
-    return responseTransactions;
+
+    return responseTransactions.sort((a, b) => +b.date - +a.date);
   }
 
   async createOne(data: CreateTransactionDto) {
@@ -142,7 +144,7 @@ export class TransactionService {
       },
     });
     const transferFrom = this.repository.create({
-      payee: sendingAccount.name, //from account name
+      payee: `Transfer: ${sendingAccount.name}`, //from account name
       date: data.date,
       inflow: data.inflow,
       outflow: data.outflow, //pays the amount
@@ -179,7 +181,7 @@ export class TransactionService {
     }
 
     const transferTo = this.repository.create({
-      payee: receiverAccount.name, //to account name
+      payee: `Transfer: ${receiverAccount.name}`, //to account name
       date: data.date,
       inflow: data.outflow, //receives the amount
       outflow: data.inflow,
