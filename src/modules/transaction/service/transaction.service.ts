@@ -138,6 +138,7 @@ export class TransactionService {
     const receiverAccount = await this.accountRepository.findOne({
       where: {
         name: data.payee,
+        budget: { id: data.budgetId },
       },
     });
     const transferFrom = this.repository.create({
