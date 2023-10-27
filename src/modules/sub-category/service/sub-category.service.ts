@@ -120,14 +120,14 @@ export class SubCategoryService {
     if (data.title) {
       currentSubCategory.title = data.title;
     }
-    if (data.balance) {
+    if (data.balance >= 0) {
       currentSubCategory.balance = data.balance;
     }
-    if (data.outflows) {
+    if (data.outflows >= 0) {
       currentSubCategory.outflows = data.outflows;
     }
 
-    if (data.budgeted) {
+    if (typeof data.budgeted === 'number') {
       //get difference between old and new values to update category and availabale to budget values
       const difference = currentSubCategory.budgeted - data.budgeted;
 
