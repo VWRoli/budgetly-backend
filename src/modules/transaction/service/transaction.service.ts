@@ -232,7 +232,6 @@ export class TransactionService {
       account: account, // Assign the account object to the 'account' property
       budget: budget, // Assign the account object to the 'budget' property
     });
-
     if (data.inflow) {
       //update account
       await this.accountService.updateOne(account.id, {
@@ -250,7 +249,6 @@ export class TransactionService {
         balance: subCategory.balance + transaction.inflow,
       });
     }
-
     if (data.outflow) {
       //update account
       await this.accountService.updateOne(account.id, {
@@ -311,8 +309,8 @@ export class TransactionService {
     currentTransaction.date = data.date;
     currentTransaction.inflow = data.inflow;
     currentTransaction.outflow = data.outflow;
-    (currentTransaction.category = category), // Assign the category object to the 'category' property
-      (currentTransaction.subCategory = subCategory); // Assign the subCategory object to the 'subCategory' property
+    currentTransaction.category = category; // Assign the category object to the 'category' property
+    currentTransaction.subCategory = subCategory; // Assign the subCategory object to the 'subCategory' property
 
     //save transaction entity in DB
     const savedTransaction = await this.repository.save(currentTransaction);

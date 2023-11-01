@@ -115,15 +115,14 @@ export class SubCategoryService {
         `You already have a SubCategory with the same name.`,
       );
     }
-
     // Update the properties of the currentSubCategory entity
     if (data.title) {
       currentSubCategory.title = data.title;
     }
-    if (data.balance >= 0) {
+    if (typeof data.balance === 'number') {
       currentSubCategory.balance = data.balance;
     }
-    if (data.outflows >= 0) {
+    if (typeof data.outflows === 'number') {
       currentSubCategory.outflows = data.outflows;
     }
 
