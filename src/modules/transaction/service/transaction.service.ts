@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateTransactionDto, UpdateTransactionDto } from '../dto';
 import { Transaction } from '../entities';
-import { Repository } from 'typeorm';
+import { Equal, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Account } from '../../account/entities';
 import { Category } from '../../category/entities';
@@ -98,7 +98,7 @@ export class TransactionService {
     }
   }
 
-  async createIncomeTransaction(
+  private async createIncomeTransaction(
     data: CreateTransactionDto,
     account: Account,
     budget: Budget,
@@ -132,7 +132,7 @@ export class TransactionService {
     return createTransactionResponseDto(savedTransaction);
   }
 
-  async createTransfer(
+  private async createTransfer(
     data: CreateTransactionDto,
     sendingAccount: Account,
     budget: Budget,
@@ -195,7 +195,7 @@ export class TransactionService {
     return createTransactionResponseDto(savedTransaction);
   }
 
-  async createTransaction(
+  private async createTransaction(
     data: CreateTransactionDto,
     account: Account,
     budget: Budget,
@@ -318,21 +318,121 @@ export class TransactionService {
     //format response
     return createTransactionResponseDto(savedTransaction);
   }
+
   async deleteOne(id: number) {
     try {
       const currentTransaction = await this.repository.findOne({
         where: { id },
+        relations: { category: true },
       });
-
       if (!currentTransaction) {
         throw new NotFoundException(
           'No transaction found with the provided id.',
         );
       }
 
-      await this.repository.softDelete(id);
+      const isTransfer = currentTransaction.payee.startsWith('Transfer:');
+
+      if (isTransfer) {
+        //delete transfer
+        await this.deleteTransfer(currentTransaction);
+      } else {
+        //delete transaction
+        await this.deleteTransaction(currentTransaction);
+      }
+
+      // await this.repository.softDelete(id);
     } catch (error) {
       throw error;
+    }
+  }
+
+  private async deleteTransfer(transaction: Transaction) {
+    const fromAccount = await this.accountRepository.findOne({
+      where: {
+        id: transaction.accountId,
+      },
+    });
+  }
+  private async deleteTransaction(transaction: Transaction) {
+    const budget = await this.budgetRepository.findOne({
+      where: {
+        id: transaction.budgetId,
+      },
+    });
+
+    const account = await this.accountRepository.findOne({
+      where: {
+        id: transaction.accountId,
+      },
+    });
+
+    const category = await this.categoryRepository.findOne({
+      where: {
+        id: Equal(transaction.categoryId),
+      },
+    });
+    const subCategory = await this.subCategoryRepository.findOne({
+      where: {
+        id: Equal(transaction.subCategoryId),
+      },
+    });
+
+    if (transaction.inflow) {
+      //update account
+      //if inflow remove amount from account balance
+      await this.accountService.updateOne(account.id, {
+        ...account,
+        balance: account.balance - transaction.inflow,
+      });
+      if (category) {
+        //update category
+        //if inflow remove amount from  category
+        await this.categoryService.updateOne(category.id, {
+          ...category,
+          balance: category.balance - transaction.inflow,
+        });
+      }
+
+      if (subCategory) {
+        //update subcategory
+        //if inflow remove amount from  subcategory
+        await this.subCategoryService.updateOne(subCategory.id, {
+          ...subCategory,
+          balance: subCategory.balance - transaction.inflow,
+        });
+      }
+
+      if (!category) {
+        //income for this month
+        await this.budgetService.updateOne(budget.id, {
+          ...budget,
+          availableToBudget: budget.availableToBudget - transaction.inflow,
+        });
+      }
+    }
+
+    if (transaction.outflow) {
+      //update account
+      //if outflow add amount to account balance
+      await this.accountService.updateOne(account.id, {
+        ...account,
+        balance: account.balance + transaction.outflow,
+      });
+      //update category
+      //if outflow add amount to category
+      await this.categoryService.updateOne(category.id, {
+        ...category,
+        balance: category.balance + transaction.outflow,
+        outflows: category.outflows - transaction.outflow,
+      });
+      //update subcategory
+      //if outflow add amount to subcategory
+      await this.subCategoryService.updateOne(subCategory.id, {
+        ...subCategory,
+        balance: subCategory.balance + transaction.outflow,
+        outflows: subCategory.outflows - transaction.outflow,
+      });
     }
   }
 
