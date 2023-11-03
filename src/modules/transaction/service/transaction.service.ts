@@ -42,7 +42,15 @@ export class TransactionService {
         subCategory: true,
         budget: true,
       },
-      select: ['id', 'payee', 'date', 'inflow', 'outflow'],
+      select: [
+        'id',
+        'payee',
+        'date',
+        'inflow',
+        'outflow',
+        'isTransfer',
+        'transferAccountId',
+      ],
     });
 
     const responseTransactions: TransactionResponseDto[] = transactions.map(
@@ -78,7 +86,7 @@ export class TransactionService {
     //if categoryId is 0 it is an income
     const income = data.categoryId === 0;
     //if categoryID is bigger than 0 and a valid number it is a transaction
-    const isTransaction = data.categoryId >= 1;
+    const isTransaction = !data.isTransfer;
     //else it is a transfer
 
     if (income) {
@@ -139,13 +147,15 @@ export class TransactionService {
   ): Promise<TransactionResponseDto> {
     const receiverAccount = await this.accountRepository.findOne({
       where: {
-        name: data.payee,
+        id: data.transferAccountId,
         budget: { id: data.budgetId },
       },
     });
     const transferFrom = this.repository.create({
       payee: `Transfer: ${sendingAccount.name}`, //from account name
       date: data.date,
+      isTransfer: data.isTransfer,
+      transferAccountId: data.transferAccountId,
       inflow: data.inflow,
       outflow: data.outflow, //pays the amount
       account: sendingAccount,
@@ -183,6 +193,8 @@ export class TransactionService {
     const transferTo = this.repository.create({
       payee: `Transfer: ${receiverAccount.name}`, //to account name
       date: data.date,
+      isTransfer: data.isTransfer,
+      transferAccountId: sendingAccount.id,
       inflow: data.outflow, //receives the amount
       outflow: data.inflow,
       account: receiverAccount,

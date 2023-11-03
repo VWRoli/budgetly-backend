@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import {
+  IsBoolean,
   IsNotEmpty,
   IsNumber,
   IsOptional,
@@ -19,6 +20,16 @@ export class CreateTransactionDto {
   })
   @ApiProperty({ example: 'Store', required: true })
   readonly payee: string;
+
+  @ApiProperty({ example: false, required: false, default: false })
+  @IsBoolean()
+  readonly isTransfer: boolean;
+
+  @ApiProperty({ example: 1, required: false, nullable: true })
+  @IsNumber()
+  @IsPositive()
+  @IsOptional()
+  readonly transferAccountId: number;
 
   @IsNumber()
   @ApiProperty({ example: 1, required: true })

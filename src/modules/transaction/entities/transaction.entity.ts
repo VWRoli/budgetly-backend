@@ -26,6 +26,14 @@ export class Transaction {
   @ApiProperty({ example: 'Store' })
   payee: string;
 
+  @ApiProperty({ example: false })
+  @Column({ default: false })
+  isTransfer: boolean;
+
+  @Column({ default: null })
+  @ApiProperty({ example: 1, nullable: true })
+  transferAccountId: number;
+
   @ManyToOne(() => Budget, (budget) => budget.transactions)
   @JoinColumn()
   budget: Budget;

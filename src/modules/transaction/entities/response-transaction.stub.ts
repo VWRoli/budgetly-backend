@@ -5,6 +5,8 @@ export const stubTransactionResponse = (): TransactionResponseDto => {
     id: 1,
     payee: 'Test Payee',
     date: new Date('2022-01-01'),
+    isTransfer: false,
+    transferAccountId: null,
     inflow: 1000,
     outflow: 500,
     budgetId: 1,

@@ -8,6 +8,8 @@ export const stubTransaction = (): Transaction => {
   return {
     id: 1,
     payee: 'Test Payee',
+    isTransfer: false,
+    transferAccountId: null,
     account: stubAccount(),
     accountId: stubAccount().id,
     budget: stubBudget(),

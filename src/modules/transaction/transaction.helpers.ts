@@ -4,12 +4,12 @@ import { TransactionResponseDto } from './dto';
 export const createTransactionResponseDto = (
   transaction: Transaction,
 ): TransactionResponseDto => {
-  //if there is no category id then it is a transfer between accounts
-  const isTransfer = transaction.payee.startsWith('Transfer:');
-  if (isTransfer) {
+  if (transaction.isTransfer) {
     return {
       id: transaction.id,
       payee: transaction.payee,
+      isTransfer: transaction.isTransfer,
+      transferAccountId: transaction.transferAccountId,
       date: transaction.date,
       inflow: transaction.inflow,
       outflow: transaction.outflow,
@@ -23,6 +23,8 @@ export const createTransactionResponseDto = (
     return {
       id: transaction.id,
       payee: transaction.payee,
+      isTransfer: transaction.isTransfer,
+      transferAccountId: transaction.transferAccountId,
       date: transaction.date,
       inflow: transaction.inflow,
       outflow: transaction.outflow,

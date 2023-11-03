@@ -7,6 +7,12 @@ export class TransactionResponseDto {
   @ApiProperty({ example: 'John Doe' })
   payee: string;
 
+  @ApiProperty({ example: false })
+  isTransfer: boolean;
+
+  @ApiProperty({ example: 1, nullable: true })
+  transferAccountId: number;
+
   @ApiProperty({ example: new Date() })
   date: Date;
 
