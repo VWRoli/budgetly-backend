@@ -5,10 +5,12 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Budget } from '../budget/entities';
 import { Account } from './entities';
 import { Transaction } from '../transaction/entities';
+import { BudgetService } from '../budget/service';
+import { User } from '../auth/entities';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Budget, Account, Transaction])],
+  imports: [TypeOrmModule.forFeature([Budget, Account, Transaction, User])],
   controllers: [AccountController],
-  providers: [AccountService],
+  providers: [AccountService, BudgetService],
 })
 export class AccountModule {}

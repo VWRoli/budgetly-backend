@@ -11,6 +11,7 @@ import { UpdateAccountDto } from '../dto';
 import { Budget } from '../../budget/entities';
 import { AccountResponseDto } from '../../account/dto';
 import { createAccountResponseDto } from '../account.helpers';
+import { BudgetService } from '../../budget/service';
 
 @Injectable()
 export class AccountService {
@@ -19,6 +20,7 @@ export class AccountService {
     private repository: Repository<Account>,
     @InjectRepository(Budget)
     private budgetRepository: Repository<Budget>,
+    private readonly budgetService: BudgetService,
   ) {}
 
   async getAll(budgetId: number): Promise<AccountResponseDto[]> {
@@ -61,9 +63,17 @@ export class AccountService {
     // Create a new instance of the Account entity
     const account = this.repository.create({
       name: data.name,
-      balance: 0,
+      balance: data.balance || 0,
       budget: budget, // Assign the budget object to the 'budget' property
     });
+
+    if (data.balance > 0) {
+      //update budget with available amount
+      await this.budgetService.updateOne(budget.id, {
+        ...budget,
+        availableToBudget: budget.availableToBudget + data.balance,
+      });
+    }
 
     // Save the account entity in the DB
     const savedAccount = await this.repository.save(account);

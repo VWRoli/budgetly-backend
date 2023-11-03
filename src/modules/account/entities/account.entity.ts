@@ -31,7 +31,7 @@ export class Account {
   @OneToMany(() => Transaction, (transaction) => transaction.account)
   transactions: Transaction[];
 
-  @Column()
+  @Column({ default: 0 })
   balance: number;
 
   @CreateDateColumn()

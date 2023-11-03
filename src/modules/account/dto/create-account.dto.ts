@@ -1,5 +1,13 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsNumber, IsString, Length } from 'class-validator';
+import {
+  IsInt,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+  Length,
+  Min,
+} from 'class-validator';
 import { MAX_LENGTH, MIN_LENGTH } from '../../../utils/constants';
 
 export class CreateAccountDto {
@@ -10,6 +18,12 @@ export class CreateAccountDto {
   })
   @ApiProperty({ example: 'Example account', required: true })
   readonly name: string;
+
+  @ApiProperty()
+  @IsInt()
+  @Min(0)
+  @IsOptional()
+  readonly balance: number;
 
   @IsNumber()
   @ApiProperty({ example: 1, required: true })
