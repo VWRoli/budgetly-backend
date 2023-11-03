@@ -63,4 +63,12 @@ export class TransactionController {
   deleteTransaction(@Param('transactionId') transactionId: number) {
     this.transactionService.deleteOne(transactionId);
   }
+
+  @Get('/payees/:budgetId')
+  @ApiOkResponse({ type: Transaction, isArray: true })
+  getPayees(@Param('budgetId') budgetId: number): Promise<string[]> {
+    return this.transactionService.getAllPayees({
+      where: { budget: { id: budgetId } },
+    });
+  }
 }

@@ -335,4 +335,22 @@ export class TransactionService {
       throw error;
     }
   }
+
+  async getAllPayees(findCondition: any): Promise<string[]> {
+    const transactions = await this.repository.find({
+      ...findCondition,
+
+      select: ['id', 'payee'],
+    });
+
+    const payees = [
+      ...new Set(
+        transactions
+          .map((txn) => txn.payee)
+          .filter((el) => !el.startsWith('Transfer:')),
+      ),
+    ];
+
+    return payees;
+  }
 }
