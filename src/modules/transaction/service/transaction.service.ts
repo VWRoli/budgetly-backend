@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateTransactionDto, UpdateTransactionDto } from '../dto';
 import { Transaction } from '../entities';
 import { Equal, Repository } from 'typeorm';
@@ -151,6 +155,11 @@ export class TransactionService {
         budget: { id: data.budgetId },
       },
     });
+    if (sendingAccount.id === receiverAccount.id) {
+      throw new ForbiddenException(
+        `You can't send money to the account you are sending it from!`,
+      );
+    }
     const transferFrom = this.repository.create({
       payee: `Transfer: ${sendingAccount.name}`, //from account name
       date: data.date,
