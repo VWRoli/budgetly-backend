@@ -8,14 +8,20 @@ import {
   Param,
   Post,
   Put,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { TransactionService } from '../service';
 import { Transaction } from '../entities';
-import { CreateTransactionDto, UpdateTransactionDto } from '../dto';
+import {
+  CreateTransactionDto,
+  TransactionResponseDto,
+  UpdateTransactionDto,
+} from '../dto';
 import { ThrottlerGuard } from '@nestjs/throttler';
 import { JwtGuard } from '../../auth/guard';
+import { PageDto, PageOptionsDto } from '../../common/dto';
 
 @ApiTags('transactions')
 @UseGuards(JwtGuard, ThrottlerGuard)
@@ -24,23 +30,26 @@ export class TransactionController {
   constructor(private readonly transactionService: TransactionService) {}
 
   @Get(':accountId')
-  @ApiOkResponse({
-    status: 200,
-    description: 'List of transactions',
-    type: Transaction,
-    isArray: true,
-  })
-  getTransactionsByAccountId(@Param('accountId') accountId: number) {
-    return this.transactionService.getAll({
-      where: { account: { id: accountId } },
-    });
+  @HttpCode(HttpStatus.OK)
+  async getTransactionsByAccountId(
+    @Param('accountId') accountId: number,
+    @Query() pageOptionsDto: PageOptionsDto,
+  ): Promise<PageDto<TransactionResponseDto>> {
+    return this.transactionService.getTransactionsByAccountId(
+      accountId,
+      pageOptionsDto,
+    );
   }
   @Get('/budget/:budgetId')
-  @ApiOkResponse({ type: Transaction, isArray: true })
-  getTransactionsByBudgetId(@Param('budgetId') budgetId: number) {
-    return this.transactionService.getAll({
-      where: { budget: { id: budgetId } },
-    });
+  @HttpCode(HttpStatus.OK)
+  async getTransactionsByBudgetId(
+    @Param('budgetId') budgetId: number,
+    @Query() pageOptionsDto: PageOptionsDto,
+  ): Promise<PageDto<TransactionResponseDto>> {
+    return this.transactionService.getTransactionsByBudgetId(
+      budgetId,
+      pageOptionsDto,
+    );
   }
 
   @Post()

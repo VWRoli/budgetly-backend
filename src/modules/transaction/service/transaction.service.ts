@@ -17,6 +17,7 @@ import { CategoryService } from '../../category/service';
 import { TransactionResponseDto } from '../dto';
 import { createTransactionResponseDto } from '../transaction.helpers';
 import { BudgetService } from '../../budget/service';
+import { PageDto, PageMetaDto, PageOptionsDto } from '../../common/dto';
 
 @Injectable()
 export class TransactionService {
@@ -36,6 +37,49 @@ export class TransactionService {
     private readonly categoryService: CategoryService,
     private readonly subCategoryService: SubCategoryService,
   ) {}
+
+  async getTransactionsByAccountId(
+    accountId: number,
+    pageOptionsDto: PageOptionsDto,
+  ): Promise<PageDto<TransactionResponseDto>> {
+    const queryBuilder = this.repository.createQueryBuilder('transaction');
+
+    queryBuilder.andWhere('transaction.accountId = :accountId', {
+      accountId: accountId,
+    });
+
+    queryBuilder
+      .orderBy('transaction.createTimeStamp', pageOptionsDto.order)
+      .skip(pageOptionsDto.skip)
+      .take(pageOptionsDto.take);
+
+    const itemCount = await queryBuilder.getCount();
+    const { entities } = await queryBuilder.getRawAndEntities();
+
+    const pageMetaDto = new PageMetaDto({ itemCount, pageOptionsDto });
+    return new PageDto(entities, pageMetaDto);
+  }
+  async getTransactionsByBudgetId(
+    budgetId: number,
+    pageOptionsDto: PageOptionsDto,
+  ): Promise<PageDto<TransactionResponseDto>> {
+    const queryBuilder = this.repository.createQueryBuilder('transaction');
+
+    queryBuilder.andWhere('transaction.budgetId = :budgetId', {
+      budgetId: budgetId,
+    });
+
+    queryBuilder
+      .orderBy('transaction.createTimeStamp', pageOptionsDto.order)
+      .skip(pageOptionsDto.skip)
+      .take(pageOptionsDto.take);
+
+    const itemCount = await queryBuilder.getCount();
+    const { entities } = await queryBuilder.getRawAndEntities();
+
+    const pageMetaDto = new PageMetaDto({ itemCount, pageOptionsDto });
+    return new PageDto(entities, pageMetaDto);
+  }
 
   async getAll(findCondition: any) {
     const transactions = await this.repository.find({
