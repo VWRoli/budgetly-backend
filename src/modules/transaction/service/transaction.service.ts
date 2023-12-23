@@ -352,28 +352,72 @@ export class TransactionService {
         );
       }
 
-      const isTransfer = currentTransaction.payee.startsWith('Transfer:');
+      const isTransfer = currentTransaction.isTransfer;
 
       if (isTransfer) {
         //delete transfer
+        const transferCounterpart = await this.repository.findOne({
+          where: {
+            date: currentTransaction.date,
+            transferAccountId: currentTransaction.accountId,
+          },
+        });
+
+        if (!transferCounterpart) {
+          throw new NotFoundException('No transfer counterpart was found!');
+        }
+
         await this.deleteTransfer(currentTransaction);
+        await this.repository.softDelete(id);
+        await this.repository.softDelete(transferCounterpart.id);
       } else {
         //delete transaction
         await this.deleteTransaction(currentTransaction);
+        await this.repository.softDelete(id);
       }
-
-      // await this.repository.softDelete(id);
     } catch (error) {
       throw error;
     }
   }
 
   private async deleteTransfer(transaction: Transaction) {
-    const fromAccount = await this.accountRepository.findOne({
+    const sendingAccount = await this.accountRepository.findOne({
       where: {
         id: transaction.accountId,
       },
     });
+
+    const receiverAccount = await this.accountRepository.findOne({
+      where: {
+        id: transaction.transferAccountId,
+        budget: { id: transaction.budgetId },
+      },
+    });
+
+    if (transaction.inflow) {
+      //update sending account
+      await this.accountService.updateOne(sendingAccount.id, {
+        ...sendingAccount,
+        balance: sendingAccount.balance - transaction.inflow,
+      });
+      //update receiving account
+      await this.accountService.updateOne(receiverAccount.id, {
+        ...receiverAccount,
+        balance: receiverAccount.balance + transaction.inflow,
+      });
+    }
+    if (transaction.outflow) {
+      //update sending account
+      await this.accountService.updateOne(sendingAccount.id, {
+        ...sendingAccount,
+        balance: sendingAccount.balance + transaction.outflow,
+      });
+      //update receiving account
+      await this.accountService.updateOne(receiverAccount.id, {
+        ...receiverAccount,
+        balance: receiverAccount.balance - transaction.outflow,
+      });
+    }
   }
   private async deleteTransaction(transaction: Transaction) {
     const budget = await this.budgetRepository.findOne({
